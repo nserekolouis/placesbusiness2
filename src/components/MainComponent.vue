@@ -1,18 +1,11 @@
 <template>
-  <posts-section
-  :Place="Place"
-  ></posts-section>
+  <router-view/>
 </template>
 <script>
-import PostsSection from '@/views/pages/PostsScreen.vue'
 
 export default {
   name: 'MainComponent',
-  components: {
-    PostsSection,
-  },
-  props: {
-    Place: {}
-  }
+  components: {},
+  props: { Place: {}}
 }
 </script>

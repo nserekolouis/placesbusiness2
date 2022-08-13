@@ -1,99 +1,39 @@
 <template>
   <CHeader position="sticky" class="mb-0">
     <CContainer fluid>
-      <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
-        <!-- <CIcon icon="cil-menu" size="lg" /> -->
-      </CHeaderToggler>
-      <!-- <CHeaderBrand class="mx-auto d-lg-none" to="/"> -->
-      <CHeaderBrand class="" to="/">
-        <CNavLink href="/homeScreen">
-          <CAvatar 
-          :src="places_logo" 
-          size="md" 
+      <CNavbarBrand href="#">
+        <div class="row login-top"
+        style="box-shadow: 0px 0px 0px 0px #d5d5d5;">
+          <img :src="logo"
+          class="logo"
           />
-        </CNavLink>
-      </CHeaderBrand>
-      <CHeaderNav class="d-none d-md-flex mx-auto">
-        <CNavItem>
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="input-group">
-                  <input 
-                  type="text" 
-                  class="form-control" 
-                  placeholder="Search for..." 
-                  aria-label="Search for..."
-                  v-model="search_place"
-                  @input="searchPlace"
-                  >
-              </div>
-              <ul class="ul-places">
-              <li v-for="place in places" :key="place.id"
-              class="li-bar-place"
-              @click="selectPlace(place)"
-              >
-              <div class="row">
-                <div class="col-md-2 place-icon-center">
-                   <CIcon icon="cilLocationPin" size="lg" />
-                </div>
-                <div class="col-md-10">
-                  <p class="p-li-bar-place">{{ place.main_text }}</p>
-                  <p class="p-li-bar-place">{{ place.secondary_text }}</p>
-                </div>
-              </div>
-              </li>
-            </ul>
-            </div>
-          </div>
-        </CNavItem>
-      <!--  <CNavItem>
-          <CNavLink href="#">Users</CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink href="#">Settings</CNavLink>
-        </CNavItem>
-      </CHeaderNav> -->
-      </CHeaderNav>
+          <h6 
+          class="top-header">
+          Places</h6>
+    </div>
+      </CNavbarBrand>
+      <CHeaderToggler class="ps-1" @click="$store.commit('toggleSidebar')">
+      </CHeaderToggler>   
       <CHeaderNav>
-        <CNavItem>
-          <CNavLink href="#">
-            <CIcon class="mx-2" icon="cil-bell" size="lg" />
-          </CNavLink>
-        </CNavItem>
-        <!-- <CNavItem>
-          <CNavLink href="#">
-            <CIcon class="mx-2" icon="cil-list" size="lg" />
-          </CNavLink>
-        </CNavItem>
-        <CNavItem>
-          <CNavLink href="#">
-            <CIcon class="mx-2" icon="cil-envelope-open" size="lg" />
-          </CNavLink>
-        </CNavItem> -->
         <AppHeaderDropdownAccnt />
       </CHeaderNav>
     </CContainer>
-    <!-- <CHeaderDivider /> -->
-    <!-- <CContainer fluid>
-      <AppBreadcrumb />
-    </CContainer> -->
   </CHeader>
 </template>
 
 <script>
 import axios from "axios";
-//import AppBreadcrumb from './AppBreadcrumb'
 import AppHeaderDropdownAccnt from './AppHeaderDropdownAccnt'
-import  places_logo  from '@/assets/places_logo.png'
+import  logo  from '@/assets/logo.png'
+
 export default {
   name: 'AppHeader',
   components: {
-    //AppBreadcrumb,
     AppHeaderDropdownAccnt,
   },
   setup() {
     return {
-      places_logo,
+      logo
     }
   },
   data(){

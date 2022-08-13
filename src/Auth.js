@@ -18,6 +18,10 @@ class Auth {
         this.token = token;
         this.user = user;
     }
+    updateUser(user){
+         window.localStorage.setItem('user', JSON.stringify(user));
+         this.user = user;
+    }
     check () {
         return !! this.token;
     }

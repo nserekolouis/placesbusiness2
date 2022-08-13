@@ -17,7 +17,7 @@
     </div>
 </template>
 <script>
-import ReactionComponent from '@/components/ReactionComponent.vue'
+import ReactionComponent from '@/components/PostReaction.vue'
 import ImageOne from '@/components/ImageOne.vue'
 import PostUserInfo from '@/components/PostUserInfo.vue'
 import PostText from '@/components/PostText.vue'
@@ -26,7 +26,8 @@ import PostPlaceName from '@/components/PostPlaceName.vue'
 export default {
     name:'OnlyText',
     props: {
-        post: {}
+        post: {},
+        index: Number
     },
     components: {
         ReactionComponent,

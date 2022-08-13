@@ -2,117 +2,108 @@
 <CSidebar visible>
   <CSidebarBrand>Places</CSidebarBrand>
   <CSidebarNav>
-    <li class="nav-title">Recent Places</li>
-    <CNavItem href="#"
-    >
-      <CIcon  customClassName="nav-icon" icon="cil-location-pin"/>
-      All 
-    </CNavItem>
-    <CNavItem href="#"
-    v-for="place in places" :key="place.sub_id"
-     @click="selectPlace(place)"
-    >
-      <CIcon  customClassName="nav-icon" icon="cil-location-pin"/>
-      {{ place.main_text }} 
-    </CNavItem>
+  <CNavItem href="/homeScreen">
+    <CIcon  customClassName="nav-icon" icon="cil-home"/>
+      Home
+  </CNavItem>
+  <CNavItem href="/notificationsscreen">
+    <CIcon  customClassName="nav-icon" icon="cil-user"/>
+      Notifications
+  </CNavItem>
+  <CNavItem href="/editprofilescreen">
+    <CIcon  customClassName="nav-icon" icon="cil-user"/>
+      Profile
+  </CNavItem>
+  <CNavGroup>
+      <template #togglerContent>
+        <CIcon  customClassName="nav-icon" icon="cil-settings"/> 
+        Settings
+      </template>
+      <CNavItem href="/accounts">
+        <CIcon  customClassName="nav-icon" icon="cil-puzzle"/> 
+        Account
+      </CNavItem>
+      <CNavItem href="/privacyandsafety">
+        <CIcon  customClassName="nav-icon" icon="cil-puzzle"/> 
+        Privacy & Safety
+      </CNavItem>
+      <CNavItem href="/aboutplaces">
+         <CIcon  customClassName="nav-icon" icon="cil-puzzle"/> 
+         About Places
+      </CNavItem>
+    </CNavGroup>
   </CSidebarNav>
   <CSidebarFooter>
     <CDropdown>
         <CDropdownToggle>
-             <CAvatar :src="avatar" size="lg" />
-             <p class="h6 p-h6">Nsereko Louis</p>
+              <img :src="profile_picture" 
+              class="profile-picture"
+              />
+             <p class="h6 p-h6">{{ username }}</p>
         </CDropdownToggle>
         <CDropdownMenu>
-            <CDropdownItem href="#">
-            <CIcon icon="cil-user"/>    
-            Profile</CDropdownItem>
-            <CDropdownItem href="#">
-            <CIcon   icon="cil-settings"/>
-            Settings</CDropdownItem>
-            <CDropdownItem href="#">
+            <CDropdownItem href="#"
+            @click="logout"
+            >
             <CIcon  icon="cil-account-logout"/>    
             Logout</CDropdownItem>
         </CDropdownMenu>
     </CDropdown>
   </CSidebarFooter>
-  <!-- <CSidebarToggler/> -->
 </CSidebar>
 </template>
 <script>
-import axios from "axios";
-import logo from '@/assets/images/avatars/places_logo.png';
-import avatar from '@/assets/images/avatars/8.jpg'
+import Auth from '@/Auth.js';
+import router from '@/router';
+import { inject } from 'vue';
+import { getToken, onMessage } from "firebase/messaging";
+
+
 export default {
   name: 'SideBar',
-  components:{
-  },
+  components:{},
   setup() {
-    return{
-      avatar: avatar,
-      places_logo: logo,
+    const messaging = inject('messaging')
+    const vapidKey = inject('vapidKey')
+    
+    const requestPermission = () => {
+      console.log('Requesting permission...');
+      Notification.requestPermission()
+      .then((permission) => {
+        if(permission === 'granted'){
+          console.log("Notification permision granted");
+          getToken(messaging, { vapidKey: vapidKey })
+          .then((currentToken) => {
+            if (currentToken) {
+              console.log("Token",currentToken);
+            } else {
+              console.log('Token not available');
+            }
+          }).catch((err) => {
+            console.log('Token An error occurred while retrieving token. ', err);
+          });
+        }else{
+            console.log("Notification permision not granted");
+        }
+      })
     }
-  },
-  props: {
-    initPlace: {}
+    requestPermission();
+
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+    });
   },
   data(){
     return {
-      places: []
+      places: [],
+      profile_picture: this.url+Auth.user.user_photo,
+      username: Auth.user.username,
     }
-  },
-  watch: {
-    initPlace: {
-    immediate: true, 
-    handler (val, oldVal) {
-      console.log("New Value",val);
-      console.log("Old Value",oldVal);
-      if(Object.keys(val).length != 0){
-        //this.addPlaceSubscription(val)
-      }
-    }
-  }
-  },
-  created(){
-    this.getPlaceSubscriptions();
   },
   methods: {
-    getPlaceSubscriptions: function(){
-      console.log("InitPlace:",this.initPlace.places_id);
-      let page_url = this.url+'api/v2/get_place_subs';
-      const data = { 
-        userplacesub_id: "0"
-      };
-      axios.post(page_url,data)
-          .then(response =>{
-            console.log("Response Places: ",response);
-            //this.places = (response.data.place_subs).reverse();
-            this.places = (response.data.place_subs).filter(place => 
-            { return place.places_id != this.initPlace.places_id });
-          }).catch(error => {
-            console.log(error);
-          });
-    },
-    addPlaceSubscription(val){
-      console.log("place id",val.places_id);
-      let page_url = this.url+'api/v2/add_user_place_subscription';
-      const data = { 
-        place_id: ""+val.places_id
-      };
-      axios.post(page_url,data)
-          .then(response =>{
-            console.log("Response ADD SUB: ",response);
-            //this.places = response.data.place_subs;
-            this.getPlaceSubscriptions();
-          }).catch(error => {
-            console.log(error);
-          });
-    },
-    selectPlace(place){
-      console.log(place);
-      this.$emit('listen-place',place);
-    },
-    selectAllPosts(){
-     this.$emit('listen-place',{});
+    logout(){
+       Auth.logout;
+       router.push({name: 'LoginScreen'});
     }
   },
 }

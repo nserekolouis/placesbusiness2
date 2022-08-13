@@ -1,6 +1,8 @@
 <template>
-<div class="row">
-    <p>{{ post.post_text }}</p>
+<div class="container">
+    <div class="row">
+        <p>{{ post.post_text }}</p>
+    </div>
 </div>
 </template>
 <script>

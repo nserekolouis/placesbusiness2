@@ -3,10 +3,17 @@
 </template>
 
 <script>
+import firebaseMessaging from './firebase'
+import { provide } from 'vue'
+
 export default {
   name: 'App',
-  components: {
-
+  components: {},
+  provide: {
+    messaging: firebaseMessaging
+  },
+  setup() {
+    provide('messaging', firebaseMessaging)
   }
 }
 </script>
