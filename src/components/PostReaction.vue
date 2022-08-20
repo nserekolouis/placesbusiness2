@@ -4,13 +4,21 @@
         <div class="col-sm-6 div-comment"
          @click="commentClicked"
         >
-            <CIcon icon="cilCommentSquare" size="m" />
+            <font-awesome-icon 
+            icon="fa-regular fa-message"
+            class="font-awesome-icon"
+            />
             <p class="p-label">{{ post.num_comments}}</p> 
         </div>
         <div class="col-sm-6 div-like"
         @click="likeClicked"
         >
-            <CIcon icon="cilHeart" size="m" :style="{ color: activeColor }"/>
+            <!-- <CIcon icon="cilHeart" size="m" :style="{ color: activeColor }"/> -->
+            <font-awesome-icon 
+            icon="fa-regular fa-heart"
+            class="font-awesome-icon"
+            :style="{ color: activeColor }"
+            />
             <p class="p-label" :style="{ color: activeColor }">{{ likes }}</p> 
         </div>
     </div>
@@ -77,3 +85,13 @@ export default {
     }
 }
 </script>
+<style scoped>
+p{
+    font-size: 0.875rem;
+}
+
+.font-awesome-icon {
+    font-size: 0.875rem;
+    color: #a7a2a9;
+}
+</style>

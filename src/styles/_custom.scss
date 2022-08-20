@@ -283,8 +283,8 @@ p {
 
 .profile-picture{
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     object-fit: cover;
     margin-right: auto;
     margin-left: auto;
@@ -374,7 +374,7 @@ p {
 }
 
 .form-item{
-    margin-bottom: 2px;
+    margin-bottom: 5px;
 }
 
 .img-profilescreen{
@@ -453,7 +453,6 @@ p {
     display: flex;
     align-items: center;
     height: 50px;
-    box-shadow: 0px 0px 0px 1px #d5d5d5;
 }
 
 .center {
@@ -470,15 +469,27 @@ p {
 
 .places-logo{
     width: 200px;
-    height: 100px;
+    height: auto;
 }
 
 .container-fluid{
-    background-color: #f7f7f7;
     padding: 0px;
 }
 
 .header.header-sticky {
     padding: 0px;
     background: #f7f7f7;
+}
+
+
+.form-select, .form-control {
+    margin-bottom: 5px;
+}
+
+.info-missing{
+    margin-left: auto;
+    margin-right: auto;
+    width: 240px;
+    text-align: center;
+    margin-top: 50px;
 }

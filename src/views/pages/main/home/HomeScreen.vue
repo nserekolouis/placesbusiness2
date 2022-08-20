@@ -1,4 +1,5 @@
-<template> 
+<template>
+<!-- <div class="container-fluid"> -->
     <div class="row">
         <div class="col-md-3">
              <sidebar-coreui
@@ -6,20 +7,21 @@
              @listen-place="emittedPlace"
              />
         </div>
-        <div class="col-md-6 sidebarstyle">
+        <div class="col-md-6">
             <posts-section
             :initPlace="Place"
             ></posts-section>
         </div>
-        <div class="col-md-3 sidebarstyle">
+        <div class="col-md-3">
             <search-users/>
         </div>
     </div>
+<!-- </div> -->
 </template>
 
 <script>
 import PostsSection from '@/views/pages/main/home/PostsScreen.vue'
-import SidebarCoreui from '@/components/SidebarCoreui.vue'
+import SidebarCoreui from '@/components/SideBar2.vue'
 import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
 
 export default {
@@ -47,3 +49,16 @@ export default {
   },
 }
 </script>
+<style scoped>
+body {
+    overflow-x: hidden;
+}
+
+.border-right {
+  border-right: 1px solid #c2c3c4;;
+}
+
+.container-fluid{
+    background-color: white;
+}
+</style>

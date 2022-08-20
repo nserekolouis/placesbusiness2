@@ -1,13 +1,9 @@
 <template>
-    <div class="row">
-        <div class="row">
-            <div class="col-sm-2">
-                <user-photo :post="post"/>
-            </div>
-            <div class="col-sm-10">
-                <post-user-info :post="post"/>
-            </div>
-        </div>
+    <div class="col-md-4">
+        <user-photo :post="post"/>
+    </div>
+    <div class="col-md-6">
+        <post-user-info :post="post"/>
     </div>
 </template>
 <script>

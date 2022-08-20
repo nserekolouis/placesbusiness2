@@ -1,17 +1,15 @@
 <template>
-<div class="row makepostcontainer">
-    <div class="col-md-1" style="text-align:center; display:none">
-        <img :src="profile_picture" 
-        class="profile-picture"
-    />
-    </div>
+<div class="row">
     <div class="col-md-12">
-        <textarea
-        class="form-control"
-        v-model="post_text"
-        :maxlength="max"
-        placeholder="Write something about this place"
-        ></textarea>
+        <div class="">
+            <textarea
+            class="form-control form-control-sm"
+            v-model="post_text"
+            :maxlength="320"
+            rows="3"
+            placeholder="What is really happening?"
+            ></textarea>
+        </div>
         <div class="row">
             <div v-if="image_one" class="col-sm-3">
                 <img :src="this.url+image_one" 
@@ -34,24 +32,43 @@
                 />
             </div>
         </div>
-        <div class="row" style="margin-top: 5px">
+        <div class="post-control">
             <input
             v-model="counter"
             class="input-counter"
             />
+            <label for="chooseFiles">
+                 <font-awesome-icon 
+                 icon="fa-solid fa-image"/>
+            </label>
             <input
-                class="choose-files"
-                id="logo"
-                type="file"
-                accept="image/*"
-                @change="uploadProfilePicture($event)"
-                multiple
+            aria-label="Choose Files"
+            class="choose-files"
+            id="chooseFiles"
+            type="file"
+            accept="image/*"
+            @change="uploadProfilePicture($event)"
+            multiple
             />
-            <button
+
+            <label for="make-post">
+                 <font-awesome-icon 
+                 icon="fa-solid fa-paper-plane"/>
+            </label>
+            <input
+            aria-label="Make Post"
+            class="make-post"
+            id="make-post"
+            type="submit"
+            accept="image/*"
+            @click="makepost"
+            multiple
+            />
+            <!-- <button
             type="button" 
             class="makepost"
             @click="makepost"
-            >Post</button>
+            >Post</button> -->
         </div>
     </div>
 </div>
@@ -69,12 +86,10 @@ export default {
             profile_picture: this.url+Auth.user.user_photo,
             post_text: "",
             counter: "",
-            max: 320,
             image_one: "",
             image_two: "",
             image_three: "",
             image_four: "",
-            post: {}
         }
     },
     watch: {
@@ -121,12 +136,15 @@ export default {
             });
         },
         makepost(){
-            
-            if(this.post_text === null && this.image_one === null){
-                alert('Please add info to share');
+            console.log("place",Object.keys(this.place).length);
+            if(this.post_text.length === 0 &&
+               this.image_one.length === 0 ){
+                alert('Post has no information');
+            }else if( Object.keys(this.place).length === 0){
+                alert('Select a Place');
             }else{
                 console.log("PLACE ID",this.place);
-                let page_url = this.url+'api/v2/makepost';
+                let page_url = this.url+'api/v2/make_post';
                 let data = new FormData();
                 data.append('place_id', this.place.places_id);
                 data.append('post_text', this.post_text);
@@ -142,8 +160,7 @@ export default {
                     this.image_two = "";
                     this.image_three = "";
                     this.image_four = "";
-
-                    this.post = response.data.posts;
+                    
                     this.$emit('listen-post');
                 })
                 .catch(error => {
@@ -154,3 +171,40 @@ export default {
     }
 }
 </script>
+<style scoped>
+.div-post-icon{
+    display: inline-block;
+    width: 50px
+}
+
+.post-control{
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    text-align: end;
+}
+
+.post-control .choose-files {
+    display: none;
+}
+
+.post-control .choose-files + label {
+   display: inline-block;
+  
+}
+
+.post-control .make-post {
+    display: none;
+}
+
+.post-control .make-post + label {
+   display: inline-block;
+  
+}
+
+label{
+   font-size: 20px;
+   margin-right: 5px;
+   color: #babcbf;
+}
+</style>

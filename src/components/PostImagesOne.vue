@@ -1,20 +1,36 @@
 <template>
-     <div class="row">
+<div class="container">
+    <div class="row">
+        <post-place-name :post="post"/>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <post-profile-picture :post="post"/>
+        </div>
+        <div class="col-md-10">
+            <post-user-info :post="post"/>
+            <post-text :post="post"/>
+            <image-one :image_one="post.image_one" />
+            <reaction-component :post="post"/>
+        </div>
+    </div>
+</div>
+     <!-- <div class="row">
         <div class="row">
             <post-place-name :post="post"/>
         </div>
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <post-profile-picture :post="post"/>
             </div>
-            <div class="col-sm-11">
+            <div class="col-md-10">
                 <post-user-info :post="post"/>
                 <post-text :post="post"/>
                 <image-one :image_one="post.image_one" />
                 <reaction-component :post="post"/>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 <script>
 import ReactionComponent from '@/components/PostReaction.vue'

@@ -1,13 +1,13 @@
 <template>
-<div class="container">
-    <div class="row">
-    <div class="col-sm-6">
+<!-- <div class="container"> -->
+    <!-- <div class="row"> -->
+    <div class="" style="border:0px solid black">
         <p class="p-username">{{ post.username }}</p>
         <p class="p-userhandle">{{ post.userhandle }}</p>
         <p class="p-timestamp">{{ timestamp }}</p>
     </div>
-</div>
-</div>
+<!-- </div> -->
+<!-- </div> -->
 </template>
 <script>
 
@@ -51,3 +51,9 @@ export default {
     }
 }
 </script>
+<style scoped>
+p{
+    margin-bottom: 0px;
+    font-size: 0.875rem;
+}
+</style>

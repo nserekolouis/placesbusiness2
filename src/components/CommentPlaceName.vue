@@ -1,11 +1,25 @@
 <template>
-<!-- <div class="container"> -->
-    <div class="row commentplacename">
-        <div class="place-name">
-            <u><p style="display:inline">{{ post.main_text }}</p></u>
-        </div>
+    <div>
         <div class="post-menu">
-            <CDropdown>
+            <div class="col-md-6 div-right">
+                <div class="dropdown">
+                    <a href="#" 
+                    class="d-flex 
+                    align-items-center
+                    link-dark
+                    text-decoration-none
+                    dropdown-toggle"
+                    id="dropdownUser2"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                ...
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
+            </div> 
+        </div>
+            <!-- <CDropdown>
                 <CDropdownToggle>
                 </CDropdownToggle>
                 <CDropdownMenu>
@@ -28,10 +42,9 @@
                     >
                     Delete Comment</CDropdownItem>
                 </CDropdownMenu>
-            </CDropdown>
+            </CDropdown> -->
         </div>
-        </div>
-<!-- </div> -->
+    </div>
 </template>
 <script>
 import { toRefs} from "vue";
@@ -98,3 +111,18 @@ export default {
     }
 }
 </script>
+<style scoped>
+.dropdown{
+    width: 36px;
+    height: 30px;
+    display: inline-block;
+    margin-left: auto;
+    /* background-color: #c1c1c12e; */
+    text-align: center;
+    border-radius: 50%;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+</style>

@@ -10,7 +10,7 @@
             <notification-section
             ></notification-section>
         </div>
-        <div class="col-md-3 sidebarstyle">
+        <div class="col-md-3">
             <search-users/>
         </div>
     </div>
@@ -18,7 +18,7 @@
 
 <script>
 import NotificationSection from '@/views/pages/main/notifications/NotificationSection.vue'
-import SidebarCoreui from '@/components/SidebarCoreui.vue'
+import SidebarCoreui from '@/components/SideBar2.vue'
 import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
 
 

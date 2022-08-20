@@ -6,7 +6,7 @@
              @listen-place="emittedPlace"
              />
         </div>
-        <div class="col-md-6 sidebarstyle">
+        <div class="col-md-6">
             <!-- <profile-and-posts
             :user_id="user_id"
             ></profile-and-posts> -->
@@ -14,15 +14,14 @@
             :user_id="user_id"
             />
         </div>
-       <div class="col-md-3 sidebarstyle">
+       <div class="col-md-3">
             <search-users/>
         </div> 
     </div>
 </template>
 
 <script>
-//import ProfileAndPosts from '@/views/pages/main/userprofile/ProfileAndPosts.vue'
-import SidebarCoreui from '@/components/SidebarCoreui.vue'
+import SidebarCoreui from '@/components/SideBar2.vue'
 import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
 import LoadMoreUserPosts from '@/views/pages/main/userprofile/LoadMoreUserPosts.vue'
 
@@ -42,7 +41,6 @@ export default {
   }
   },
   components: {
-       //ProfileAndPosts,
        SidebarCoreui,
        SearchUsers,
        LoadMoreUserPosts

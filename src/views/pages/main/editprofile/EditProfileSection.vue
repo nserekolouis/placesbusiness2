@@ -1,68 +1,93 @@
 <template>
-  <div class="container">
+  <!-- <div class="container"> -->
+    <div style="margin-top:5px; margin-bottom:5px">
+        <font-awesome-icon icon="fa-solid fa-long-arrow-left"
+        @click="$router.back()"
+        />
+        <h6>Profile</h6>
+   </div>
     <div class="row">
-      <div class="col-sm-6 profilescreen">
+      <div class="col-md-6 profilescreen">
          <form
-        @submit.prevent="uploadProfile">
-        <div v-if="profile_picture" class="form-item img-profilescreen">
-            <img v-bind:src="''+this.url+profile_picture" width="100" height="100">
-        </div>
-        <div class="form-item">
-            <input
-                class="form-control"
-                id="logo"
-                type="file"
-                accept="image/*"
+         @submit.prevent="uploadProfile">
+        
+        <div class="" style="width:300px;
+                             margin-left: auto;
+                             margin-right: auto;">
+          <div class="form-item" style="text-align: -webkit-center;">
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                <input type='file'
+                id="imageUpload" 
+                accept=".png, .jpg, .jpeg"
                 @change="uploadProfilePicture($event)"
+                />
+                <label for="imageUpload">
+                  <font-awesome-icon 
+                  class="edit-icon"
+                  icon="fa-solid fa-pencil" />
+                </label>
+              </div>
+              
+              <div class="avatar-preview">
+                <div id="imagePreview" 
+                :style="{backgroundImage: 'url(' + profile_picture + ')'}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-item">
+            <label for="username">Display Name</label>
+            <input
+            id="username"
+            class="form-control form-control-sm"
+            v-model="username"
+            type="text"
+            required
             />
-        </div>
-        <div class="form-item">
-            <input
-                class="form-control"
-                placeholder="username"
-                v-model="username"
-                type="text"
-                required
-                />
-        </div>
-        <div class="form-item">
+          </div>
+          <div class="form-item">
+            <label for="userbio">User Bio</label>
             <textarea
-                class="form-control"
-                placeholder="user bio"
-                v-model="userbio"
-                type="text"
-                maxlength="320"
-                required
-                ></textarea>
+            id="userbio"
+            class="form-control form-control-sm"
+            v-model="userbio"
+            type="text"
+            maxlength="320"
+            rows="4"
+            required
+            ></textarea>
         </div>
         <div class="form-item">
-            <input
-                class="form-control"
-                placeholder="country of interest"
-                v-model="search_country"
-                @input="searchCountries"
-                type="text"
-                required
-                />
-            <ul class="list-group">
-              <li v-for="country in countries" :key="country.id"
-              class="list-group-item"
-              @click="selectCountry(country)"
-              >
-              {{ country.name }}
-              </li>
-            </ul>
+          <label for="country">Search country of interest</label>
+          <input
+          id="country"
+          class="form-control form-control-sm"
+          v-model="search_country"
+          @input="searchCountries"
+          type="text"
+          required
+          />
+          <ul class="list-group">
+            <li v-for="country in countries" :key="country.id"
+            class="list-group-item"
+            @click="selectCountry(country)"
+            >
+            {{ country.name }}
+            </li>
+          </ul>
         </div>
-        <div class="form-item">
-           <button 
-            type="submit" 
-            class="btn btn-light btn-userhandle"
-            >Save</button>
+        <div class="form-item" style="text-align:end">
+          <button 
+          type="submit" 
+          class="btn btn-primary" 
+          >Save</button>
+        </div>
         </div>
         </form>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -80,7 +105,7 @@ export default {
   },
   data () {
     return {
-      profile_picture: Auth.user.user_photo,
+      profile_picture: this.url+Auth.user.user_photo,
       search_country: "",
       countries: [],
       username: Auth.user.username,
@@ -106,7 +131,7 @@ export default {
         .then(response =>{
             console.log("profile_picture",response);
                 //this.profile_picture = response.data.logo;
-                this.profile_picture = response.data.user_photo;
+                this.profile_picture = this.url+response.data.user_photo;
             })
         .catch(error => {
             console.log(error);
@@ -173,18 +198,107 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+h6 {
+    display: inline-block;
+    margin-left:10px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+body {
+  background: whitesmoke;
+  font-family: 'Open Sans', sans-serif;
 }
-li {
+
+.container {
+  max-width: 960px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 20px;
+  text-align: center;
+  margin: 20px 0 20px;
+}
+
+h1 small {
+  display: block;
+  font-size: 15px;
+  padding-top: 8px;
+  color: gray;
+}
+
+.avatar-upload {
+  position: relative;
+  max-width: 205px;
+  /* margin: 50px auto; */
+}
+
+.avatar-upload .avatar-edit {
+  position: absolute;
+  right: 44px;
+  z-index: 1;
+  top: 10px;
+}
+
+.avatar-upload .avatar-edit input {
+  display: none;
+}
+
+.avatar-upload .avatar-edit input + label {
   display: inline-block;
-  margin: 0 10px;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0;
+  border-radius: 100%;
+  background: #FFFFFF;
+  border: 1px solid transparent;
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.12);
+  cursor: pointer;
+  font-weight: normal;
+  transition: all .2s ease-in-out;
 }
-a {
-  color: #42b983;
+
+.avatar-upload .avatar-edit input + label:hover {
+  background: #f1f1f1;
+  border-color: #d6d6d6;
+}
+
+ .avatar-upload .avatar-edit input + label:after {
+   color: #757575;
+   position: absolute;
+   top: 10px;
+   left: 0;
+   right: 0;
+   text-align: center;
+   margin: auto;
+  }
+
+ .avatar-upload .avatar-preview {
+   width: 160px;
+   height: 160px;
+   position: relative;
+   border-radius: 100%;
+   border: 6px solid #F8F8F8;
+   box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.1);
+  }
+
+ .avatar-upload .avatar-preview div {
+   width: 100%;
+   height: 100%;
+   border-radius: 100%;
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-position: center;
+}
+.edit-icon{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 13px;
+  color: #c9c9c9;
+}
+
+label{
+  font-size: 0.875rem;
+  margin: 0px;
 }
 </style>

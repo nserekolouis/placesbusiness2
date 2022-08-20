@@ -1,6 +1,6 @@
 <template> 
     <div class="row">
-        <div class="col-md-3" style="display">
+        <div class="col-md-3">
              <sidebar-coreui
              :initPlace="Place"
              @listen-place="emittedPlace"
@@ -22,8 +22,7 @@
 
 <script>
 
-import SidebarCoreui from '@/components/SidebarCoreui.vue'
-//import PostAndComments from '@/views/pages/main/comments/PostAndComments.vue'
+import SidebarCoreui from '@/components/SideBar2.vue'
 import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
 import LoadMorePostsAndComments from '@/views/pages/main/comments/LoadMorePostsAndComments.vue'
 

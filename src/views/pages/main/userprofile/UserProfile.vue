@@ -1,20 +1,31 @@
 <template>
-    <div class="">
-      <img :src="this.url+user.user_photo" 
+    <div style="margin-top:5px; margin-bottom:5px">
+        <font-awesome-icon icon="fa-solid fa-long-arrow-left"
+        @click="$router.back()"
+        />
+    <h6>User Profile</h6>
+   </div>
+    <div class="row">
+      <div class="col-md-6">
+          <img :src="this.url+user.user_photo" 
         class="profile-picture"
       />
+      </div>
+      <div class="col-md-6" style="text-align:right">
+           <button
+              type="button"
+              class="btn btn-primary btn-follow" 
+              @click="followAction"
+              >{{ follow }}</button>
+      </div>
       <div class="row">
           <p>{{ user.username }}</p>
           <p>{{ user.userhandle}}</p>
           <p>{{ user.userbio }}</p>
           <p>{{ user.created_at }}</p>
           <div class="row">
-              <p>Followers: {{ user.followers }}</p>
-              <p>Following: {{ user.following }}</p>
-              <button
-              type="button"
-              @click="followAction"
-              >{{ follow }}</button>
+              <p style="display: inline-block; width: 120px;">Followers: {{ user.followers }}</p>
+              <p style="display: inline-block; width: 120px;">Following: {{ user.following }}</p>
           </div>
       </div>
     </div>
@@ -81,3 +92,29 @@ export default {
     },
 }
 </script>
+<style scoped>
+h6 {
+    display: inline-block;
+    margin-left:10px;
+    font-size: 0.900rem;
+}
+
+p{
+    margin-bottom: 0px;
+}
+
+.profile-picture{
+    width: 60px;
+    height: 60px;
+}
+
+.btn-follow{
+    font-size: 12px;
+    margin-top: 25px;
+}
+
+p{
+    margin-bottom: 0px;
+    font-size: 0.875rem;
+}
+</style>

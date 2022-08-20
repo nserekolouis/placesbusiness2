@@ -1,9 +1,9 @@
 <template>
-<div class="container">
-    <div class="row">
+<!-- <div class="container"> -->
+    <!-- <div class="row"> -->
         <p>{{ post.body }}</p>
-    </div>
-</div>
+    <!-- </div> -->
+<!-- </div> -->
 </template>
 <script>
 export default {
@@ -13,3 +13,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+p{
+    font-size: 0.875rem;
+}
+</style>

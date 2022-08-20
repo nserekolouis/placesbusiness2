@@ -1,23 +1,28 @@
 <template>
   <div class="container-fluid">
     <app-header/>
-    <div class="row" style="height:100vh">
+    <div class="row">
       <div class="col-sm-6 userhandle">
-        <p :style="{ color: activeColor }">{{ response_handle }}</p>
+        <p 
+        :style="{ color: activeColor }"
+        class="p-response"
+        >{{ response_handle }}</p>
+        <div class="form-item">
+          <label>Userhandle</label>
         <input
           class="form-control"
           placeholder="@userhandle"
           v-model="userhandle"
           @input="onChange"
           type="text"
+          maxlength="32"
         />
+        </div>
         <button 
         type="button"
         class="btn btn-light btn-userhandle"
         @click="next">Next</button>
       </div>
-      
-      
     </div>
   </div>
 </template>
@@ -26,7 +31,7 @@
 import axios from "axios";
 import Auth from '@/Auth.js';
 import router from '@/router';
-import AppHeader from '@/components/AppHeader.vue'
+import AppHeader from '@/components/AppHeader2.vue'
 
 export default {
   name: 'UserHandle',
@@ -49,7 +54,16 @@ export default {
   },
   methods: {
     onChange(){
-      const data = { 
+      if(this.userhandle.indexOf(' ') >= 0){
+        //nospace
+        this.response_handle = "No space";
+        this.activeColor = 'red';
+      }else if(this.userhandle.length < 3){
+        //minimumcharacter
+        this.response_handle = "3 characters minimum";
+        this.activeColor = 'red';
+      }else{
+        const data = { 
           user_handle: '@'+this.userhandle,
           app_token: "web-platform",
           user_agent: "web"
@@ -72,6 +86,7 @@ export default {
           this.errorMessage = error.message;
           console.error("There was an error!", error);
       });
+      }
     },
     next(){
       console.log("profilescreen");
@@ -84,3 +99,13 @@ export default {
   },
 }
 </script>
+<style scoped>
+.p-response{
+    margin-left: auto;
+    margin-right: auto;
+    width: 180px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    text-align: center;
+}
+</style>

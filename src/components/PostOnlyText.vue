@@ -1,5 +1,5 @@
 <template>
-     <div class="row">
+     <div class="container">
         <div class="row">
             <post-place-name 
             :post="post"
@@ -11,10 +11,10 @@
             />
         </div>
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <post-profile-picture :post="post"/>
             </div>
-            <div class="col-sm-11">
+            <div class="col-md-10">
                 <post-user-info :post="post"/>
                 <post-text :post="post"/>
                 <reaction-component :post="post"/>

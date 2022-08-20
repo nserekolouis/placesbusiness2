@@ -1,41 +1,42 @@
 <template>
-    <div class="row" style="margin: 10px; cursor: pointer"
-    @click="$router.back()"
-    >
-       <CIcon icon="cilArrowLeft" size="lg"/>
+    <div style="margin-top:5px; margin-bottom:5px">
+    <font-awesome-icon icon="fa-solid fa-long-arrow-left "
+     @click="$router.back()"
+    />
+    <h6>Comments</h6>
    </div>
-   <div class="row" ref="scrollComponent">
-        <four-images
-        v-if="post.image_four != null"
-        :post="post"
-        />
-        <three-images
-        v-else-if="post.image_three != null"
-        :post="post"
-        />
-        <two-images
-        v-else-if="post.image_two != null"
-        :post="post"
-        />
-        <one-image
-        v-else-if="post.image_one != null"
-        :post="post"
-        />
-        <only-text
-        v-else
-        :post="post"
-        />
-   </div>
-   <div class="row comments">
-        <ul class="ul-post">
-           <li class="">
+   <div class="" ref="scrollComponent">
+        <ul class="list-group">
+           <li class="list-group-item">
+               <four-images
+               v-if="post.image_four != null"
+               :post="post"
+               />
+               <three-images
+               v-else-if="post.image_three != null"
+               :post="post"
+               />
+               <two-images
+               v-else-if="post.image_two != null"
+               :post="post"
+               />
+               <one-image
+               v-else-if="post.image_one != null"
+               :post="post"
+               />
+               <only-text
+               v-else
+               :post="post"
+               />
+           </li>
+           <li class="list-group-item">
                <make-comment
                :post="post"
                @listen-comment="newComment"
                />
            </li>
            <li v-for="(post, index) in comments" :key="post.id"
-              class="li-bar-post post-card"
+              class="list-group-item"
               >
               <post-extras
               v-if="post.post_extras == 1"
@@ -149,7 +150,7 @@ export default {
                 .then(response => {
                     console.log("LMPAC POST DETAILS",response);
                     post.value = response.data.post;
-                    getComments()
+                    //getComments()
                 })
                 .catch(error => {
                     console.log(error);
@@ -219,3 +220,9 @@ export default {
     },
 }
 </script>
+<style scoped>
+h6 {
+    display: inline-block;
+    margin-left:10px;
+}
+</style>

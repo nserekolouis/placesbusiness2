@@ -1,16 +1,18 @@
 <template>
 <div class="container">
 <div class="row">
-    <div class="col-md-1">
+    <!-- <div class="col-md-1">
         <img :src="profile_picture" 
         class="profile-picture"
     />
-    </div>
-    <div class="col-md-11">
+    </div> -->
+    <div class="col-md-12">
         <textarea
-        class="form-control textarea-post"
+        class="form-control form-control-sm"
         v-model="post_text"
-        :maxlength="max"
+        :maxlength="320"
+        rows="4"
+        placeholder="Comment here"
         ></textarea>
         <div class="row">
             <div v-if="image_one" class="col-sm-3">
@@ -34,7 +36,7 @@
                 />
             </div>
         </div>
-        <div class="row" style="margin-top: 5px">
+        <!-- <div class="row" style="margin-top: 5px">
             <input
             v-model="counter"
             class="input-counter"
@@ -50,6 +52,44 @@
             <button class="makepost"
             @click="makepost"
             >Comment</button>
+        </div> -->
+        <div class="post-control">
+            <input
+            v-model="counter"
+            class="input-counter"
+            />
+            <label for="chooseFiles">
+                 <font-awesome-icon 
+                 icon="fa-solid fa-image"/>
+            </label>
+            <input
+            aria-label="Choose Files"
+            class="choose-files"
+            id="chooseFiles"
+            type="file"
+            accept="image/*"
+            @change="uploadProfilePicture($event)"
+            multiple
+            />
+
+            <label for="chooseFiles">
+                 <font-awesome-icon 
+                 icon="fa-solid fa-paper-plane"/>
+            </label>
+            <input
+            aria-label="Make Post"
+            class="choose-files"
+            id="chooseFiles"
+            type="submit"
+            accept="image/*"
+            @click="makepost"
+            multiple
+            />
+            <!-- <button
+            type="button" 
+            class="makepost"
+            @click="makepost"
+            >Post</button> -->
         </div>
     </div>
 </div>
@@ -68,7 +108,6 @@ export default {
             profile_picture: this.url+Auth.user.user_photo,
             post_text: "",
             counter: "",
-            max: 320,
             image_one: "",
             image_two: "",
             image_three: "",
@@ -149,3 +188,26 @@ export default {
     }
 }
 </script>
+<style scoped>
+.post-control{
+    display: inline-block;
+    height: 40px;
+    width: 100%;
+    text-align: end;
+}
+
+.post-control .choose-files {
+    display: none;
+}
+
+.post-control .choose-files + label {
+   display: inline-block;
+  
+}
+
+label{
+   font-size: 20px;
+   margin-right: 5px;
+   color: #babcbf;
+}
+</style>

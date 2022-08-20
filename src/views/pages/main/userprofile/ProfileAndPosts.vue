@@ -1,18 +1,13 @@
 <template>
-    <div class="row" style="margin: 10px; cursor: pointer"
-    @click="$router.back()"
-    >
-    <CIcon icon="cilArrowLeft" size="lg"/>
-    </div>
     <div class="row">
         <user-profile
         :user_id="user_id"
         />
     </div>
-    <div class="row comments" ref="scrollComponent">
-        <ul class="ul-post">
+    <div class="row" ref="scrollComponent">
+        <ul class="list-group">
            <li v-for="(post, index) in posts" :key="post.id"
-              class="li-bar-post post-card"
+              class="list-group-item"
               >
               <post-extras
               v-if="post.post_extras == 1"

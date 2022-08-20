@@ -1,11 +1,44 @@
 <template>
-<!-- <div class="container"> -->
-    <div class="row">
-        <div class="place-name">
-            <u><p style="display:inline">{{ post.main_text }}</p></u>
+    <!-- <div class="div-main"> -->
+        <div class="col-md-6 div-left">
+            <u><p class="p-place-name">{{ post.main_text }}</p></u>
         </div>
-        <div class="post-menu">
-            <CDropdown>
+        <div class="col-md-6 div-right">
+            <div class="dropdown">
+                <a href="#" 
+                class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                id="dropdownUser2"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                ...
+                </a>
+                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                </ul>
+            </div> 
+        </div>
+    <!-- </div> -->
+    <!-- <div style="border: 1px solid black">
+        <div class="place-name">
+            <u><p class="p-place-name"
+                >{{ post.main_text }}</p>
+            </u>
+        </div>
+        <div class="dropdown">
+            <a href="#" 
+            class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+            id="dropdownUser2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            ...
+            </a>
+      <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+        <li><a class="dropdown-item" href="#">Sign out</a></li>
+      </ul>
+    </div> -->
+        <!-- <div class="post-menu"> -->
+            <!-- </div> -->
+            <!--<CDropdown>
                 <CDropdownToggle>
                 </CDropdownToggle>
                 <CDropdownMenu>
@@ -32,10 +65,9 @@
                     >
                     Delete Post</CDropdownItem>
                     </CDropdownMenu>
-            </CDropdown>
-        </div>
-        </div>
-<!-- </div> -->
+            </CDropdown> -->
+        <!-- </div> -->
+    <!-- </div> -->
 </template>
 <script>
 import { toRefs} from "vue";
@@ -90,7 +122,7 @@ export default {
             this.$emit('listen-deletepost',this.index);   
         },
         followAction(){
-            let page_url = this.url+'api/user_follow';
+            let page_url = this.url+'api/uinline-blockser_follow';
             const data = { 
                 followed_id: ""+this.post.user_id
             };
@@ -105,3 +137,37 @@ export default {
     }
 }
 </script>
+<style scoped>
+.div-main{}
+
+.div-left{}
+
+.div-right{
+  text-align: right;
+}
+
+
+
+.place-name{
+    width: 100px;
+}
+
+.dropdown{
+    width: 36px;
+    height: 30px;
+    display: inline-block;
+    margin-left: auto;
+    /* background-color: #c1c1c12e; */
+    text-align: center;
+    border-radius: 50%;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+.p-place-name{
+    margin-bottom: 0px;
+    padding-top: 5px;
+    font-size: 0.875rem;
+}
+</style>

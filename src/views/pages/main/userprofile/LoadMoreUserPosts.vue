@@ -1,18 +1,13 @@
 <template>
-    <div class="row" style="margin: 10px; cursor: pointer"
-    @click="$router.back()"
-    >
-    <CIcon icon="cilArrowLeft" size="lg"/>
-    </div>
     <div class="row">
         <user-profile
         :user_id="user_id"
         />
     </div>
-    <div class="" ref="scrollComponent">
-        <ul class="ul-post">
+    <div class="" ref="scrollComponent" style="margin-top:10px;">
+        <ul class="list-group">
            <li v-for="(post, index) in posts" :key="post.id"
-              class="li-bar-post post-card"
+              class="list-group-item"
               >
               <post-extras
               v-if="post.post_extras == 1"
@@ -97,10 +92,10 @@ export default {
                 post_id.value = 0;
             }
 
-            let page_url = url+'api/get_user_posts';
+            let page_url = url+'api/v2/get_user_posts';
             const data = { 
-                user_id: ""+u_id.value,
-                post_id: ""+post_id.value
+                profile_id: ""+u_id.value,
+                latest_post_id: ""+post_id.value
             };
             
 

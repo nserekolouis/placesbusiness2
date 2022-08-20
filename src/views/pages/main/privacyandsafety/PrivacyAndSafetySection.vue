@@ -1,31 +1,24 @@
 <template>
+    <div style="margin-top:5px; margin-bottom:5px">
+        <font-awesome-icon icon="fa-solid fa-long-arrow-left"
+        @click="$router.back()"
+        />
+    <h6>Privacy and safety policy</h6>
+   </div>
     <div>
-        <div class="position-relative">
-            <!-- shape Hero -->
+        <!-- <div class="position-relative">
             <section class="section-shaped my-0">
-                <div class="shape shape-style-1 shape-default">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
                 <div class="container shape-container d-flex">
                     <div class="col px-0">
                         <div class="row">
                             <div class="col-lg-6">
-                                <h1 class="display-3  text-white">Places privacy policy</h1>
+                                <h2 class="display-3 text-black">Places Privacy Policy</h2>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- 1st Hero Variation -->
-        </div>
+        </div> -->
         <section class="section section-lg">
             <div class="container">
                 <div class="row row-grid align-items-center">
@@ -854,3 +847,10 @@ export default {
     }
 }
 </script>
+<style scoped>
+h6 {
+    display: inline-block;
+    margin-left:10px;
+    font-size: 1.000rem;
+}
+</style>

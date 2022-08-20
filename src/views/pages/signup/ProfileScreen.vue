@@ -4,81 +4,80 @@
     <div class="row">
       <div class="col-sm-6 profilescreen">
          <form
-        @submit.prevent="uploadProfile">
-        <!-- <div v-if="profile_picture" class="form-item img-profilescreen">
-            <img v-bind:src="''+this.url+profile_picture" 
-            width="120" 
-            height="120"
-            style="border-radius: 50%;"
-            >
-        </div>
-        <div class="form-item">
-            <input
-                class="form-control"
-                id="logo"
-                type="file"
-                accept="image/*"
+         @submit.prevent="uploadProfile">
+        
+        <div class="" style="width: 390px;
+                             margin-left: auto;
+                             margin-right: auto;">
+          <div class="form-item">
+            <div class="avatar-upload">
+              <div class="avatar-edit">
+                <input type='file'
+                id="imageUpload" 
+                accept=".png, .jpg, .jpeg"
                 @change="uploadProfilePicture($event)"
-            />
-        </div> -->
-        <div class="avatar-upload">
-          <div class="avatar-edit">
-            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
-            <label for="imageUpload">
-              <font-awesome-icon 
-              class="edit-icon"
-              icon="fa-solid fa-pencil" />
-            </label>
-          </div>
-          <div class="avatar-preview">
-            <div id="imagePreview" 
+                />
+                <label for="imageUpload">
+                  <font-awesome-icon 
+                  class="edit-icon"
+                  icon="fa-solid fa-pencil" />
+                </label>
+              </div>
+              
+              <div class="avatar-preview">
+                <div id="imagePreview" 
                 :style="{backgroundImage: 'url(' + profile_picture + ')'}">
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div class="form-item">
-          <input
+          <div class="form-item">
+            <label for="username">Display Name</label>
+            <input
+            id="username"
             class="form-control"
-            placeholder="username"
             v-model="username"
             type="text"
             required
-          />
-        </div>
-        <div class="form-item">
+            />
+          </div>
+          <div class="form-item">
+            <label for="userbio">User Bio</label>
             <textarea
-                class="form-control"
-                placeholder="user bio"
-                v-model="userbio"
-                type="text"
-                maxlength="320"
-                required
-                ></textarea>
+            id="userbio"
+            class="form-control"
+            v-model="userbio"
+            type="text"
+            maxlength="320"
+            rows="4"
+            required
+            ></textarea>
         </div>
         <div class="form-item">
-            <input
-                class="form-control"
-                placeholder="country of interest"
-                v-model="search_country"
-                @input="searchCountries"
-                type="text"
-                required
-                />
-            <ul class="list-group">
-              <li v-for="country in countries" :key="country.id"
-              class="list-group-item"
-              @click="selectCountry(country)"
-              >
-              {{ country.name }}
-              </li>
-            </ul>
+          <label for="country">Search country of interest</label>
+          <input
+          id="country"
+          class="form-control"
+          v-model="search_country"
+          @input="searchCountries"
+          type="text"
+          required
+          />
+          <ul class="list-group">
+            <li v-for="country in countries" :key="country.id"
+            class="list-group-item"
+            @click="selectCountry(country)"
+            >
+            {{ country.name }}
+            </li>
+          </ul>
         </div>
         <div class="form-item">
-           <button 
-            type="submit" 
-            class="btn btn-light btn-userhandle"
-            >Next</button>
+          <button 
+          type="submit" 
+          class="btn btn-light btn-userhandle"
+          >Next</button>
+        </div>
         </div>
         </form>
       </div>
@@ -90,7 +89,7 @@
 import axios from "axios";
 import Auth from '@/Auth.js';
 import router from '@/router';
-import AppHeader from '@/components/AppHeader.vue'
+import AppHeader from '@/components/AppHeader2.vue'
 
 export default {
   name: 'UserHandle',
@@ -107,7 +106,8 @@ export default {
       countries: [],
       username: "",
       userbio: "",
-      country_id: ""
+      country_id: "",
+      picture: "storage/profile/OEAYvPDaKVFE2LaWarmvj5kFHraHjSMRwaghhStj.png"
     }
   },
   mounted () {
@@ -122,7 +122,8 @@ export default {
         .then(response =>{
             console.log("profile_picture",response);
                 //this.profile_picture = response.data.logo;
-                this.profile_picture = response.data.user_photo;
+                this.profile_picture = this.url+response.data.user_photo;
+                this.picture = response.data.user_photo;
             })
         .catch(error => {
             console.log(error);
@@ -149,7 +150,7 @@ export default {
     },
     uploadProfile: function(){
       let data = new FormData();
-      data.append('userphoto', this.profile_picture);
+      data.append('userphoto', this.picture);
       data.append('username', this.username);
       data.append('userbio', this.userbio);
       data.append('country_id', this.country_id);
@@ -270,5 +271,10 @@ h1 small {
   left: 10px;
   width: 13px;
   color: #c9c9c9;
+}
+
+label{
+  font-size: 13px;
+  margin: 0px;
 }
 </style>

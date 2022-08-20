@@ -1,46 +1,45 @@
 <template>
   <div class="container-fluid">
-    <div class="row login-top">
-      <img :src="logo"
-        class="logo"
-      />
-      <h6 class="top-header">Places</h6>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="center">
-          <div style="text-align:center;">
-            <h3 style="display:block;
-                       text-transform: capitalize;">
-            Stay connected to your favourate </h3>
-            <img :src="placesLogo"
-             class="places-logo"
+    <app-header/>
+    <div class="row" style="margin-top: 30px;">
+      <div class="col-md-6" 
+      style="margin-left:auto;
+             margin-right:auto;
+             text-align: center;">
+        <h1>Stay connected to your favourate Places</h1>
+        <div class="row">
+          <div class="col-md-3">
+            <img :src="africanMale"
+             class="round-image"
             />
-            <div class="login">
-              <GoogleLogin :callback="callback" prompt/>
-            </div>
-            <div class="">
-              <hr>
-            </div>
-            <div class="login">
-              <button
-              type="button" 
-              class="btn btn-secondary"
-              style="background-color: #298f82;
-                     color: white;
-                     font-size: 13px;
-                     width: 200px;
-                     height: 38px;"
-              >Download Android App</button>
-            </div>
+          </div>
+          <div class="col-md-3">
+            <img :src="church"
+            class="round-image"
+            />
+          </div>
+          <div class="col-md-3">
+            <img :src="people"
+            class="round-image"
+            />
+          </div>
+          <div class="col-md-3">
+            <img :src="travel"
+            class="round-image"
+            />
           </div>
         </div>
-      </div>
-      <div class="col-md-6 center">
-        <img :src="happyPeople1"
-        class="login-image"
-        />
-      </div>
+        <div class="row div-gmail">
+          <p
+          class="p-login-gmail"
+          >LOGIN WITH GMAIL</p>
+          <GoogleLogin 
+          :callback="callback" 
+          prompt
+          class="btn-google"
+          />
+        </div>
+    </div>
     </div>
   </div>
 </template>
@@ -49,6 +48,7 @@ import { decodeCredential } from 'vue3-google-login'
 import Auth from '@/Auth.js';
 import router from '@/router'
 import axios from "axios";
+
 
 const callback = (response) => {
   const userData = decodeCredential(response.credential)
@@ -87,7 +87,12 @@ const callback = (response) => {
 import  placesLogo  from '@/assets/images/placeslogo.png'
 import  logo  from '@/assets/logo.png'
 import  happyPeople1  from '@/assets/images/happypeople1.png'
+import AppHeader from '@/components/AppHeader2.vue'
 
+import  africanMale  from '@/assets/images/login/african_male.jpeg'
+import  church  from '@/assets/images/login/church.jpg'
+import  people  from '@/assets/images/login/people.jpeg'
+import  travel  from '@/assets/images/login/travel.jpg'
 
 export default {
   name: 'LoginScreen',
@@ -98,11 +103,43 @@ export default {
     return {
       placesLogo,
       logo,
-      happyPeople1
+      happyPeople1,
+      africanMale,
+      church,
+      people,
+      travel
     }
   },
-  methods: {
-    
+  components: {
+    AppHeader
   },
 }
 </script>
+<style scoped>
+.round-image{
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 25%;
+}
+.btn-google{
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.p-login-gmail{
+  position: absolute;
+  top: 277px;
+  left: 208px;
+  background-color: #f7f7f7;
+  width: 160px;
+  font-weight: bold;
+  font-size: 14px;
+  display: none;
+}
+.div-gmail{
+  margin-top: 50px;
+  border: 1px solid #d9d9d9;
+  padding: 10px;
+}
+</style>

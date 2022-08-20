@@ -1,5 +1,6 @@
 <template>
-<div class="row">
+<div class="div-pp"
+     style="border:0px solid black">
     <img :src="this.url+post.user_photo" 
         class="profile-picture"
         @click="goToProfile"
@@ -22,3 +23,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.div-pp{
+    text-align: center;
+}
+</style>

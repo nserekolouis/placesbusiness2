@@ -6,20 +6,20 @@
              @listen-place="emittedPlace"
              />
         </div>
-        <div class="col-md-6">
+        <div class="col-md-9">
             <accounts-section
             ></accounts-section>
         </div>
-        <div class="col-md-3 sidebarstyle">
+        <!-- <div class="col-md-3 sidebarstyle">
             <search-users/>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 import AccountsSection from '@/views/pages/main/accounts/AccountsSection.vue'
-import SidebarCoreui from '@/components/SidebarCoreui.vue'
-import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
+import SidebarCoreui from '@/components/SideBar2.vue'
+//import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
 
 export default {
   name: 'HomeScreen',
@@ -27,7 +27,7 @@ export default {
   components: {
        AccountsSection,
        SidebarCoreui,
-       SearchUsers
+       //SearchUsers
   },
   data() {
       return {

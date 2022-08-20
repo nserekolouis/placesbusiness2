@@ -1,18 +1,18 @@
 <template>
-<div class="container image-margin-top">
-    <div class="row gx-4">
-    <div class="col-sm-6 center-image">
+<!-- <div class="container image-margin-top"> -->
+    <div class="row">
+    <div class="col-md-6 center-image">
         <img 
         class="post-one-image"
         :src="this.url+image_one" /> 
     </div>
-        <div class="col-sm-6 center-image">
+    <div class="col-md-6 center-image">
         <img 
-        class="post-two-image"
+        class="post-one-image"
         :src="this.url+image_two" /> 
     </div>
 </div>
-</div>
+<!-- </div> -->
 </template>
 <script>
 export default {

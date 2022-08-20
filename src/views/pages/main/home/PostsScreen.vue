@@ -1,15 +1,19 @@
 <template>
-    <div style="margin-top:10px; 
-                margin-left:10px; 
-                width:200px">
-           <select class="form-select" 
-           @change="selectPlace($event,$event.target.selectedIndex)"
-           aria-label="Default select example">
-               <option>ALL Places</option>
-               <option v-for="place in places" :key="place.sub_id">
-               {{ place.main_text }} 
-               </option>
-            </select>
+    <div class="">
+        <h6>Home</h6>
+    </div>
+    <div class="div-select">
+        <select class="form-select form-select-sm"
+            aria-label="Default select examples"
+            @change="selectPlace($event,$event.target.selectedIndex)"
+            >
+            <option>ALL Places</option>
+            <option v-for="place in places" :key="place.sub_id"> 
+            <div class="">
+                <p>{{ place.main_text }}</p>
+            </div>
+            </option>
+        </select>
     </div>
    <div>
        <nav-app-header-search
@@ -17,10 +21,15 @@
        @listen-post="newPost"
        />
    </div>
-   <div class="container-fluid">
-       <ul class="ul-post">
+   <div>
+        <center-infomation
+        :info="alert"
+        v-show="show"
+        class="info-missing"
+        />
+       <ul class="list-group">
            <li v-for="(post, index) in posts" :key="post.id"
-              class="li-bar-post post-card"
+              class="list-group-item"
               >
               <post-extras
               v-if="post.post_extras == 1"
@@ -69,6 +78,7 @@ import ThreeImages from '@/components/PostImagesThree.vue'
 import FourImages from '@/components/PostImagesFour.vue'
 import NavAppHeaderSearch from '@/components/NavAppHeaderSearch.vue'
 import PostExtras from '@/components/PostExtras.vue'
+import CenterInfomation from '@/components/CenterInformation.vue';
 
 
 export default {
@@ -80,7 +90,8 @@ export default {
       ThreeImages,
       FourImages,
       NavAppHeaderSearch,
-      PostExtras
+      PostExtras,
+      CenterInfomation
   },
   props: {
       initPlace:{}
@@ -103,7 +114,9 @@ export default {
           posts:[],
           places: [],
           place: {},
-          info: ""
+          info: "",
+          show: true,
+          alert: "No posts yet"
       }
   },
   created(){
@@ -115,14 +128,14 @@ export default {
       getPosts: function(){
           let page_url = this.url+'api/v2/get_posts';
           axios.post(page_url,null)
-           .then(response =>{
-              console.log("Response Posts: ",response.data.posts);
+           .then(response => {
+              console.log("Response Posts: ",response);
               if((response.data.posts).length > 0){
+                   this.show = false;
                    this.posts = response.data.posts;
               }else{
-                  this.posts = [];
+                   this.posts = [];
               }
-             
             }).catch(error => {
               console.log(error);
             });
@@ -253,3 +266,21 @@ export default {
   },
 }
 </script>
+<style scoped>
+h6 {
+    display: inline-block;
+    font-size: 0.900rem;
+}
+
+.div-select {
+    margin-top: 10px;
+}
+
+.form-select{
+    /* position: absolute;
+    width: 200px;
+    z-index: 1;
+    top: 157px;
+    left: 335px; */
+}
+</style>

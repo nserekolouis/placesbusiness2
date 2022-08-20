@@ -1,34 +1,36 @@
 <template>
-<nav class="navbar navbar-light">
-          <input 
-          class="form-control mr-sm-2" 
-          type="search" 
-          placeholder="Search for place" 
-          aria-label="Search"
-          v-model="search_place"
-          @input="searchPlace"
-          >
-          <ul class="list-group ul-places">
-            <li v-for="place in places" :key="place.id"
-            class="list-group-item li-bar-place"
-            @click="selectPlace(place)"
-            >
-            <div class="row">
-            <div class="col-md-2 place-icon-center">
-                <CIcon icon="cilLocationPin" size="lg" />
-            </div>
-            <div class="col-md-10">
-                <p class="p-li-bar-place">{{ place.main_text }}</p>
-                <p class="p-li-bar-place">{{ place.secondary_text }}</p>
-            </div>
-            </div>
-            </li>
-          </ul>
-        <make-post-component
-        :place="place"
-        @listen-post="newPost"
-        />
-</nav>
+  <div class="" style="position:relative">
+    <input 
+    class="form-control form-control-sm" 
+    type="search" 
+    placeholder="Search for place" 
+    aria-label="Search"
+    v-model="search_place"
+    @input="searchPlace"
+    >
+    <ul class="list-group dropdown-places">
+      <li v-for="place in places" :key="place.id"
+      class="list-group-item"
+      @click="selectPlace(place)"
+      >
+      <div class="row">
+        <div class="col-md-2 place-icon-center">
+          <!-- <CIcon icon="cilLocationPin" size="lg" /> -->
+          <font-awesome-icon 
+           icon="fa-solid fa-location-pin"/>
+        </div>
+        <div class="col-md-10">
+          <p class="p-li-bar-place">{{ place.main_text }}</p>
+          <p class="p-li-bar-place">{{ place.secondary_text }}</p>
+        </div>
+      </div>
+      </li>
+    </ul>
+    <make-post-component
+    :place="place"
+    @listen-post="newPost"
+    />
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -101,3 +103,10 @@ export default {
     }
 }
 </script>
+<style scoped>
+.dropdown-places{
+    position: absolute;
+    width: -webkit-fill-available;
+    z-index: 1;
+}
+</style>
