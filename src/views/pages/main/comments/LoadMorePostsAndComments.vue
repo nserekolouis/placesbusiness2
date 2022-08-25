@@ -144,7 +144,7 @@ export default {
             console.log("LMPAC GET POST DETAILS");
             let page_url = url+'api/v2/get_post';
             const data = {
-                post_id: post_id.value
+                post_id: ""+post_id.value
             }
             axios.post(page_url,data)
                 .then(response => {
