@@ -8,9 +8,9 @@
              />
         </div>
         <div class="col-md-6">
-            <posts-section
-            :initPlace="Place"
-            ></posts-section>
+                 <posts-screen
+                 :initPlace="Place"
+                 ></posts-screen>
         </div>
         <div class="col-md-3">
             <search-users/>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import PostsSection from '@/views/pages/main/home/PostsScreen.vue'
+import PostsScreen from '@/views/pages/main/home/PostsScreen.vue'
 import SidebarCoreui from '@/components/SideBar2.vue'
 import SearchUsers from '@/views/pages/main/search/SearchUsers.vue'
 
@@ -28,7 +28,7 @@ export default {
   name: 'HomeScreen',
   props: {},
   components: {
-       PostsSection,
+       PostsScreen,
        SidebarCoreui,
        SearchUsers
   },

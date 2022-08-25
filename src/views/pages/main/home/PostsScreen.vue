@@ -82,7 +82,7 @@ import CenterInfomation from '@/components/CenterInformation.vue';
 
 
 export default {
-  name: 'PostsSection',
+  name: 'PostsScreen',
   components: {
       OnlyText,
       OneImage,

@@ -150,7 +150,7 @@ export default {
                 .then(response => {
                     console.log("LMPAC POST DETAILS",response);
                     post.value = response.data.post;
-                    //getComments()
+                    getComments()
                 })
                 .catch(error => {
                     console.log(error);
@@ -159,7 +159,7 @@ export default {
 
         const getComments = () => {
             let page_url = url+'api/v2/get_comments';
-            if(count.value != 0){
+            if(count.value != 0 ){
                 if(return_mine.value < totalMine.value){
                      comment_id_mine.value = comments.value[(comments.value.length)-1].id
                 }else if(return_mine.value == totalMine.value){
@@ -198,10 +198,44 @@ export default {
                 });
         }
 
+        const newComment = () => {
+            count.value = 0
+            let page_url = url+'api/v2/get_comments';
+        
+            const data = {
+                post_id: ""+post_id.value,
+                comment_id_mine: 0,
+                comment_id_others: 0,
+                return_mine: 0
+            }
+
+            console.log("LMPAC NEW COMMENT",data)
+
+            axios.post(page_url,data)
+                .then(response => {
+                    loadMore.value = true;
+                    console.log("LMPAC COMMENTS ",response);
+                    let newComments = response.data.comments;
+                    comments.value = newComments
+                    let newTotalMine = response.data.total_mine;
+                    totalMine.value = newTotalMine;
+                    let newTotalOthers = response.data.total_others;
+                    totalOthers.value = newTotalOthers;
+                    count.value += 5;
+                    let newReturnMine = response.data.return_mine;
+                    return_mine.value += newReturnMine;
+                })
+                .catch(error => {
+                    loadMore.value = true;
+                    console.log("LMPAC",error);
+                });
+        }
+
         return {
             comments,
             post,
-            scrollComponent
+            scrollComponent,
+            newComment,
         }
     },
     components: {
@@ -217,7 +251,7 @@ export default {
         CFourImages,
         MakeComment,
         PostExtras
-    },
+    }
 }
 </script>
 <style scoped>

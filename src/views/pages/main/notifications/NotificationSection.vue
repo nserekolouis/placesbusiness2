@@ -49,7 +49,7 @@ export default {
               .then(response =>{
                   console.log("NOTIFICATIONS",response.data.notifications);
                   this.notifications = response.data.notifications
-                  if((response.data.notifications) > 0){
+                  if(this.notifications.length > 0){
                       this.show = false
                   }
               }).catch(error => {

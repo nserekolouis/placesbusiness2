@@ -48,19 +48,21 @@ import { decodeCredential } from 'vue3-google-login'
 import Auth from '@/Auth.js';
 import router from '@/router'
 import axios from "axios";
+import { inject } from 'vue';
 
 
 const callback = (response) => {
+  const url = inject('url')
   const userData = decodeCredential(response.credential)
   console.log("Handle the userData", userData.email)
   const data = { 
-          email: userData.email,
-          password: "password",
-          password_confirmation: "password",
-          role: "Client" 
-        };
-
-  axios.post("http://192.168.43.79:8000/api/v2/register", data)
+    email: userData.email,
+    password: "password",
+    password_confirmation: "password",
+    role: "Client" 
+  };
+  let page_url = "http://192.168.43.79:8000/api/v2/register";
+  axios.post(page_url, data)
   .then(response => {
     console.log("Response LOGIN", response.data.exist);
     console.log("Response LOGIN USER", response.data.user.userhandle);

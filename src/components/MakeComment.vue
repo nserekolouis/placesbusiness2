@@ -12,7 +12,7 @@
         v-model="post_text"
         :maxlength="320"
         rows="4"
-        placeholder="Comment here"
+        placeholder="Type comment..."
         ></textarea>
         <div class="row">
             <div v-if="image_one" class="col-sm-3">
@@ -72,17 +72,17 @@
             multiple
             />
 
-            <label for="chooseFiles">
+            <label for="makeComment">
                  <font-awesome-icon 
                  icon="fa-solid fa-paper-plane"/>
             </label>
             <input
             aria-label="Make Post"
-            class="choose-files"
-            id="chooseFiles"
+            class="make-comment"
+            id="makeComment"
             type="submit"
             accept="image/*"
-            @click="makepost"
+            @click="makeComment"
             multiple
             />
             <!-- <button
@@ -157,15 +157,15 @@ export default {
                 console.log(error);
             });
         },
-        makepost(){
+        makeComment(){
             if(this.post_text === null && this.image_one === null){
                 alert('Please add info to share');
             }else{
                 let page_url = this.url+'api/v2/make_comment';
                 let data = new FormData();
                 data.append('post_id', this.post.id);
-                data.append('place_id', this.post.place_id);
-                data.append('makepost_text', this.post_text);
+                //data.append('place_id', this.post.place_id);
+                data.append('comment_text', this.post_text);
                 data.append('image_one', this.image_one);
                 data.append('image_two', this.image_two);
                 data.append('image_three', this.image_three);
@@ -210,4 +210,20 @@ label{
    margin-right: 5px;
    color: #babcbf;
 }
+
+.post-control .make-comment {
+    display: none;
+}
+
+.post-control .make-comment + label {
+   display: inline-block;
+  
+}
+
+label{
+   font-size: 20px;
+   margin-right: 5px;
+   color: #babcbf;
+}
+
 </style>
