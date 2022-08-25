@@ -62,20 +62,19 @@ export default {
     },
     likeClicked() {
       console.log("like clicked");
-      let page_url = this.url + "api/like_post";
+      let page_url = this.url + "api/v2/like_post";
       let data = new FormData();
       data.append("post_id", this.post.id);
       axios
         .post(page_url, data)
         .then((response) => {
           console.log("RESPONSE LIKE POST ", response.data.status_code);
-          if (response.data.status_code == 1) {
+          if (response.data.liked == 1) {
             this.activeColor = "red";
-            this.likes = response.data.likes;
           } else {
             this.activeColor = "";
-            this.likes = response.data.likes;
           }
+          this.likes = response.data.num_likes;
         })
         .catch((error) => {
           console.log(error);
