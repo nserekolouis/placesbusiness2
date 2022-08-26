@@ -9,7 +9,6 @@
         <p class="p-label">{{ post.num_comments }}</p>
       </div>
       <div class="col-sm-6 div-like" @click="likeClicked">
-        <!-- <CIcon icon="cilHeart" size="m" :style="{ color: activeColor }"/> -->
         <font-awesome-icon
           icon="fa-regular fa-heart"
           class="font-awesome-icon"
