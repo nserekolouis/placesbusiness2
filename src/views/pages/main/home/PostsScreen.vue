@@ -82,22 +82,6 @@ export default {
     PostExtras,
     CenterInfomation,
   },
-  props: {
-    initPlace: {},
-  },
-  watch: {
-    initPlace: {
-      immediate: true,
-      handler(val) {
-        console.log("PostScreen", val);
-        if (Object.keys(val).length != 0) {
-          this.getPlacePosts(val);
-        } else {
-          this.getPosts();
-        }
-      },
-    },
-  },
   data() {
     return {
       posts: [],

@@ -1,13 +1,16 @@
 <script>
-import HomeScreen from "@/views/pages/main/home/HomeScreen.vue";
-import CommentsScreen from "@/views/pages/main/comments/CommentScreen.vue";
-import UserProfileAndPostsScreen from "@/views/pages/main/userprofile/UserProfileAndPostsScreen.vue";
-import NotificationsScreen from "@/views/pages/main/notifications/NotificationsScreen.vue";
+import HomeScreen from "@/views/pages/main/home/PostsScreen.vue";
+import CommentsScreen from "@/views/pages/main/comments/LoadMorePostsAndComments.vue";
+import UserProfileAndPostsScreen from "@/views/pages/main/userprofile/LoadMoreUserPosts.vue";
+import NotificationsScreen from "@/views/pages/main/notifications/NotificationSection.vue";
 
-import AboutPlacesScreen from "@/views/pages/main/aboutplaces/AboutPlacesScreen.vue";
-import AccountsScreen from "@/views/pages/main/accounts/AccountsScreen.vue";
-import EditProfileScreen from "@/views/pages/main/editprofile/EditProfileScreen.vue";
-import PrivacyAndSafety from "@/views/pages/main/privacyandsafety/PrivacyAndSafefty.vue";
+import AboutPlacesScreen from "@/views/pages/main/aboutplaces/AboutSection.vue";
+import AccountsScreen from "@/views/pages/main/accounts/AccountsSection.vue";
+import EditProfileScreen from "@/views/pages/main/editprofile/EditProfileSection.vue";
+import PrivacyAndSafety from "@/views/pages/main/privacyandsafety/PrivacyAndSafetySection.vue";
+
+import SidebarCoreui from "@/components/SideBar2.vue";
+import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
 export default {
   components: {
@@ -19,6 +22,8 @@ export default {
     NotificationsScreen,
     EditProfileScreen,
     PrivacyAndSafety,
+    SidebarCoreui,
+    SearchUsers,
   },
   data() {
     return {
@@ -56,19 +61,34 @@ export default {
 </script>
 
 <template>
-  <div class="demo">
-    <KeepAlive>
-      <component
-        :is="current"
-        :id="id"
-        @listen-comment="goToComments"
+  <div class="row">
+    <div class="col-md-3">
+      <sidebar-coreui
         @listen-notifications="goToNotifications"
         @listen-home="goToHome"
         @listen-profile="goToProfile"
         @listen-accounts="goToAccounts"
         @listen-privacy-safety="goToPrivacyAndSafety"
         @listen-about-places="goToAboutPlaces"
-      ></component>
-    </KeepAlive>
+      />
+    </div>
+    <div class="col-md-6">
+      <KeepAlive>
+        <component
+          :is="current"
+          :id="id"
+          @listen-comment="goToComments"
+          @listen-notifications="goToNotifications"
+          @listen-home="goToHome"
+          @listen-profile="goToProfile"
+          @listen-accounts="goToAccounts"
+          @listen-privacy-safety="goToPrivacyAndSafety"
+          @listen-about-places="goToAboutPlaces"
+        ></component>
+      </KeepAlive>
+    </div>
+    <div class="col-md-3">
+      <search-users />
+    </div>
   </div>
 </template>

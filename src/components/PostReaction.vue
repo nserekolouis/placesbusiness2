@@ -54,10 +54,6 @@ export default {
   methods: {
     commentClicked() {
       console.log("comment clicked");
-      //router.push({ name: 'CommentScreen', params: {
-      //  id: this.post.id,
-      //}
-      //});
       this.$emit("listen-comment", this.post);
     },
     likeClicked() {
