@@ -1,30 +1,31 @@
 <template>
-<div class="div-pp"
-     style="border:0px solid black">
-    <img :src="this.url+post.user_photo" 
-        class="profile-picture"
-        @click="goToProfile"
+  <div class="div-pp" style="border: 0px solid black">
+    <img
+      :src="this.url + post.user_photo"
+      class="profile-picture"
+      @click="goToProfile"
     />
-</div>
+  </div>
 </template>
 <script>
-import router from '@/router';
 export default {
-    name: 'PostProfilePicture',
-    props: {
-        post:{}
+  name: "PostProfilePicture",
+  props: {
+    post: {},
+  },
+  methods: {
+    goToProfile() {
+      this.$emit("listen-user-profile",this.post);
     },
-    methods: {
-        goToProfile(){
-             router.push({ name: 'UserProfileAndPosts', params: {
-                user_id: this.post.user_id,
-            }});
-        }
-    }
-}
+  },
+};
 </script>
 <style scoped>
-.div-pp{
-    text-align: center;
+.div-pp {
+  text-align: center;
+}
+
+.profile-picture{
+  cursor: pointer;
 }
 </style>

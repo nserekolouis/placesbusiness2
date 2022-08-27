@@ -8,7 +8,7 @@ import AboutPlacesScreen from "@/views/pages/main/aboutplaces/AboutSection.vue";
 import AccountsScreen from "@/views/pages/main/accounts/AccountsSection.vue";
 import EditProfileScreen from "@/views/pages/main/editprofile/EditProfileSection.vue";
 import PrivacyAndSafety from "@/views/pages/main/privacyandsafety/PrivacyAndSafetySection.vue";
-
+import LoadMoreUserPosts from "@/views/pages/main/userprofile/LoadMoreUserPosts.vue";
 import SidebarCoreui from "@/components/SideBar2.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
@@ -24,16 +24,20 @@ export default {
     PrivacyAndSafety,
     SidebarCoreui,
     SearchUsers,
+    LoadMoreUserPosts,
   },
   data() {
     return {
       current: "HomeScreen",
       id: "",
+      user_id: "",
+      from_component: "",
     };
   },
   methods: {
     goToComments(post) {
       console.log("Switch", post);
+      this.from_component = this.current;
       this.current = "CommentsScreen";
       this.id = post.id;
     },
@@ -41,6 +45,7 @@ export default {
       this.current = "NotificationsScreen";
     },
     goToHome() {
+      this.from_component = this.current;
       this.current = "HomeScreen";
     },
     goToProfile() {
@@ -55,6 +60,11 @@ export default {
     },
     goToAboutPlaces() {
       this.current = "AboutPlacesScreen";
+    },
+    goToUserProfile(post) {
+      this.from_component = this.current;
+      this.current = "LoadMoreUserPosts";
+      this.user_id = post.user_id;
     },
   },
 };
@@ -77,6 +87,8 @@ export default {
         <component
           :is="current"
           :id="id"
+          :user_id="user_id"
+          :from_component="from_component"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -84,10 +96,11 @@ export default {
           @listen-accounts="goToAccounts"
           @listen-privacy-safety="goToPrivacyAndSafety"
           @listen-about-places="goToAboutPlaces"
+          @listen-user-profile="goToUserProfile"
         ></component>
       </KeepAlive>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 border-left">
       <search-users />
     </div>
   </div>

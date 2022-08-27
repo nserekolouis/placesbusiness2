@@ -1,10 +1,10 @@
 <template>
-    <div style="margin-top:5px; margin-bottom:5px">
+    <!-- <div style="margin-top:5px; margin-bottom:5px">
         <font-awesome-icon icon="fa-solid fa-long-arrow-left"
         @click="$router.back()"
         />
     <h6>User Profile</h6>
-   </div>
+   </div> -->
     <div class="row">
       <div class="col-md-6">
           <img :src="this.url+user.user_photo" 

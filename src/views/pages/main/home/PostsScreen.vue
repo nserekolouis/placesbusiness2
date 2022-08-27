@@ -54,6 +54,7 @@
           @listen-unsubplace="unsubPlace"
           @listen-deletepost="deletePost"
           @listen-comment="goToComments"
+          @listen-user-profile="goToUserProfile"
         />
       </li>
     </ul>
@@ -254,6 +255,9 @@ export default {
     goToComments(post) {
       this.$emit("listen-comment",post);
     },
+    goToUserProfile(post){
+      this.$emit("listen-user-profile",post)
+    }
   },
 };
 </script>
@@ -267,11 +271,11 @@ h6 {
   margin-top: 10px;
 }
 
-.form-select {
+/* .form-select { */
   /* position: absolute;
     width: 200px;
     z-index: 1;
     top: 157px;
     left: 335px; */
-}
+/* } */
 </style>

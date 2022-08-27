@@ -12,14 +12,15 @@
     </div>
     <div class="row">
       <div class="col-md-2">
-        <post-profile-picture :post="post" />
+        <post-profile-picture
+          :post="post"
+          @listen-user-profile="goToUserProfile"
+        />
       </div>
       <div class="col-md-10">
         <post-user-info :post="post" />
         <post-text :post="post" />
-        <reaction-component :post="post" 
-        @listen-comment="goToComments"
-         />
+        <reaction-component :post="post" @listen-comment="goToComments" />
       </div>
     </div>
   </div>
@@ -64,6 +65,9 @@ export default {
     },
     goToComments(post) {
       this.$emit("listen-comment", post);
+    },
+    goToUserProfile(post) {
+      this.$emit("listen-user-profile",post);
     },
   },
 };
