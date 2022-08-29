@@ -81,16 +81,29 @@ import axios from "axios";
 import placesLogo from "@/assets/images/placeslogo.png";
 import Auth from "@/Auth.js";
 import router from "@/router";
-import { inject, ref } from "vue";
+import { inject, ref, watch } from "vue";
 import { getToken, onMessage } from "firebase/messaging";
 
 export default {
-  setup() {
+  name: "SideBar2",
+  props: {
+    indicatorbg: String,
+  },
+  setup(props) {
     const messaging = inject("messaging");
     const vapidKey = inject("vapidKey");
     const url = inject("url");
     const noteCount = ref(0);
     const indicator = ref("#fff");
+
+    watch(
+      () => props.indicatorbg,
+      (newVal, oldVal) => {
+        console.log("indicator", newVal);
+        console.log("indicator", oldVal);
+        indicator.value = newVal
+      }
+    );
 
     const requestPermission = () => {
       console.log("Requesting permission...");
@@ -144,6 +157,7 @@ export default {
           console.log(error);
         });
     };
+
     return {
       noteCount,
       placesLogo,

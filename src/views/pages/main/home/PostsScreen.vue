@@ -19,11 +19,13 @@
   <div>
     <nav-app-header-search :selected_place="place" @listen-post="newPost" />
   </div>
-  <div>
+  <div ref="scrollComponent">
     <center-infomation :info="alert" v-show="show" class="info-missing" />
     <ul class="list-group">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
-        <post-extras v-if="post.post_extras == 1" :info="info" />
+        <post-extras 
+        v-if="post.post_extras == 1" 
+        :info="info" />
         <four-images
           v-else-if="post.image_four != null"
           :post="post"
@@ -71,6 +73,8 @@ import NavAppHeaderSearch from "@/components/NavAppHeaderSearch.vue";
 import PostExtras from "@/components/PostExtras.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 
+import { inject, ref, onMounted, watch } from "vue";
+
 export default {
   name: "PostsScreen",
   components: {
@@ -83,86 +87,154 @@ export default {
     PostExtras,
     CenterInfomation,
   },
-  data() {
-    return {
-      posts: [],
-      places: [],
-      place: {},
-      info: "",
-      show: true,
-      alert: "No posts yet",
-    };
+  props: {
+    new_posts: Boolean,
   },
-  created() {
-    console.log("Created");
-    this.getPosts();
-    this.getPlaceSubscriptions();
-  },
-  methods: {
-    getPosts: function () {
-      let page_url = this.url + "api/v2/get_posts";
+  setup(props) {
+    watch(
+      () => props.new_posts,
+      (newVal, oldVal) => {
+        console.log("New Value", newVal);
+        console.log("Old Value", oldVal);
+        getPosts();
+      }
+    );
+    const show = ref(true);
+    const posts = ref([]);
+    const places = ref([]);
+    const scrollComponent = ref(null);
+    const url = inject("url");
+
+    onMounted(() => {
+      console.log("GET POSTS");
+      getPosts();
+      getPlaceSubscriptions();
+    });
+
+    const getPosts = () => {
+      let page_url = url + "api/v2/get_posts";
       axios
         .post(page_url, null)
         .then((response) => {
-          console.log("Response Posts: ", response);
-          if (response.data.posts.length > 0) {
-            this.show = false;
-            this.posts = response.data.posts;
-          } else {
-            this.posts = [];
+          console.log("POSTS", response);
+          let newPosts = response.data.posts;
+          if (newPosts.length > 0) {
+            show.value = false;
+            newPosts.push(...posts.value);
+            posts.value = newPosts;
           }
         })
         .catch((error) => {
           console.log(error);
         });
-    },
-    getPlacePosts(place) {
-      let page_url = this.url + "api/get_place_posts";
-      const data = {
-        place_id: "" + place.places_id,
-        post_id: "0",
-      };
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("Response Place Posts ", response);
-          this.posts = response.data.place_posts.reverse();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    newPost() {
-      console.log("LOAD NEW POSTS");
-      this.getPosts();
-    },
-    getPlaceSubscriptions: function () {
-      let page_url = this.url + "api/v2/get_place_subs";
+    };
+
+    const getPlaceSubscriptions = () => {
+      let page_url = url + "api/v2/get_place_subs";
       const data = {
         userplacesub_id: "0",
       };
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("Response Places: ", response);
-          this.places = response.data.place_subs;
+          places.value = response.data.place_subs;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
+    };
+
+    const newPost = () => {
+      getPosts();
+    }
+
+    return {
+      show,
+      posts,
+      places,
+      scrollComponent,
+      newPost
+    };
+  },
+  data() {
+    return {
+      //places: [],
+      place: {},
+      info: "",
+      alert: "No posts yet",
+    };
+  },
+  created() {
+    console.log("Created");
+    //this.getPosts();
+    //this.getPlaceSubscriptions();
+  },
+  methods: {
+    // getPosts: function () {
+    //   let page_url = this.url + "api/v2/get_posts";
+    //   axios
+    //     .post(page_url, null)
+    //     .then((response) => {
+    //       console.log("Response Posts: ", response);
+    //       if (response.data.posts.length > 0) {
+    //         this.show = false;
+    //         let newPosts = response.data.posts;
+    //         this.posts = newPosts;
+    //       } else {
+    //         this.posts = [];
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
+    // getPlacePosts(place) {
+    //   let page_url = this.url + "api/get_place_posts";
+    //   const data = {
+    //     place_id: "" + place.places_id,
+    //     post_id: "0",
+    //   };
+    //   axios
+    //     .post(page_url, data)
+    //     .then((response) => {
+    //       console.log("Response Place Posts ", response);
+    //       this.posts = response.data.place_posts.reverse();
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
+    // newPost() {
+    //   console.log("LOAD NEW POSTS");
+    //   this.getPosts();
+    // },
+    // getPlaceSubscriptions: function () {
+    //   let page_url = this.url + "api/v2/get_place_subs";
+    //   const data = {
+    //     userplacesub_id: "0",
+    //   };
+    //   axios
+    //     .post(page_url, data)
+    //     .then((response) => {
+    //       console.log("Response Places: ", response);
+    //       this.places = response.data.place_subs;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
     selectPlace(event, selectedIndex) {
       if (selectedIndex == 0) {
         this.getPosts();
       } else {
         console.log(this.places[selectedIndex - 1]);
         this.place = this.places[selectedIndex - 1];
-        this.getPlacePosts(this.places[selectedIndex - 1]);
+        //this.getPlacePosts(this.places[selectedIndex - 1]);
       }
     },
     selectAllPosts() {
       console.log("Select all places");
-      this.getPosts();
+      //this.getPosts();
     },
     userBlocked(index) {
       let page_url = this.url + "api/block_user";
@@ -253,11 +325,11 @@ export default {
       this.posts.splice(index, 1, data);
     },
     goToComments(post) {
-      this.$emit("listen-comment",post);
+      this.$emit("listen-comment", post);
     },
-    goToUserProfile(post){
-      this.$emit("listen-user-profile",post)
-    }
+    goToUserProfile(post) {
+      this.$emit("listen-user-profile", post);
+    },
   },
 };
 </script>
@@ -272,7 +344,7 @@ h6 {
 }
 
 /* .form-select { */
-  /* position: absolute;
+/* position: absolute;
     width: 200px;
     z-index: 1;
     top: 157px;

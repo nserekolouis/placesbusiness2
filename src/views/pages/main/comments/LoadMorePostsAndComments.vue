@@ -229,6 +229,8 @@ export default {
         this.$emit("listen-user-profile");
       } else if (this.from_component == "CommentsScreen") {
         this.$emit("listen-comment");
+      } else if (this.from_component == "NotificationsScreen") {
+        this.$emit("listen-notifications");
       } else {
         console.log("UNKNOWN");
       }

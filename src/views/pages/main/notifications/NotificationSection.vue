@@ -1,16 +1,19 @@
 <template>
   <div class="btn-home">
-    <!-- <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="goBack" /> -->
     <h6>Notifications</h6>
   </div>
   <center-infomation :info="info" v-show="show" class="info-missing" />
-  <ul class="list-group">
+  <ul class="list-group" ref="scrollComponent">
     <li
       v-for="(post, index) in notifications"
       :key="post.id"
       class="list-group-item"
     >
-      <notification-item :post="post" :index="index" />
+      <notification-item
+        :post="post"
+        :index="index"
+        @listen-post-details="goToPostDetails"
+      />
     </li>
   </ul>
 </template>
@@ -18,38 +21,104 @@
 import axios from "axios";
 import NotificationItem from "@/views/pages/main/notifications/NotificationItem.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
+import { inject, ref, onMounted, watch, onUnmounted } from "vue";
 
 export default {
   name: "NotificationSection",
-  components: {
-    NotificationItem,
-    CenterInfomation,
+  props: {
+    new_notifications: Boolean,
   },
-  created() {
-    this.getNotifications();
-  },
-  data() {
-    return {
-      notifications: [],
-      info: "No notifications yet",
-      show: true,
-    };
-  },
-  methods: {
-    getNotifications() {
-      let page_url = this.url + "api/v2/get_notifications";
+  setup(props) {
+    const url = inject("url");
+    const show = ref(true);
+    const notifications = ref([]);
+    const info = "No notifications yet";
+    const count = ref(0);
+    const total = ref(0);
+    const limit = 10;
+    const loadMore = ref(false);
+    const note_id = ref(0);
+
+    const scrollComponent = ref(null);
+
+    watch(
+      () => props.new_notifications,
+      (newVal, oldVal) => {
+        console.log("New Value", newVal);
+        console.log("Old Value", oldVal);
+        getNotifications();
+      }
+    );
+
+    onMounted(() => {
+      console.log("NOTIFICATIONS ONMOUNTED");
+      window.addEventListener("scroll", handleScroll);
+      getNotifications();
+    });
+
+    onUnmounted(() => {
+      console.log("NOTIFICATIONS ONUNMOUNTED");
+      window.removeEventListener("scroll", handleScroll);
+    });
+
+    const getNotifications = () => {
+      let page_url = url + "api/v2/get_notifications";
+
+      if (count.value > 0) {
+        note_id.value = notifications.value[notifications.value.length - 1];
+      }
+
+      const data = {
+        notification_id: "" + note_id.value,
+      };
+
       axios
-        .get(page_url)
+        .post(page_url, data)
         .then((response) => {
-          console.log("NOTIFICATIONS", response.data.notifications);
-          this.notifications = response.data.notifications;
-          if (this.notifications.length > 0) {
-            this.show = false;
+          console.log("NOTIFICATIONS", response);
+          let newNotifications = response.data.notifications;
+          if (newNotifications.length > 0) {
+            show.value = false;
+            notifications.value.push(...newNotifications);
+            count.value += limit;
+            total.value = response.data.total;
+            if (count.value >= total.value) {
+              loadMore.value = false;
+            } else {
+              loadMore.value = true;
+            }
           }
         })
         .catch((error) => {
           console.log(error);
         });
+    };
+
+    const handleScroll = () => {
+      let element = scrollComponent.value;
+      if (
+        element.getBoundingClientRect().bottom < window.innerHeight &&
+        loadMore.value
+      ) {
+        loadMore.value = false;
+        getNotifications();
+      }
+    };
+
+    return {
+      notifications,
+      info,
+      show,
+      scrollComponent,
+    };
+  },
+  components: {
+    NotificationItem,
+    CenterInfomation,
+  },
+  methods: {
+    goToPostDetails(post_id) {
+      this.$emit("listen-post-details", post_id);
     },
   },
 };

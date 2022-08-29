@@ -15,7 +15,8 @@ export default {
   },
   methods: {
     goToProfile() {
-      this.$emit("listen-user-profile",this.post);
+      console.log("Notifications CLICKED", this.post);
+      this.$emit("listen-user-profile", this.post);
     },
   },
 };
@@ -25,7 +26,7 @@ export default {
   text-align: center;
 }
 
-.profile-picture{
+.profile-picture {
   cursor: pointer;
 }
 </style>

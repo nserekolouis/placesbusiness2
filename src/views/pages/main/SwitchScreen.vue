@@ -32,6 +32,8 @@ export default {
       id: "",
       user_id: "",
       from_component: "",
+      new_posts: false,
+      bgColor: "",
     };
   },
   methods: {
@@ -47,6 +49,13 @@ export default {
     goToHome() {
       this.from_component = this.current;
       this.current = "HomeScreen";
+      console.log("switch screen home");
+      this.new_posts = !this.new_posts;
+      if (this.bgColor == "#fff") {
+        this.bgColor = "#ffffff";
+      } else {
+        this.bgColor = "#fff";
+      }
     },
     goToProfile() {
       console.log("Go to profile");
@@ -66,6 +75,12 @@ export default {
       this.current = "LoadMoreUserPosts";
       this.user_id = post.user_id;
     },
+    goToPostDetails(post_id) {
+      console.log(post_id);
+      this.from_component = this.current;
+      this.current = "CommentsScreen";
+      this.id = post_id;
+    },
   },
 };
 </script>
@@ -74,6 +89,7 @@ export default {
   <div class="row">
     <div class="col-md-3">
       <sidebar-coreui
+        :indicatorbg="bgColor"
         @listen-notifications="goToNotifications"
         @listen-home="goToHome"
         @listen-profile="goToProfile"
@@ -89,6 +105,7 @@ export default {
           :id="id"
           :user_id="user_id"
           :from_component="from_component"
+          :new_posts="new_posts"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -97,6 +114,7 @@ export default {
           @listen-privacy-safety="goToPrivacyAndSafety"
           @listen-about-places="goToAboutPlaces"
           @listen-user-profile="goToUserProfile"
+          @listen-post-details="goToPostDetails"
         ></component>
       </KeepAlive>
     </div>
