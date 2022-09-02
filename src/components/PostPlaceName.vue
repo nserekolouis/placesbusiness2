@@ -1,10 +1,10 @@
 <template>
-  <div class="col-md-6 div-left">
+  <div class="col-6 div-left">
     <u>
       <p class="p-place-name">{{ post.main_text }}</p>
     </u>
   </div>
-  <div class="col-md-6 div-right">
+  <div class="col-6 div-right">
     <div class="dropdown">
       <a
         href="#"
@@ -139,10 +139,6 @@ export default {
     reportPost() {
       console.log("Report Post");
       this.$emit("listen-report-post");
-    },
-    unSubPlace() {
-      console.log("Unsub Place");
-      this.$emit("listen-unsubplace", this.index);
     },
     deletePost() {
       console.log("DELETE POST");

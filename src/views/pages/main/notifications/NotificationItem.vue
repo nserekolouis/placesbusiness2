@@ -5,21 +5,25 @@
       v-if="clicked == false"
       style="background-color: #f5f5f5; padding: 5px"
     >
-      <div class="col-md-2">
+      <div class="col-2">
         <post-profile-picture
           :post="post"
+          @listen-user-profile="goToUserProfile"
         />
       </div>
-      <div class="col-md-10" @click="updateNotificationClicked">
+      <div class="col-10" @click="updateNotificationClicked">
         <post-user-info :post="post" />
         <notification-text :post="post" />
       </div>
     </div>
     <div class="row" v-else>
-      <div class="col-md-2">
-        <post-profile-picture :post="post" />
+      <div class="col-2">
+        <post-profile-picture
+          :post="post"
+          @listen-user-profile="goToUserProfile"
+        />
       </div>
-      <div class="col-md-10" @click="updateNotificationClicked">
+      <div class="col-10" @click="updateNotificationClicked">
         <post-user-info :post="post" />
         <notification-text :post="post" />
       </div>
@@ -74,9 +78,14 @@ export default {
         });
     };
 
+    const goToUserProfile = (post) => {
+      emit("listen-user-profile", post);
+    };
+
     return {
       clicked,
       updateNotificationClicked,
+      goToUserProfile,
     };
   },
   created() {

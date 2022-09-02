@@ -1,16 +1,11 @@
 <template>
-<!-- <div class="container"> -->
-    <!-- <div class="row"> -->
-    <div class="" style="border:0px solid black">
+    <div class="col-12" style="border:0px solid black">
         <p class="p-username">{{ post.username }}</p>
         <p class="p-userhandle">{{ post.userhandle }}</p>
         <p class="p-timestamp">{{ timestamp }}</p>
     </div>
-<!-- </div> -->
-<!-- </div> -->
 </template>
 <script>
-
 export default {
     name: 'PostUserInfo',
     props: {

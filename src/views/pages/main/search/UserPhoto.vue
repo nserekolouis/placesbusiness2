@@ -1,10 +1,8 @@
 <template>
-<div class="row">
     <img :src="this.url+post.userphoto" 
         class="profile-picture"
         @click="goToProfile"
     />
-</div>
 </template>
 <script>
 import router from '@/router';

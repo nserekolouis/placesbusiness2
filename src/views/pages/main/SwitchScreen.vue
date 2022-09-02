@@ -31,24 +31,33 @@ export default {
       current: "HomeScreen",
       id: "",
       user_id: "",
-      from_component: "",
+      from_component: [],
       new_posts: false,
+      new_comments: false,
       bgColor: "",
+      new_notifications: false,
     };
   },
   methods: {
     goToComments(post) {
-      console.log("Switch", post);
-      this.from_component = this.current;
+      console.log("comment clicked", post);
+      if (post != null) {
+        this.id = post.id;
+      }
+      this.new_comments = !this.new_comments;
+      this.from_component.push(this.current);
       this.current = "CommentsScreen";
-      this.id = post.id;
     },
     goToNotifications() {
+      this.new_notifications = !this.new_notifications;
       this.current = "NotificationsScreen";
+      this.from_component = [];
+      this.from_component.push(this.current);
     },
     goToHome() {
-      this.from_component = this.current;
       this.current = "HomeScreen";
+      this.from_component = [];
+      this.from_component.push(this.current);
       console.log("switch screen home");
       this.new_posts = !this.new_posts;
       if (this.bgColor == "#fff") {
@@ -71,23 +80,55 @@ export default {
       this.current = "AboutPlacesScreen";
     },
     goToUserProfile(post) {
-      this.from_component = this.current;
+      this.from_component.push(this.current);
       this.current = "LoadMoreUserPosts";
       this.user_id = post.user_id;
     },
     goToPostDetails(post_id) {
       console.log(post_id);
-      this.from_component = this.current;
+      this.from_component.push(this.current);
       this.current = "CommentsScreen";
       this.id = post_id;
+    },
+    moveBack() {
+      console.log("length", this.from_component.length);
+      console.log(
+        "length",
+        this.from_component[this.from_component.length - 1]
+      );
+      this.current = this.from_component[this.from_component.length - 1];
+      this.from_component.pop();
     },
   },
 };
 </script>
 
 <template>
-  <div class="row">
+  <div class="row main">
     <div class="col-md-3">
+      <!-- <button
+        class="btn d-md-none"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasResponsive"
+        aria-controls="offcanvasResponsive"
+      >
+        <font-awesome-icon icon="fa-solid fa-bars" />
+      </button> -->
+      <!-- <div
+        class="offcanvas-md offcanvas-start"
+        tabindex="-1"
+        id="offcanvasResponsive"
+        aria-labelledby="offcanvasResponsiveLabel"
+      >
+        <div class="offcanvas-body">
+          <button
+            type="button"
+            class="btn-close btn-close-left"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            aria-label="Close"
+          ></button> -->
       <sidebar-coreui
         :indicatorbg="bgColor"
         @listen-notifications="goToNotifications"
@@ -97,8 +138,10 @@ export default {
         @listen-privacy-safety="goToPrivacyAndSafety"
         @listen-about-places="goToAboutPlaces"
       />
+      <!-- </div> -->
+      <!-- </div> -->
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 border-left">
       <KeepAlive>
         <component
           :is="current"
@@ -106,6 +149,8 @@ export default {
           :user_id="user_id"
           :from_component="from_component"
           :new_posts="new_posts"
+          :new_comments="new_comments"
+          :new_notifications="new_notifications"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -115,11 +160,111 @@ export default {
           @listen-about-places="goToAboutPlaces"
           @listen-user-profile="goToUserProfile"
           @listen-post-details="goToPostDetails"
+          @listen-move-back="moveBack"
         ></component>
       </KeepAlive>
     </div>
     <div class="col-md-3 border-left">
-      <search-users />
+      <button
+        class="btn d-md-none btn-menu-right"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasResponsive2"
+        aria-controls="offcanvasResponsive2"
+      >
+        <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      </button>
+      <div
+        class="offcanvas-md offcanvas-end"
+        tabindex="-1"
+        id="offcanvasResponsive2"
+        aria-labelledby="offcanvasResponsiveLabel2"
+      >
+        <div class="offcanvas-body">
+          <button
+            type="button"
+            class="btn-close btn-close-right"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive2"
+            aria-label="Close"
+          ></button>
+          <search-users />
+        </div>
+      </div>
     </div>
   </div>
 </template>
+<style scoped>
+html:not([dir="rtl"]) .offcanvas.offcanvas-start {
+  transform: translateX(0%);
+}
+
+.btn-close {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+  .btn-close {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  html:not([dir="rtl"]) .offcanvas-sm.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: none;
+  }
+
+  .btn {
+    border: 0px solid black;
+  }
+
+  .btn-menu-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+
+  .offcanvas-md.offcanvas-start {
+    width: 330px;
+  }
+
+  .offcanvas-md.offcanvas-end {
+    width: 330px;
+  }
+
+  .btn-close-right {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+  }
+
+  .btn-close-left {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+  }
+
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  html:not([dir="rtl"]) .offcanvas-md.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: block;
+  }
+
+  .offcanvas-sm.offcanvas-start {
+    width: 330px;
+  }
+}
+</style>

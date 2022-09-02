@@ -1,8 +1,5 @@
 <template>
-  <div class="btn-home">
-    <!-- <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="goBack" /> -->
-    <h6>About Places</h6>
-  </div>
+  <title-component :title="componentTitle" />
   <div>
     <section class="section section-lg">
       <div class="container">
@@ -918,9 +915,23 @@
   </div>
 </template>
 <script>
+import TitleComponent from "@/components/TitleComponent.vue";
+import { onMounted } from "vue";
+
 export default {
   name: "PrivacyAndSafetySection",
-  components: {},
+  components: {
+    TitleComponent,
+  },
+  setup() {
+    const componentTitle = "Privacy and Safety";
+    onMounted(() => {
+      document.title = "Places | Privacy and safety";
+    });
+    return {
+      componentTitle,
+    };
+  },
 };
 </script>
 <style scoped>

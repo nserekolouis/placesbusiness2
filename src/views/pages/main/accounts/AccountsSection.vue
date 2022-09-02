@@ -1,8 +1,5 @@
 <template>
-  <div class="btn-home">
-    <!-- <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="goBack" /> -->
-    <h6>Account Information</h6>
-  </div>
+  <title-component :title="componentTitle" />
   <div class="row card" style="margin-top: 50px">
     <p>{{ email }}</p>
     <p>{{ userhandle }}</p>
@@ -11,8 +8,25 @@
 </template>
 <script>
 import Auth from "@/Auth.js";
+import TitleComponent from "@/components/TitleComponent.vue";
+import { onMounted } from "vue";
+
 export default {
   name: "AccountsSection",
+  components: {
+    TitleComponent,
+  },
+  setup() {
+    const componentTitle = "Accounts";
+
+    onMounted(() => {
+      document.title = "Places | Accounts";
+    });
+
+    return {
+      componentTitle,
+    };
+  },
   data() {
     return {
       email: Auth.user.email,
@@ -33,5 +47,4 @@ h6 {
   text-align: center;
   margin-bottom: 10px;
 }
-
 </style>

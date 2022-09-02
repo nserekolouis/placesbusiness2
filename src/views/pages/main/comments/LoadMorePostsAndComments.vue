@@ -1,8 +1,5 @@
 <template>
-  <div style="margin-top: 5px; margin-bottom: 5px">
-    <font-awesome-icon icon="fa-solid fa-long-arrow-left " @click="goBack" />
-    <h6>Comments</h6>
-  </div>
+  <back-navigation :info="componentName" @listen-move-back="moveBack" />
   <div class="" ref="scrollComponent">
     <ul class="list-group">
       <li class="list-group-item">
@@ -29,9 +26,7 @@
           v-else
           :post="post"
           :index="index"
-          @listen-userblocked="userBlocked"
-          @listen-reportpost="reportPost"
-          @listen-deletepost="deletePost"
+          @listen-user-profile="goToUserProfile"
         />
       </li>
     </ul>
@@ -44,27 +39,26 @@ import OneImage from "@/components/PostImagesOne.vue";
 import TwoImages from "@/components/PostImagesTwo.vue";
 import ThreeImages from "@/components/PostImagesThree.vue";
 import FourImages from "@/components/PostImagesFour.vue";
-
 import COnlyText from "@/components/CommentOnlyText.vue";
 import COneImage from "@/components/CommentOneImage.vue";
 import CTwoImages from "@/components/CommentTwoImages.vue";
 import CThreeImages from "@/components/CommentThreeImages.vue";
 import CFourImages from "@/components/CommentFourImages.vue";
-
 import MakeComment from "@/components/MakeComment.vue";
-
 import PostExtras from "@/components/PostExtras.vue";
+import BackNavigation from "@/components/BackNavigation.vue";
 import { ref, onMounted, onUnmounted } from "vue";
-import { inject } from "vue";
+import { inject, watch } from "vue";
 
 export default {
   name: "LoadMorePostsAndComments",
   props: {
     id: String,
     from_component: String,
+    new_comments: Boolean,
   },
-  setup(props) {
-    console.log("id", props);
+  setup(props, { emit }) {
+    const componentName = "Comments";
     const url = inject("url");
     const post_id = ref(props.id);
     const post = ref({});
@@ -79,8 +73,25 @@ export default {
 
     const scrollComponent = ref(null);
 
+    watch(
+      () => props.new_comments,
+      (newVal, oldVal) => {
+        console.log("comment clicked", newVal);
+        console.log("comment clicked", oldVal);
+        console.log("comment clicked", props.id);
+        count.value = 0;
+        return_mine.value = 0;
+        totalMine.value = 0;
+        totalOthers.value = 0;
+        loadMore.value = true;
+        post_id.value = props.id;
+        getPost();
+      }
+    );
+
     onMounted(() => {
       console.log("LMPAC ON");
+      document.title = "Places | Comments";
       window.addEventListener("scroll", handleScroll);
       getPost();
     });
@@ -184,6 +195,7 @@ export default {
           loadMore.value = true;
           console.log("LMPAC COMMENTS ", response);
           let newComments = response.data.comments;
+          newComments.push(...comments.value);
           comments.value = newComments;
           let newTotalMine = response.data.total_mine;
           totalMine.value = newTotalMine;
@@ -199,11 +211,22 @@ export default {
         });
     };
 
+    const goToUserProfile = (post) => {
+      emit("listen-user-profile", post);
+    };
+
+    const moveBack = () => {
+      emit("listen-move-back");
+    };
+
     return {
       comments,
       post,
       scrollComponent,
       newComment,
+      goToUserProfile,
+      componentName,
+      moveBack,
     };
   },
   components: {
@@ -219,23 +242,24 @@ export default {
     CFourImages,
     MakeComment,
     PostExtras,
+    BackNavigation,
   },
-  methods: {
-    goBack() {
-      console.log("FROM COMPONENT", this.from_component);
-      if (this.from_component == "HomeScreen") {
-        this.$emit("listen-home");
-      } else if (this.from_Component == "LoadMoreUserPosts") {
-        this.$emit("listen-user-profile");
-      } else if (this.from_component == "CommentsScreen") {
-        this.$emit("listen-comment");
-      } else if (this.from_component == "NotificationsScreen") {
-        this.$emit("listen-notifications");
-      } else {
-        console.log("UNKNOWN");
-      }
-    },
-  },
+  // methods: {
+  //   goBack() {
+  //     console.log("FROM COMPONENT", this.from_component);
+  //     if (this.from_component == "HomeScreen") {
+  //       this.$emit("listen-home");
+  //     } else if (this.from_Component == "LoadMoreUserPosts") {
+  //       this.$emit("listen-user-profile");
+  //     } else if (this.from_component == "CommentsScreen") {
+  //       this.$emit("listen-comment");
+  //     } else if (this.from_component == "NotificationsScreen") {
+  //       this.$emit("listen-notifications");
+  //     } else {
+  //       console.log("UNKNOWN");
+  //     }
+  //   },
+  // },
 };
 </script>
 <style scoped>

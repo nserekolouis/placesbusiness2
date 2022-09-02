@@ -1,8 +1,5 @@
 <template>
-  <div class="btn-home">
-    <!-- <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="goBack" /> -->
-    <h6>About Places</h6>
-  </div>
+  <title-component :title="componentTitle" />
   <div class="row card" style="margin-top: 50px">
     <p>Places</p>
     <p>App version 2.8(19)</p>
@@ -11,7 +8,26 @@
   </div>
 </template>
 <script>
-export default {};
+import TitleComponent from "@/components/TitleComponent.vue";
+import { onMounted } from "vue";
+
+export default {
+  name: "AboutSection",
+  setup() {
+    const componentTitle = "About Places";
+
+    onMounted(() => {
+      document.title = "Places | About Places";
+    });
+
+    return {
+      componentTitle,
+    };
+  },
+  components: {
+    TitleComponent,
+  },
+};
 </script>
 <style scoped>
 h6 {

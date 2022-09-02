@@ -12,6 +12,7 @@ import NotificationsScreen from "@/views/pages/main/notifications/NotificationsS
 import AccountsScreen from '@/views/pages/main/accounts/AccountsScreen.vue'
 import PrivacyAndSafetyScreen from '@/views/pages/main/privacyandsafety/PrivacyAndSafefty.vue'
 import AboutPlacesScreen from '@/views/pages/main/aboutplaces/AboutPlacesScreen.vue'
+import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
 
 
 const routes = [
@@ -34,7 +35,7 @@ const routes = [
     component: ProfileScreen,
   },
   {
-    path: '/homeScreen',
+    path: '/home',
     name: "HomeScreen",
     component: HomeScreen,
   },
@@ -79,6 +80,11 @@ const routes = [
     path: '/:catchAll(.*)*',
     name: "PageNotFound",
     component: PageNotFound,
+  },
+  {
+    path: '/undermaintenance',
+    name: "UnderMaintenance",
+    component: UnderMaintenace,
   },
 ]
 

@@ -1,78 +1,128 @@
 <template>
-  <div
-    class="d-flex flex-column flex-shrink-0 p-3 bg-white"
-    style="width: 280px; height: 100vh; border: 1px solid #c8c9ca"
+  <button
+    class="btn d-md-none humberger"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasResponsive"
+    aria-controls="offcanvasResponsive"
   >
-    <a
-      href="/"
-      class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
-    >
-      <img :src="placesLogo" class="places-logo" />
-    </a>
-    <hr />
-    <ul class="nav nav-pills flex-column mb-auto">
-      <li class="nav-item" @click="goToHome">
-        <a href="#" class="nav-link link-dark" aria-current="page">
-          <div class="" style="position: relative">
-            <font-awesome-icon icon="fa-solid fa-house" />
-            <span
-              class="position-absolute top-0 start-1 translate-middle p-1 bg-places border border-light rounded-circle"
-              :style="{ backgroundColor: indicator }"
+    <font-awesome-icon icon="fa-solid fa-bars" />
+  </button>
+  <div
+    class="offcanvas-md offcanvas-start"
+    tabindex="-1"
+    id="offcanvasResponsive"
+    aria-labelledby="offcanvasResponsiveLabel"
+  >
+    <div class="offcanvas-body">
+      <button
+        type="button"
+        class="btn-close btn-close-left"
+        data-bs-dismiss="offcanvas"
+        data-bs-target="#offcanvasResponsive"
+        aria-label="Close"
+      ></button>
+      <div class="d-flex flex-column flex-shrink-0 p-3 bg-white sb">
+        <a
+          href="/"
+          class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+        >
+          <img :src="placesLogo" class="places-logo" />
+        </a>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToHome"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <font-awesome-icon icon="fa-solid fa-house" />
+                <span
+                  class="position-absolute top-0 start-1 translate-middle p-1 bg-places border border-light rounded-circle"
+                  :style="{ backgroundColor: indicator }"
+                >
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+                <p>Home</p>
+              </div>
+            </a>
+          </li>
+          <li
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToNotifications"
+          >
+            <a href="#" class="nav-link link-dark">
+              <font-awesome-icon icon="fa-solid fa-bell" />
+              <p>Notifications</p>
+              <span class="badge bg-places" style="margin-left: 10px">{{
+                noteCount
+              }}</span>
+            </a>
+          </li>
+        </ul>
+        <hr />
+        <div class="dropdown">
+          <a
+            href="#"
+            class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+            id="dropdownUser2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              :src="profile_picture"
+              alt=""
+              width="32"
+              height="32"
+              class="rounded-circle me-2"
+            />
+            <strong>{{ username }}</strong>
+          </a>
+          <ul
+            class="dropdown-menu text-small shadow"
+            aria-labelledby="dropdownUser2"
+          >
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToProfile"
             >
-              <span class="visually-hidden">New alerts</span>
-            </span>
-            <p>Home</p>
-          </div>
-        </a>
-      </li>
-      <li @click="goToNotifications">
-        <a href="#" class="nav-link link-dark">
-          <font-awesome-icon icon="fa-solid fa-bell" />
-          <p>Notifications</p>
-          <span class="badge bg-places" style="margin-left: 10px">{{
-            noteCount
-          }}</span>
-        </a>
-      </li>
-    </ul>
-    <hr />
-    <div class="dropdown">
-      <a
-        href="#"
-        class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
-        id="dropdownUser2"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <img
-          :src="profile_picture"
-          alt=""
-          width="32"
-          height="32"
-          class="rounded-circle me-2"
-        />
-        <strong>{{ username }}</strong>
-      </a>
-      <ul
-        class="dropdown-menu text-small shadow"
-        aria-labelledby="dropdownUser2"
-      >
-        <li @click="goToProfile">
-          <a class="dropdown-item" href="#"> Profile</a>
-        </li>
-        <li @click="goToAccounts">
-          <a class="dropdown-item" href="#"> Accounts</a>
-        </li>
-        <li @click="goToPrivacyAndSafety">
-          <a class="dropdown-item" href="#"> Privacy and Safety</a>
-        </li>
-        <li @click="goToAboutPlaces">
-          <a class="dropdown-item" href="#"> About Places</a>
-        </li>
-        <li>
-          <a class="dropdown-item" href="#" @click="logout"> Sign out</a>
-        </li>
-      </ul>
+              <a class="dropdown-item" href="#">Profile</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToAccounts"
+            >
+              <a class="dropdown-item" href="#">Accounts</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToPrivacyAndSafety"
+            >
+              <a class="dropdown-item" href="#">Privacy and Safety</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToAboutPlaces"
+            >
+              <a class="dropdown-item" href="#">About Places</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+            >
+              <a class="dropdown-item" href="#" @click="logout">Sign out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -89,7 +139,7 @@ export default {
   props: {
     indicatorbg: String,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const messaging = inject("messaging");
     const vapidKey = inject("vapidKey");
     const url = inject("url");
@@ -101,7 +151,7 @@ export default {
       (newVal, oldVal) => {
         console.log("indicator", newVal);
         console.log("indicator", oldVal);
-        indicator.value = newVal
+        indicator.value = newVal;
       }
     );
 
@@ -158,10 +208,16 @@ export default {
         });
     };
 
+    const goToNotifications = () => {
+      noteCount.value = 0;
+      emit("listen-notifications");
+    };
+
     return {
       noteCount,
       placesLogo,
       indicator,
+      goToNotifications,
     };
   },
   data() {
@@ -175,9 +231,6 @@ export default {
     logout() {
       Auth.logout;
       router.push({ name: "LoginScreen" });
-    },
-    goToNotifications() {
-      this.$emit("listen-notifications");
     },
     goToHome() {
       this.$emit("listen-home");
@@ -208,5 +261,79 @@ p {
 
 .bg-places {
   background-color: #288c7f;
+}
+
+.sb {
+  width: 280px;
+  height: 90vh;
+  border: 0px;
+}
+html:not([dir="rtl"]) .offcanvas.offcanvas-start {
+  transform: translateX(0%);
+}
+
+.btn-close {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+  .btn-close {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  html:not([dir="rtl"]) .offcanvas-sm.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: none;
+  }
+
+  .btn {
+    border: 0px solid black;
+  }
+
+  .btn-menu-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+
+  .offcanvas-md.offcanvas-start {
+    width: 330px;
+  }
+
+  .btn-close-right {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+  }
+
+  .btn-close-left {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+  }
+
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  html:not([dir="rtl"]) .offcanvas-md.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: block;
+  }
+
+  .offcanvas-sm.offcanvas-start {
+    width: 330px;
+  }
 }
 </style>

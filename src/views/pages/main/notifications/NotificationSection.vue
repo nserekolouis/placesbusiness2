@@ -1,7 +1,5 @@
 <template>
-  <div class="btn-home">
-    <h6>Notifications</h6>
-  </div>
+  <title-component :title="componentTitle" />
   <center-infomation :info="info" v-show="show" class="info-missing" />
   <ul class="list-group" ref="scrollComponent">
     <li
@@ -13,6 +11,7 @@
         :post="post"
         :index="index"
         @listen-post-details="goToPostDetails"
+        @listen-user-profile="goToUserProfile"
       />
     </li>
   </ul>
@@ -21,14 +20,20 @@
 import axios from "axios";
 import NotificationItem from "@/views/pages/main/notifications/NotificationItem.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
+import TitleComponent from "@/components/TitleComponent.vue";
 import { inject, ref, onMounted, watch, onUnmounted } from "vue";
 
 export default {
   name: "NotificationSection",
+  components: {
+    TitleComponent,
+    NotificationItem,
+    CenterInfomation,
+  },
   props: {
     new_notifications: Boolean,
   },
-  setup(props) {
+  setup(props,{emit}) {
     const url = inject("url");
     const show = ref(true);
     const notifications = ref([]);
@@ -38,19 +43,23 @@ export default {
     const limit = 10;
     const loadMore = ref(false);
     const note_id = ref(0);
-
     const scrollComponent = ref(null);
+    const componentName = "Notifications";
 
     watch(
       () => props.new_notifications,
       (newVal, oldVal) => {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
-        getNotifications();
+        count.value = 0;
+        note_id.value = 0;
+        notifications.value = [];
+        refreshNotifications();
       }
     );
 
     onMounted(() => {
+      document.title = "Places | Notifications";
       console.log("NOTIFICATIONS ONMOUNTED");
       window.addEventListener("scroll", handleScroll);
       getNotifications();
@@ -69,7 +78,7 @@ export default {
       }
 
       const data = {
-        notification_id: "" + note_id.value,
+        notification_id: "" + 0,
       };
 
       axios
@@ -80,6 +89,35 @@ export default {
           if (newNotifications.length > 0) {
             show.value = false;
             notifications.value.push(...newNotifications);
+            count.value += limit;
+            total.value = response.data.total;
+            if (count.value >= total.value) {
+              loadMore.value = false;
+            } else {
+              loadMore.value = true;
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const refreshNotifications = () => {
+      let page_url = url + "api/v2/get_notifications";
+
+      const data = {
+        notification_id: "" + 0,
+      };
+
+      axios
+        .post(page_url, data)
+        .then((response) => {
+          console.log("NOTIFICATIONS", response);
+          let newNotifications = response.data.notifications;
+          if (newNotifications.length > 0) {
+            show.value = false;
+            notifications.value = newNotifications;
             count.value += limit;
             total.value = response.data.total;
             if (count.value >= total.value) {
@@ -105,16 +143,21 @@ export default {
       }
     };
 
+    const componentTitle = "Notifications";
+
+    const goToUserProfile = (post) => {
+      emit("listen-user-profile", post);
+    };
+
     return {
       notifications,
       info,
       show,
       scrollComponent,
+      componentName,
+      componentTitle,
+      goToUserProfile
     };
-  },
-  components: {
-    NotificationItem,
-    CenterInfomation,
   },
   methods: {
     goToPostDetails(post_id) {

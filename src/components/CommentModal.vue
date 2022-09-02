@@ -14,7 +14,7 @@
                   v-for="reason in reasons"
                   :key="reason.id"
                   class="list-group-item clickable"
-                  @click="reportPost(reason)"
+                  @click="reportComment(reason)"
                 >
                   <p>{{ reason.description }}</p>
                 </li>
@@ -44,11 +44,11 @@ export default {
     show: Boolean,
     post: {},
   },
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const showModal = ref(props.show);
     const url = inject("url");
     const reasons = ref([]);
-    const post_id = ref(props.post.id);
+    const comment_id = ref(props.post.id);
 
     watch(
       () => props.show,
@@ -80,18 +80,18 @@ export default {
         });
     };
 
-    const reportPost = (reason) => {
-      let page_url = url + "api/v2/report_post";
+    const reportComment = (reason) => {
+      let page_url = url + "api/v2/report_comment";
       const data = {
-        post_id: ""+post_id.value,
-        reason_id: ""+reason.id,
+        comment_id: "" + comment_id.value,
+        reason_id: "" + reason.id,
       };
       axios
         .post(page_url, data)
         .then((response) => {
           console.log(response);
-          showModal.value = false
-          emit("listen-report-post");
+          showModal.value = false;
+          emit("listen-report-comment");
         })
         .catch((error) => {
           console.log(error);
@@ -102,7 +102,7 @@ export default {
       showModal,
       closeModal,
       reasons,
-      reportPost,
+      reportComment,
     };
   },
 };
@@ -178,7 +178,7 @@ p {
   font-size: 0.875rem;
 }
 
-.clickable{
+.clickable {
   cursor: pointer;
 }
 </style>

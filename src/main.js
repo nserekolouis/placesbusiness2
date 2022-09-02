@@ -23,7 +23,9 @@ import {
   faBell,
   faUser,
   faLongArrowLeft,
-  faLocationPin
+  faLocationPin,
+  faBars,
+  faEllipsis
 } from '@fortawesome/free-solid-svg-icons'
 
   import {faMessage,faHeart} from '@fortawesome/free-regular-svg-icons'
@@ -39,6 +41,8 @@ library.add(faMessage)
 library.add(faHeart)
 library.add(faLongArrowLeft )
 library.add(faLocationPin )
+library.add(faBars)
+library.add(faEllipsis)
 //..................
 
 import BootstrapVue3 from 'bootstrap-vue-3'

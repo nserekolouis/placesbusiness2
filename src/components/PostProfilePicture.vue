@@ -1,5 +1,5 @@
 <template>
-  <div class="div-pp" style="border: 0px solid black">
+  <div class="col-sm div-pp" style="border: 0px solid black">
     <img
       :src="this.url + post.user_photo"
       class="profile-picture"

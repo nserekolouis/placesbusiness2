@@ -1,8 +1,5 @@
 <template>
-  <div class="btn-home">
-    <!-- <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="goBack" /> -->
-    <h6>Edit Profile</h6>
-  </div>
+  <title-component :title="componentTitle" />
   <div class="row">
     <div class="col-md-6 profilescreen">
       <form @submit.prevent="uploadProfile">
@@ -91,11 +88,26 @@
 import axios from "axios";
 import Auth from "@/Auth.js";
 import router from "@/router";
+import TitleComponent from "@/components/TitleComponent.vue";
+import { onMounted } from "vue";
 
 export default {
   name: "UserHandle",
-  components: {},
+  components: {
+    TitleComponent,
+  },
   props: {},
+  setup() {
+    const componentTitle = "Profile";
+
+    onMounted(() => {
+      document.title = "Places | Profile";
+    });
+
+    return {
+      componentTitle,
+    };
+  },
   data() {
     return {
       profile_picture: this.url + Auth.user.user_photo,
@@ -304,11 +316,9 @@ label {
   margin: 0px;
 }
 
-.btn-home{
+.btn-home {
   margin-top: 5px;
   text-align: center;
   margin-bottom: 10px;
 }
-
-
 </style>

@@ -1,14 +1,14 @@
 <template>
   <div class="container reaction-component">
     <div class="row">
-      <div class="col-sm-6 div-comment" @click="commentClicked">
+      <div class="col-6 div-comment" @click="commentClicked">
         <font-awesome-icon
           icon="fa-regular fa-message"
           class="font-awesome-icon"
         />
         <p class="p-label">{{ post.num_comments }}</p>
       </div>
-      <div class="col-sm-6 div-like" @click="likeClicked">
+      <div class="col-6 div-like" @click="likeClicked">
         <font-awesome-icon
           icon="fa-regular fa-heart"
           class="font-awesome-icon"
@@ -20,7 +20,6 @@
   </div>
 </template>
 <script>
-//import router from "@/router";
 import axios from "axios";
 export default {
   name: "ReactionComponent",
@@ -52,7 +51,7 @@ export default {
   },
   methods: {
     commentClicked() {
-      console.log("comment clicked");
+      console.log("comment clicked", this.post);
       this.$emit("listen-comment", this.post);
     },
     likeClicked() {

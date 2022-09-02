@@ -1,6 +1,6 @@
 <template>
 <!-- <div class="container image-margin-top"> -->
-     <div class="row">
+     <div class="row col-12">
         <img 
         class="post-one-image"
         :src="this.url+image_one" /> 

@@ -5,20 +5,18 @@
         :post="post"
         :index="index"
         @listen-block-user="blockUser"
-        @listen-reportpost="reportPost"
-        @listen-unsubplace="unSubPlace"
         @listen-delete-post="deletePost"
         @listen-report-post="reportPost"
       />
     </div>
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-2">
         <post-profile-picture
           :post="post"
           @listen-user-profile="goToUserProfile"
         />
       </div>
-      <div class="col-md-10">
+      <div class="col-10">
         <post-user-info :post="post" />
         <post-text :post="post" />
         <reaction-component :post="post" @listen-comment="goToComments" />
@@ -45,7 +43,7 @@ export default {
     post: {},
     index: Number,
   },
-  setup() {
+  setup(props,{emit}) {
     const showExtras = ref(false);
     const info = ref(null);
 
@@ -64,12 +62,22 @@ export default {
       info.value = "Post Reported";
     };
 
+    const goToComments = (post) => {
+      emit("listen-comment", post);
+    };
+
+    const goToUserProfile = (post) => {
+      emit("listen-user-profile", post);
+    };
+
     return {
       showExtras,
       info,
       deletePost,
       blockUser,
-      reportPost
+      reportPost,
+      goToComments,
+      goToUserProfile
     };
   },
   components: {
@@ -79,22 +87,6 @@ export default {
     PostProfilePicture,
     PostPlaceName,
     PostExtras,
-  },
-  methods: {
-    userBlocked(index) {
-      console.log("USER BLOCKED 2");
-      this.$emit("listen-userblocked", index);
-    },
-    unSubPlace(index) {
-      console.log("Unsub Place 2");
-      this.$emit("listen-unsubplace", index);
-    },
-    goToComments(post) {
-      this.$emit("listen-comment", post);
-    },
-    goToUserProfile(post) {
-      this.$emit("listen-user-profile", post);
-    },
   },
 };
 </script>

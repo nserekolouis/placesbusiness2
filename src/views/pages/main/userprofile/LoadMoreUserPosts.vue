@@ -1,9 +1,6 @@
 <template>
   <div class="row">
-    <div class="btn-home">
-      <!-- <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="goBack" /> -->
-      <h6>User Profile</h6>
-    </div>
+    <back-navigation :info="componentName" @listen-move-back="moveBack" />
     <div>
       <user-profile :user_id="user_id" />
     </div>
@@ -34,7 +31,7 @@ import OneImage from "@/components/PostImagesOne.vue";
 import TwoImages from "@/components/PostImagesTwo.vue";
 import ThreeImages from "@/components/PostImagesThree.vue";
 import FourImages from "@/components/PostImagesFour.vue";
-
+import BackNavigation from "@/components/BackNavigation.vue";
 import PostExtras from "@/components/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 
@@ -55,22 +52,22 @@ export default {
     FourImages,
     PostExtras,
     UserProfile,
+    BackNavigation,
   },
-  setup(props) {
+  setup(props, { emit }) {
+    const componentName = "User Profile";
     const url = inject("url");
-    console.log("LMUP WATCH", props.user_id);
     const u_id = ref(props.user_id);
     const length = ref(0);
     const count = ref(0);
     const post_id = ref(0);
+    //const from_component = ref(props.from_component);
+    const loadMore = ref(true);
 
     const posts = ref([]);
     const scrollComponent = ref(null);
 
     const getUserPosts = () => {
-      console.log("LMUP U_ID", u_id.value);
-      console.log("LMUP URL", "" + url);
-
       if (Object.keys(posts.value).length != 0) {
         console.log("posts value", posts.value[posts.value.length - 1].id);
         post_id.value = posts.value[posts.value.length - 1].id;
@@ -87,21 +84,27 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("LMUP POSTS", response);
+          console.log("posts", response);
           let newPosts = response.data.posts;
-          console.log("LMUP POSTS 2", newPosts);
+          console.log("posts 2", newPosts);
           posts.value.push(...newPosts);
           let total = response.data.total;
           length.value = total;
           count.value += 5;
+          if (count.value >= total.value) {
+            loadMore.value = false;
+          } else {
+            loadMore.value = true;
+          }
         })
         .catch((error) => {
-          console.log("LMUP", error);
+          console.log("posts", error);
         });
     };
 
     onMounted(() => {
-      console.log("LMUP ON");
+      console.log("posts");
+      document.title = "Places | User Profile"
       window.addEventListener("scroll", handleScroll);
       getUserPosts();
     });
@@ -117,29 +120,26 @@ export default {
       console.log("LMUP SCROLLING WH", element.getBoundingClientRect().bottom);
       if (
         element.getBoundingClientRect().bottom < window.innerHeight &&
-        count.value < length.value
+        count.value < length.value &&
+        loadMore.value
       ) {
+        loadMore.value = false;
         getUserPosts();
       }
     };
+
+    
+
+    const moveBack = () => {
+      emit("listen-move-back");
+    };
+
     return {
       posts,
       scrollComponent,
+      moveBack,
+      componentName,
     };
-  },
-  methods: {
-    goBack() {
-      console.log("FROM COMPONENT", this.from_component);
-      if (this.from_component == "HomeScreen") {
-        this.$emit("listen-home");
-      } else if (this.from_Component == "LoadMoreUserPosts") {
-        this.$emit("listen-user-profile");
-      } else if (this.from_component == "CommentsScreen") {
-        this.$emit("listen-comment");
-      } else {
-        console.log("UNKNOWN");
-      }
-    },
   },
 };
 </script>
@@ -153,12 +153,16 @@ export default {
 
 h6 {
   display: inline-block;
-  margin-left: 5px;
+  margin-left: 10px;
 }
 
 .btn-home {
   margin-top: 5px;
   text-align: center;
   margin-bottom: 10px;
+}
+
+.btn {
+  display: none;
 }
 </style>
