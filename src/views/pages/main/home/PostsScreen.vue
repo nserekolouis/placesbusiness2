@@ -270,11 +270,8 @@ export default {
 
     const componentTitle = "Home";
 
-    const searchedPlace = (p) => {
-      //getPlaceSubscriptions();
-      console.log("Searched Place", p);
-      place.value = p;
-      console.log("Searched Place", place.value);
+    const searchedPlace = (searched_place) => {
+      place.value = searched_place;
       count.value = 0;
       total.value = 0;
       id.value = 0;
