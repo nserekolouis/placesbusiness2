@@ -16,10 +16,10 @@
         @click="selectPlace(place)"
       >
         <div class="row">
-          <div class="col-md-2 place-icon-center">
+          <div class="col-2 place-icon-center">
             <font-awesome-icon icon="fa-solid fa-location-pin" />
           </div>
-          <div class="col-md-10">
+          <div class="col-10">
             <p class="p-li-bar-place">{{ place.main_text }}</p>
             <p class="p-li-bar-place">{{ place.secondary_text }}</p>
           </div>
@@ -56,7 +56,7 @@ export default {
           this.search_place = val.main_text;
           this.place = val;
         } else {
-          this.search_place = ""
+          this.search_place = "";
         }
       },
     },
@@ -80,7 +80,6 @@ export default {
     selectPlace: function (place) {
       this.search_place = place.main_text;
       this.places = [];
-      this.$emit("listen-place", place);
       this.place = place;
       this.addPlaceSubscription(place);
     },
@@ -98,6 +97,7 @@ export default {
         .post(page_url, data)
         .then((response) => {
           console.log("Response ADD SUB: ", response);
+          this.$emit("listen-place", place);
         })
         .catch((error) => {
           console.log(error);

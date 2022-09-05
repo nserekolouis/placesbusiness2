@@ -6,7 +6,7 @@
       aria-label="Default select examples"
       @change="selectPlace($event, $event.target.selectedIndex)"
     >
-      <option>All Places</option>
+      <option :selected="false">All Places</option>
       <option v-for="place in places" :key="place.sub_id">
         <div class="">
           <p>{{ place.main_text }}</p>
@@ -169,6 +169,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
+          console.log("PLACE SUBSCRITIONS", response.data.place_subs);
           places.value = response.data.place_subs;
         })
         .catch((error) => {
@@ -220,7 +221,7 @@ export default {
         id: "" + id.value,
         place_id: "" + place.value.places_id,
       };
-      console.log("POSTS PLACE", data);
+      console.log("SEARCHED PLACE", data);
       axios
         .post(page_url, data)
         .then((response) => {
@@ -262,12 +263,23 @@ export default {
         if (place.value == null) {
           getPosts();
         } else {
-          getPlacePosts(place.value);
+          getPlacePosts();
         }
       }
     };
 
     const componentTitle = "Home";
+
+    const searchedPlace = (p) => {
+      //getPlaceSubscriptions();
+      console.log("Searched Place", p);
+      place.value = p;
+      console.log("Searched Place", place.value);
+      count.value = 0;
+      total.value = 0;
+      id.value = 0;
+      getPlacePosts();
+    };
 
     return {
       show,
@@ -280,6 +292,7 @@ export default {
       goToUserProfile,
       componentTitle,
       selectPlace,
+      searchedPlace,
     };
   },
   data() {
