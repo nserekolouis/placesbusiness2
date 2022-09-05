@@ -1,6 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router"
 import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
-import PageNotFound from '@/views/pages/main/PageNotFound.vue'
+//import PageNotFound from '@/views/pages/main/PageNotFound.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
 import ProfileScreen from '@/views/pages/signup/ProfileScreen.vue'
 import HomeScreen from '@/views/pages/main/SwitchScreen.vue'
@@ -78,8 +78,8 @@ const routes = [
   },
   {
     path: '/:catchAll(.*)*',
-    name: "PageNotFound",
-    component: PageNotFound,
+    name: "HomeScreen",
+    component: HomeScreen,
   },
   {
     path: '/undermaintenance',
