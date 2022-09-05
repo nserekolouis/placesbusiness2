@@ -117,7 +117,7 @@ const callback = (response) => {
         router.push({ name: "ProfileScreen" });
       } else {
         console.log("4");
-        router.push({ name: "HomeScreen" });
+        router.push({ name: "SwitchScreen" });
       }
     })
     .catch((error) => {

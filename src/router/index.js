@@ -3,7 +3,7 @@ import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
 import PageNotFound from '@/views/pages/main/PageNotFound.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
 import ProfileScreen from '@/views/pages/signup/ProfileScreen.vue'
-import HomeScreen from '@/views/pages/main/SwitchScreen.vue'
+import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
 import CommentScreen from '@/views/pages/main/comments/CommentScreen.vue'
 import UserProfileAndPosts from '@/views/pages/main/userprofile/UserProfileAndPostsScreen.vue'
 import Auth from '@/Auth.js';
@@ -36,8 +36,8 @@ const routes = [
   },
   {
     path: '/home',
-    name: "HomeScreen",
-    component: HomeScreen,
+    name: "SwitchScreen",
+    component: SwitchScreen,
   },
   {
     path: '/commentsScreen/:id',
