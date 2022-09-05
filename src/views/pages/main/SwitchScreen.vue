@@ -42,7 +42,7 @@ export default {
     goToComments(post) {
       console.log("comment clicked", post);
       if (post != null) {
-        this.id = post.id;
+        this.id = post.post_id;
       }
       this.new_comments = !this.new_comments;
       this.from_component.push(this.current);
@@ -98,6 +98,11 @@ export default {
       );
       this.current = this.from_component[this.from_component.length - 1];
       this.from_component.pop();
+    },
+    searchUserProfile(user_id) {
+      this.from_component.push(this.current);
+      this.current = "LoadMoreUserPosts";
+      this.user_id = user_id;
     },
   },
 };
@@ -188,7 +193,7 @@ export default {
             data-bs-target="#offcanvasResponsive2"
             aria-label="Close"
           ></button>
-          <search-users />
+          <search-users @listen-search-user-profile="searchUserProfile" />
         </div>
       </div>
     </div>

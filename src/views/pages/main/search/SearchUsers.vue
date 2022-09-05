@@ -30,7 +30,6 @@
 <script>
 import axios from "axios";
 import UserItem from "@/views/pages/main/search/UserItem.vue";
-import router from "@/router";
 
 export default {
   name: "SearchUsers",
@@ -85,12 +84,7 @@ export default {
       console.log("selectUser...", user);
       this.search_user = "";
       this.users = [];
-      router.push({
-        name: "UserProfileAndPosts",
-        params: {
-          user_id: user.app_user_id,
-        },
-      });
+      this.$emit("listen-search-user-profile",user.app_user_id);
     },
   },
 };

@@ -35,7 +35,7 @@ import BackNavigation from "@/components/BackNavigation.vue";
 import PostExtras from "@/components/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import axios from "axios";
 import { inject } from "vue";
 
@@ -44,16 +44,6 @@ export default {
     user_id: String,
     from_component: String,
   },
-  components: {
-    OnlyText,
-    OneImage,
-    TwoImages,
-    ThreeImages,
-    FourImages,
-    PostExtras,
-    UserProfile,
-    BackNavigation,
-  },
   setup(props, { emit }) {
     const componentName = "User Profile";
     const url = inject("url");
@@ -61,14 +51,23 @@ export default {
     const length = ref(0);
     const count = ref(0);
     const post_id = ref(0);
-    //const from_component = ref(props.from_component);
     const loadMore = ref(true);
-
     const posts = ref([]);
     const scrollComponent = ref(null);
 
+    watch(
+      () => props.user_id,
+      (newVal, oldVal) => {
+        console.log("New Value", newVal);
+        console.log("Old Value", oldVal);
+        u_id.value = newVal;
+        posts.value = [];
+        getUserPosts();
+      }
+    );
+
     const getUserPosts = () => {
-      if (Object.keys(posts.value).length != 0) {
+      if (posts.value.length != 0) {
         console.log("posts value", posts.value[posts.value.length - 1].id);
         post_id.value = posts.value[posts.value.length - 1].id;
       } else {
@@ -84,7 +83,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("posts", response);
+          console.log("User", response);
           let newPosts = response.data.posts;
           console.log("posts 2", newPosts);
           posts.value.push(...newPosts);
@@ -104,7 +103,7 @@ export default {
 
     onMounted(() => {
       console.log("posts");
-      document.title = "Places | User Profile"
+      document.title = "Places | User Profile";
       window.addEventListener("scroll", handleScroll);
       getUserPosts();
     });
@@ -128,8 +127,6 @@ export default {
       }
     };
 
-    
-
     const moveBack = () => {
       emit("listen-move-back");
     };
@@ -140,6 +137,16 @@ export default {
       moveBack,
       componentName,
     };
+  },
+  components: {
+    OnlyText,
+    OneImage,
+    TwoImages,
+    ThreeImages,
+    FourImages,
+    PostExtras,
+    UserProfile,
+    BackNavigation,
   },
 };
 </script>

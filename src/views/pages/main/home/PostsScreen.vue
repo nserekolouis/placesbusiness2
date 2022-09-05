@@ -144,7 +144,7 @@ export default {
           if (newPosts.length > 0) {
             show.value = false;
             if (id.value == 0) {
-              newPosts.push(...posts.value);
+              //newPosts.push(...posts.value);
               posts.value = newPosts;
             } else {
               posts.value.push(...newPosts);
