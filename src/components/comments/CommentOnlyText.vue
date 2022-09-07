@@ -29,11 +29,11 @@
 </template>
 <script>
 import ReactionComponent from "@/components/comments/CommentReaction.vue";
-import PostUserInfo from "@/components/PostUserInfo.vue";
-import PostText from "@/components/PostText.vue";
-import PostProfilePicture from "@/components/PostProfilePicture.vue";
+import PostUserInfo from "@/components/posts/PostUserInfo.vue";
+import PostText from "@/components/posts/PostText.vue";
+import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
-import PostExtras from "@/components/PostExtras.vue";
+import PostExtras from "@/components/posts/PostExtras.vue";
 import { ref } from "vue";
 
 export default {

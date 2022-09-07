@@ -48,7 +48,7 @@ library.add(faEllipsis)
 import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
-import PostsPage from "@/views/pages/main/home/PostsPage.vue"
+
 
 const app = createApp(App)
 
@@ -56,7 +56,7 @@ app.use(BootstrapVue3)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 
-app.component('PostsPage', PostsPage)
+
 
 app.provide('vapidKey', 'BGn2nGKMiDpzUK2pqdsaikMyw4Hn5c7zVQlGcKPCe8qrlrNtT4hTxWoTgF0urVNa3yj5913JA17plEMABE7sBHs')
 

@@ -1,34 +1,32 @@
 <script>
-import HomeScreen from "@/views/pages/main/home/PostsScreen.vue";
 import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue";
-import UserProfileAndPostsScreen from "@/views/pages/main/userprofile/UserPostsPage.vue";
-import NotificationsScreen from "@/views/pages/main/notifications/NotificationSection.vue";
+import PostsPage from "@/views/pages/main/home/PostsPage.vue"
+import UserPostsPage from "@/views/pages/main/userprofile/UserPostsPage.vue";
+import NotificationSection from "@/views/pages/main/notifications/NotificationSection.vue";
 
-import AboutPlacesScreen from "@/views/pages/main/aboutplaces/AboutSection.vue";
-import AccountsScreen from "@/views/pages/main/accounts/AccountsSection.vue";
-import EditProfileScreen from "@/views/pages/main/editprofile/EditProfileSection.vue";
+import AboutSection from "@/views/pages/main/aboutplaces/AboutSection.vue";
+import AccountsSection from "@/views/pages/main/accounts/AccountsSection.vue";
+import EditProfileSection from "@/views/pages/main/editprofile/EditProfileSection.vue";
 import PrivacyAndSafety from "@/views/pages/main/privacyandsafety/PrivacyAndSafetySection.vue";
-import LoadMoreUserPosts from "@/views/pages/main/userprofile/UserPostsPage.vue";
-import SidebarCoreui from "@/components/SideBar.vue";
+import SideBar from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
 export default {
   components: {
-    HomeScreen,
-    UserProfileAndPostsScreen,
-    AboutPlacesScreen,
-    AccountsScreen,
+    UserPostsPage,
+    AboutSection,
+    AccountsSection,
     CommentsPage,
-    NotificationsScreen,
-    EditProfileScreen,
+    NotificationSection,
+    EditProfileSection,
     PrivacyAndSafety,
-    SidebarCoreui,
+    SideBar,
     SearchUsers,
-    LoadMoreUserPosts,
+    PostsPage
   },
   data() {
     return {
-      current: "HomeScreen",
+      current: "PostsPage",
       id: "",
       user_id: "",
       from_component: [],
@@ -50,12 +48,12 @@ export default {
     },
     goToNotifications() {
       this.new_notifications = !this.new_notifications;
-      this.current = "NotificationsScreen";
+      this.current = "NotificationSection";
       this.from_component = [];
       this.from_component.push(this.current);
     },
     goToHome() {
-      this.current = "HomeScreen";
+      this.current = "PostsPage";
       this.from_component = [];
       this.from_component.push(this.current);
       console.log("switch screen home");
@@ -68,20 +66,20 @@ export default {
     },
     goToProfile() {
       console.log("Go to profile");
-      this.current = "EditProfileScreen";
+      this.current = "EditProfileSection";
     },
     goToAccounts() {
-      this.current = "AccountsScreen";
+      this.current = "AccountsSection";
     },
     goToPrivacyAndSafety() {
       this.current = "PrivacyAndSafety";
     },
     goToAboutPlaces() {
-      this.current = "AboutPlacesScreen";
+      this.current = "AboutSection";
     },
     goToUserProfile(post) {
       this.from_component.push(this.current);
-      this.current = "LoadMoreUserPosts";
+      this.current = "UserPostsPage";
       this.user_id = post.user_id;
     },
     goToPostDetails(post_id) {
@@ -101,7 +99,7 @@ export default {
     },
     searchUserProfile(user_id) {
       this.from_component.push(this.current);
-      this.current = "LoadMoreUserPosts";
+      this.current = "UserPostsPage";
       this.user_id = user_id;
     },
   },
@@ -143,9 +141,6 @@ export default {
           @listen-move-back="moveBack"
         ></component>
       </KeepAlive>
-      <!-- <keep-alive include="PostsPage">
-      <router-view></router-view>
-      </keep-alive> -->
     </div>
     <div class="col-md-3 border-left">
       <button
