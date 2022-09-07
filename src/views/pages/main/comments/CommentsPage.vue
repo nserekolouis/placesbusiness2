@@ -1,6 +1,6 @@
 <template>
   <back-navigation :info="componentName" @listen-move-back="moveBack" />
-  <div class="" ref="scrollComponent">
+  <div class="" ref="scrollComponent" style="margin-top:10px">
     <ul class="list-group">
       <li class="list-group-item">
         <four-images v-if="post.image_four != null" :post="post" />
@@ -93,12 +93,21 @@ export default {
       console.log("LMPAC ON");
       document.title = "Places | Comments";
       window.addEventListener("scroll", handleScroll);
+      window.addEventListener(
+        "backbutton",
+        function (e) {
+          e.preventDefault()
+          console.log("BACK BUTTON PRESSED");
+        },
+        false
+      );
       getPost();
     });
 
     onUnmounted(() => {
       console.log("LMPAC OFF");
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("backbutton", moveBack());
     });
 
     //methods

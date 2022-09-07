@@ -14,6 +14,10 @@ import PrivacyAndSafetyScreen from '@/views/pages/main/privacyandsafety/PrivacyA
 import AboutPlacesScreen from '@/views/pages/main/aboutplaces/AboutPlacesScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
 
+import PostsPage from "@/views/pages/main/home/PostsPage.vue"
+
+import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue"
+
 
 const routes = [
   {
@@ -38,6 +42,25 @@ const routes = [
     path: '/home',
     name: "SwitchScreen",
     component: SwitchScreen,
+    // children:[{
+    //   path: '',
+    //   name: 'Post',
+    //   component: PostComponent,
+      children:[
+        {
+          path: '',
+          name: 'PostsPage',
+          component: PostsPage
+        },
+        {
+          path: '/home/posts/comments/:id',
+          name: 'CommentsPage',
+          component: CommentsPage,
+          props: true
+        }
+      ]
+    // }
+    // ]
   },
   {
     path: '/commentsScreen/:id',

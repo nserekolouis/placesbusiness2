@@ -21,6 +21,8 @@
 </template>
 <script>
 import axios from "axios";
+//import router from "@/router";
+
 export default {
   name: "ReactionComponent",
   props: {
@@ -53,6 +55,7 @@ export default {
     commentClicked() {
       console.log("comment clicked", this.post);
       this.$emit("listen-comment", this.post);
+      //router.push({ name: "CommentsPage", params: {id: this.post.post_id}});
     },
     likeClicked() {
       console.log("like clicked");

@@ -1,6 +1,6 @@
 <template>
-  <div class="backNav">
-    <font-awesome-icon icon="fa-solid fa-long-arrow-left" @click="moveBack" />
+  <div class="backNav" @click="moveBack">
+    <font-awesome-icon icon="fa-solid fa-long-arrow-left"/>
     <h6>{{ info }}</h6>
   </div>
 </template>
@@ -32,6 +32,10 @@ h6 {
     background-color: white;
     position: absolute;
     top: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    width: auto;
   }
 }
 </style>

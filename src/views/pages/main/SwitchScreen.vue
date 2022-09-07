@@ -1,6 +1,6 @@
 <script>
 import HomeScreen from "@/views/pages/main/home/PostsScreen.vue";
-import CommentsScreen from "@/views/pages/main/comments/LoadMorePostsAndComments.vue";
+import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue";
 import UserProfileAndPostsScreen from "@/views/pages/main/userprofile/LoadMoreUserPosts.vue";
 import NotificationsScreen from "@/views/pages/main/notifications/NotificationSection.vue";
 
@@ -18,7 +18,7 @@ export default {
     UserProfileAndPostsScreen,
     AboutPlacesScreen,
     AccountsScreen,
-    CommentsScreen,
+    CommentsPage,
     NotificationsScreen,
     EditProfileScreen,
     PrivacyAndSafety,
@@ -46,7 +46,7 @@ export default {
       }
       this.new_comments = !this.new_comments;
       this.from_component.push(this.current);
-      this.current = "CommentsScreen";
+      this.current = "CommentsPage";
     },
     goToNotifications() {
       this.new_notifications = !this.new_notifications;
@@ -111,29 +111,6 @@ export default {
 <template>
   <div class="row main">
     <div class="col-md-3">
-      <!-- <button
-        class="btn d-md-none"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasResponsive"
-        aria-controls="offcanvasResponsive"
-      >
-        <font-awesome-icon icon="fa-solid fa-bars" />
-      </button> -->
-      <!-- <div
-        class="offcanvas-md offcanvas-start"
-        tabindex="-1"
-        id="offcanvasResponsive"
-        aria-labelledby="offcanvasResponsiveLabel"
-      >
-        <div class="offcanvas-body">
-          <button
-            type="button"
-            class="btn-close btn-close-left"
-            data-bs-dismiss="offcanvas"
-            data-bs-target="#offcanvasResponsive"
-            aria-label="Close"
-          ></button> -->
       <sidebar-coreui
         :indicatorbg="bgColor"
         @listen-notifications="goToNotifications"
@@ -143,8 +120,6 @@ export default {
         @listen-privacy-safety="goToPrivacyAndSafety"
         @listen-about-places="goToAboutPlaces"
       />
-      <!-- </div> -->
-      <!-- </div> -->
     </div>
     <div class="col-md-6 border-left">
       <KeepAlive>
@@ -168,6 +143,9 @@ export default {
           @listen-move-back="moveBack"
         ></component>
       </KeepAlive>
+      <!-- <keep-alive include="PostsPage">
+      <router-view></router-view>
+      </keep-alive> -->
     </div>
     <div class="col-md-3 border-left">
       <button
