@@ -33,7 +33,7 @@
 import axios from "axios";
 import Auth from "@/Auth.js";
 import router from "@/router";
-import AppHeader from "@/components/AppHeader2.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 export default {
   name: "UserHandle",

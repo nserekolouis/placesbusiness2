@@ -18,7 +18,7 @@
 
 <script>
 import EditProfileSection from "@/views/pages/main/editprofile/EditProfileSection.vue";
-import SidebarCoreui from "@/components/SideBar2.vue";
+import SidebarCoreui from "@/components/SideBar.vue";
 
 export default {
   name: "HomeScreen",

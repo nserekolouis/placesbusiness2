@@ -66,7 +66,7 @@
 import { ref } from "vue";
 import Auth from "@/Auth.js";
 import axios from "axios";
-import Modal from "@/components/CommentModal.vue";
+import Modal from "@/components/comments/CommentModal.vue";
 
 export default {
   name: "CommentPlaceName",

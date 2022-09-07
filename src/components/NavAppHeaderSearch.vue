@@ -31,7 +31,7 @@
 </template>
 <script>
 import axios from "axios";
-import MakePostComponent from "@/components/MakePost.vue";
+import MakePostComponent from "@/components/posts/MakePost.vue";
 export default {
   name: "NavAppHeaderSearch",
   props: {

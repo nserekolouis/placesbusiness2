@@ -1,186 +1,339 @@
 <template>
-    <!-- <nav-app-header/> -->
-    <!-- <AppHeaderDropdownAccnt /> -->
-    <div class="sidenavbar">
-      <div class="brand">
-         <img :src="places_logo" 
-          width="50" 
-          height="50" 
-          class="d-inline-block align-center" alt="Logo">
-         <p class="p-logo">Places</p>
-      </div>
-      <hr>
-      <div class="sidebar-places">
-        <p class="p-sidebar-places-label">Recent Places</p>
-        <ul class="list-group">
-          <!-- <li class="li-sidebar"> -->
-          <!-- <div>
-            <CIcon icon="cilHome" size="lg" />
-             Home
-          </div> -->
-          <!-- </li> -->
-        <!-- <li class="li-sidebar">
-          Selected Place
-        </li> -->
-        <li v-for="place in places" :key="place.sub_id"
-        class="list-group-item list-group-item-action"
-        @click="selectPlace(place)"
+  <button
+    class="btn d-md-none humberger"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasResponsive"
+    aria-controls="offcanvasResponsive"
+  >
+    <font-awesome-icon icon="fa-solid fa-bars" />
+  </button>
+  <div
+    class="offcanvas-md offcanvas-start"
+    tabindex="-1"
+    id="offcanvasResponsive"
+    aria-labelledby="offcanvasResponsiveLabel"
+  >
+    <div class="offcanvas-body">
+      <button
+        type="button"
+        class="btn-close btn-close-left"
+        data-bs-dismiss="offcanvas"
+        data-bs-target="#offcanvasResponsive"
+        aria-label="Close"
+      ></button>
+      <div class="d-flex flex-column flex-shrink-0 p-3 bg-white sb">
+        <a
+          href="/"
+          class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
         >
-        <div class="container">
-           <div class="row">
-          <!-- <div class="col-md-2 place-icon-center">
-              <CIcon icon="cilLocationPin" size="lg" />
-          </div> -->
-          <div class="col-md-10">
-            <p class="p-li-bar-place">{{ place.main_text }}</p>
-            <p class="p-li-bar-place">{{ place.secondary_text }}</p>
-          </div>
+          <img :src="placesLogo" class="places-logo" />
+        </a>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToHome"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <font-awesome-icon icon="fa-solid fa-house" />
+                <span
+                  class="position-absolute top-0 start-1 translate-middle p-1 bg-places border border-light rounded-circle"
+                  :style="{ backgroundColor: indicator }"
+                >
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+                <p>Home</p>
+              </div>
+            </a>
+          </li>
+          <li
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToNotifications"
+          >
+            <a href="#" class="nav-link link-dark">
+              <font-awesome-icon icon="fa-solid fa-bell" />
+              <p>Notifications</p>
+              <span class="badge bg-places" style="margin-left: 10px">{{
+                noteCount
+              }}</span>
+            </a>
+          </li>
+        </ul>
+        <hr />
+        <div class="dropdown">
+          <a
+            href="#"
+            class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+            id="dropdownUser2"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              :src="profile_picture"
+              alt=""
+              width="32"
+              height="32"
+              class="rounded-circle me-2"
+            />
+            <strong>{{ username }}</strong>
+          </a>
+          <ul
+            class="dropdown-menu text-small shadow"
+            aria-labelledby="dropdownUser2"
+          >
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToProfile"
+            >
+              <a class="dropdown-item" href="#">Profile</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToAccounts"
+            >
+              <a class="dropdown-item" href="#">Accounts</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToPrivacyAndSafety"
+            >
+              <a class="dropdown-item" href="#">Privacy and Safety</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              @click="goToAboutPlaces"
+            >
+              <a class="dropdown-item" href="#">About Places</a>
+            </li>
+            <li
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+            >
+              <a class="dropdown-item" href="#" @click="logout">Sign out</a>
+            </li>
+          </ul>
         </div>
-        </div>
-       </li>
-       <!-- <li class="li-sidebar">
-         Profile
-       </li>
-       <li class="li-sidebar">
-         Settings
-       </li>
-       <li class="li-sidebar">
-         Logout
-       </li> -->
-      </ul>
-      </div>
-      
-      <!-- <div class="profile-background">
-       <CAvatar :src="avatar" size="lg" />
-       <p class="h6 p-h6">Nsereko Louis</p>
-      </div> -->
-    </div>
-    <!-- <div class="sidebar sidebar-show">
-    <ul class="sidebar-nav">
-    <li class="nav-title">Recent Places </li>
-    <li class="nav-item li-sidebar card"
-    @click="selectAllPosts()"
-    >
-    <div class="row">
-      <div class="col-md-2 place-icon-center">
-          <CIcon icon="cilLocationPin" size="lg" />
-      </div>
-      <div class="col-md-10">
-        <p class="p-li-bar-place">All</p>
-        <p class="p-li-bar-place">Places</p>
       </div>
     </div>
-    </li>
-    <li class="nav-item li-sidebar card selected-li-sidebar">
-    <div class="row" v-show="initPlace.main_text != null">
-      <div class="col-md-2 place-icon-center">
-          <CIcon icon="cilLocationPin" size="lg" />
-      </div>
-      <div class="col-md-10">
-        <p class="p-li-bar-place">{{ initPlace.main_text }}</p>
-        <p class="p-li-bar-place">{{ initPlace.secondary_text }}</p>
-      </div>
-    </div>
-    </li>
-    <li v-for="place in places" :key="place.sub_id"
-    class="nav-item li-sidebar card"
-    @click="selectPlace(place)"
-    >
-    <div class="row">
-      <div class="col-md-2 place-icon-center">
-          <CIcon icon="cilLocationPin" size="lg" />
-      </div>
-      <div class="col-md-10">
-        <p class="p-li-bar-place">{{ place.main_text }}</p>
-        <p class="p-li-bar-place">{{ place.secondary_text }}</p>
-      </div>
-    </div>
-    </li>
-    </ul>
-</div> -->
+  </div>
 </template>
 <script>
 import axios from "axios";
-import logo from '@/assets/images/avatars/places_logo.png';
-//import NavAppHeader from '@/components/NavAppHeader.vue'
-//import AppHeaderDropdownAccnt from '@/components/AppHeaderDropdownAccnt.vue'
-import avatar from '@/assets/images/avatars/8.jpg'
+import placesLogo from "@/assets/images/placeslogo.png";
+import Auth from "@/Auth.js";
+import router from "@/router";
+import { inject, ref, watch } from "vue";
+import { getToken, onMessage } from "firebase/messaging";
+
 export default {
-  name: 'SideBar',
-  components:{
-    //NavAppHeader,
-    //AppHeaderDropdownAccnt
-  },
-  setup() {
-    return{
-      avatar: avatar,
-      places_logo: logo,
-    }
-  },
+  name: "SideBar2",
   props: {
-    initPlace: {}
+    indicatorbg: String,
   },
-  data(){
-    return {
-      places: []
-    }
-  },
-  watch: {
-    initPlace: {
-    // the callback will be called immediately after the start of the observation
-    immediate: true, 
-    handler (val, oldVal) {
-      console.log("New Value",val);
-      console.log("Old Value",oldVal);
-      // do your stuff
-      if(Object.keys(val).length != 0){
-        //this.addPlaceSubscription(val)
+  setup(props, { emit }) {
+    const messaging = inject("messaging");
+    const vapidKey = inject("vapidKey");
+    const url = inject("url");
+    const noteCount = ref(0);
+    const indicator = ref("#fff");
+
+    watch(
+      () => props.indicatorbg,
+      (newVal, oldVal) => {
+        console.log("indicator", newVal);
+        console.log("indicator", oldVal);
+        indicator.value = newVal;
       }
-    }
-  }
+    );
+
+    const requestPermission = () => {
+      console.log("Requesting permission...");
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("Notification permision granted");
+          getToken(messaging, { vapidKey: vapidKey })
+            .then((currentToken) => {
+              if (currentToken) {
+                console.log("Token", currentToken);
+                webOnline(currentToken);
+              } else {
+                console.log("Token not available");
+              }
+            })
+            .catch((err) => {
+              console.log(
+                "Token An error occurred while retrieving token. ",
+                err
+              );
+            });
+        } else {
+          console.log("Notification permision not granted");
+        }
+      });
+    };
+    requestPermission();
+
+    onMessage(messaging, (payload) => {
+      console.log("Message received. ", payload);
+      if (payload.data.payload === "9") {
+        indicator.value = "#288c7f";
+      } else {
+        noteCount.value++;
+      }
+    });
+
+    const webOnline = (currentToken) => {
+      let page_url = url + "api/v2/web_online";
+      let data = new FormData();
+      data.append("token", currentToken);
+      axios
+        .post(page_url, data)
+        .then((response) => {
+          console.log("RESPONSE WEB ONLINE", response);
+          if (response.data.success) {
+            noteCount.value = response.data.count;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const goToNotifications = () => {
+      noteCount.value = 0;
+      emit("listen-notifications");
+    };
+
+    return {
+      noteCount,
+      placesLogo,
+      indicator,
+      goToNotifications,
+    };
   },
-  created(){
-    this.getPlaceSubscriptions();
+  data() {
+    return {
+      places: [],
+      profile_picture: this.url + Auth.user.user_photo,
+      username: Auth.user.username,
+    };
   },
   methods: {
-    getPlaceSubscriptions: function(){
-      console.log("InitPlace:",this.initPlace.places_id);
-      let page_url = this.url+'api/v2/get_place_subs';
-      const data = { 
-        userplacesub_id: "0"
-      };
-      axios.post(page_url,data)
-          .then(response =>{
-            console.log("Response Places: ",response);
-            //this.places = (response.data.place_subs).reverse();
-            this.places = (response.data.place_subs).filter(place => 
-            { return place.places_id != this.initPlace.places_id });
-          }).catch(error => {
-            console.log(error);
-          });
+    logout() {
+      Auth.logout;
+      router.push({ name: "LoginScreen" });
     },
-    addPlaceSubscription(val){
-      console.log("place id",val.places_id);
-      let page_url = this.url+'api/v2/add_user_place_subscription';
-      const data = { 
-        place_id: ""+val.places_id
-      };
-      axios.post(page_url,data)
-          .then(response =>{
-            console.log("Response ADD SUB: ",response);
-            //this.places = response.data.place_subs;
-            this.getPlaceSubscriptions();
-          }).catch(error => {
-            console.log(error);
-          });
+    goToHome() {
+      this.$emit("listen-home");
     },
-    selectPlace(place){
-      console.log(place);
-      this.$emit('listen-place',place);
+    goToProfile() {
+      console.log("Go to profile 3");
+      this.$emit("listen-profile");
     },
-    selectAllPosts(){
-     this.$emit('listen-place',{});
-    }
+    goToAccounts() {
+      this.$emit("listen-accounts");
+    },
+    goToPrivacyAndSafety() {
+      this.$emit("listen-privacy-safety");
+    },
+    goToAboutPlaces() {
+      this.$emit("listen-about-places");
+    },
   },
-}
+};
 </script>
+<style scoped>
+p {
+  display: inline;
+  margin-left: 10px;
+  margin-bottom: 0px;
+  font-size: 15px;
+}
+
+.bg-places {
+  background-color: #288c7f;
+}
+
+.sb {
+  width: 280px;
+  height: 90vh;
+  border: 0px;
+}
+html:not([dir="rtl"]) .offcanvas.offcanvas-start {
+  transform: translateX(0%);
+}
+
+.btn-close {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+  .btn-close {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  html:not([dir="rtl"]) .offcanvas-sm.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: none;
+  }
+
+  .btn {
+    border: 0px solid black;
+  }
+
+  .btn-menu-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+
+  .offcanvas-md.offcanvas-start {
+    width: 330px;
+  }
+
+  .btn-close-right {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+  }
+
+  .btn-close-left {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+  }
+
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  html:not([dir="rtl"]) .offcanvas-md.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: block;
+  }
+
+  .offcanvas-sm.offcanvas-start {
+    width: 330px;
+  }
+}
+</style>

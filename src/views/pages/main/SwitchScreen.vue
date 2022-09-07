@@ -1,15 +1,15 @@
 <script>
 import HomeScreen from "@/views/pages/main/home/PostsScreen.vue";
 import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue";
-import UserProfileAndPostsScreen from "@/views/pages/main/userprofile/LoadMoreUserPosts.vue";
+import UserProfileAndPostsScreen from "@/views/pages/main/userprofile/UserPostsPage.vue";
 import NotificationsScreen from "@/views/pages/main/notifications/NotificationSection.vue";
 
 import AboutPlacesScreen from "@/views/pages/main/aboutplaces/AboutSection.vue";
 import AccountsScreen from "@/views/pages/main/accounts/AccountsSection.vue";
 import EditProfileScreen from "@/views/pages/main/editprofile/EditProfileSection.vue";
 import PrivacyAndSafety from "@/views/pages/main/privacyandsafety/PrivacyAndSafetySection.vue";
-import LoadMoreUserPosts from "@/views/pages/main/userprofile/LoadMoreUserPosts.vue";
-import SidebarCoreui from "@/components/SideBar2.vue";
+import LoadMoreUserPosts from "@/views/pages/main/userprofile/UserPostsPage.vue";
+import SidebarCoreui from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
 export default {

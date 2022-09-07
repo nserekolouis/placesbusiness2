@@ -1,21 +1,12 @@
 import { createWebHistory, createRouter } from "vue-router"
+import Auth from '@/Auth.js'
 import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
 import PageNotFound from '@/views/pages/main/PageNotFound.vue'
+import UploadProfile from '@/views/pages/signup/ProfileScreen.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
-import ProfileScreen from '@/views/pages/signup/ProfileScreen.vue'
 import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
-import CommentScreen from '@/views/pages/main/comments/CommentScreen.vue'
-import UserProfileAndPosts from '@/views/pages/main/userprofile/UserProfileAndPostsScreen.vue'
-import Auth from '@/Auth.js';
-import EditProfileScreen from "@/views/pages/main/editprofile/EditProfileScreen.vue"
-import NotificationsScreen from "@/views/pages/main/notifications/NotificationsScreen.vue"
-import AccountsScreen from '@/views/pages/main/accounts/AccountsScreen.vue'
-import PrivacyAndSafetyScreen from '@/views/pages/main/privacyandsafety/PrivacyAndSafefty.vue'
-import AboutPlacesScreen from '@/views/pages/main/aboutplaces/AboutPlacesScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
-
 import PostsPage from "@/views/pages/main/home/PostsPage.vue"
-
 import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue"
 
 
@@ -34,18 +25,14 @@ const routes = [
     component: UserhandleScreen,
   },
   {
-    path: '/profilescreen',
-    name: "ProfileScreen",
-    component: ProfileScreen,
+    path: '/uploadProfile',
+    name: "UploadProfile",
+    component: UploadProfile,
   },
   {
     path: '/home',
     name: "SwitchScreen",
     component: SwitchScreen,
-    // children:[{
-    //   path: '',
-    //   name: 'Post',
-    //   component: PostComponent,
       children:[
         {
           path: '',
@@ -59,45 +46,6 @@ const routes = [
           props: true
         }
       ]
-    // }
-    // ]
-  },
-  {
-    path: '/commentsScreen/:id',
-    name: "CommentScreen",
-    component: CommentScreen,
-    props: true
-  },
-  {
-    path: '/userprofileandposts/:user_id',
-    name: "UserProfileAndPosts",
-    component: UserProfileAndPosts,
-    props: true
-  },
-  {
-    path: '/editprofilescreen',
-    name: "EditProfileScreen",
-    component: EditProfileScreen
-  },
-  {
-    path: '/notificationsscreen',
-    name: 'NotificationsScreen',
-    component: NotificationsScreen,
-  },
-  {
-    path: '/accounts',
-    name: 'Accounts',
-    component: AccountsScreen,
-  },
-  {
-    path: '/privacyandsafety',
-    name: 'PrivacyAndSafety',
-    component: PrivacyAndSafetyScreen,
-  },
-  {
-    path: '/aboutplaces',
-    name: 'AboutPlacesScreen',
-    component: AboutPlacesScreen,
   },
   {
     path: '/:catchAll(.*)*',

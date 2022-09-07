@@ -18,7 +18,7 @@
 
 <script>
 import PrivacyAndSafetySection from "@/views/pages/main/privacyandsafety/PrivacyAndSafetySection.vue";
-import SidebarCoreui from "@/components/SideBar2.vue";
+import SidebarCoreui from "@/components/SideBar.vue";
 
 export default {
   name: "HomeScreen",

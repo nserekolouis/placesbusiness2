@@ -77,13 +77,13 @@ import TwoImages from '@/components/PostImagesTwo.vue'
 import ThreeImages from '@/components/PostImagesThree.vue'
 import FourImages from '@/components/PostImagesFour.vue'
 
-import COnlyText from '@/components/CommentOnlyText.vue' 
-import COneImage from '@/components/CommentOneImage.vue' 
-import CTwoImages from '@/components/CommentTwoImages.vue'
-import CThreeImages from '@/components/CommentThreeImages.vue'
-import CFourImages from '@/components/CommentFourImages.vue'
+import COnlyText from '@/components/comments/CommentOnlyText.vue' 
+import COneImage from '@/components/comments/CommentOneImage.vue' 
+import CTwoImages from '@/components/comments/CommentTwoImages.vue'
+import CThreeImages from '@/components/comments/CommentThreeImages.vue'
+import CFourImages from '@/components/comments/CommentFourImages.vue'
 
-import MakeComment from '@/components/MakeComment.vue'
+import MakeComment from '@/components/comments/MakeComment.vue'
 
 import PostExtras from '@/components/PostExtras.vue'
 

@@ -20,10 +20,7 @@
         <post-user-info :post="post" />
         <post-text :post="post" />
         <images-two :image_one="post.image_one" :image_two="post.image_two" />
-        <images-two
-          :image_one="post.image_three"
-          :image_two="post.image_four"
-        />
+        <image-one :image_one="post.image_three" />
         <reaction-component :post="post" />
       </div>
     </div>
@@ -33,13 +30,15 @@
   </div>
 </template>
 <script>
-import ReactionComponent from "@/components/CommentReaction.vue";
+import ReactionComponent from "@/components/comments/CommentReaction.vue";
 import ImagesTwo from "@/components/ImagesTwo.vue";
+import ImageOne from "@/components/ImageOne.vue";
 import PostUserInfo from "@/components/PostUserInfo.vue";
 import PostText from "@/components/PostText.vue";
 import PostProfilePicture from "@/components/PostProfilePicture.vue";
-import PostPlaceName from "@/components/CommentPlaceName.vue";
+import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
 import PostExtras from "@/components/PostExtras.vue";
+
 import { ref } from "vue";
 
 export default {
@@ -47,7 +46,7 @@ export default {
   props: {
     post: {},
   },
-  setup() {
+  setup(props, { emit }) {
     const showExtras = ref(false);
     const info = ref(null);
 
@@ -66,6 +65,10 @@ export default {
       info.value = "Comment Reported";
     };
 
+    const goToUserProfile = (post) => {
+      emit("listen-user-profile", post);
+    };
+
     return {
       showExtras,
       info,
@@ -73,11 +76,13 @@ export default {
       blockUser,
       reportComment,
       PostExtras,
+      goToUserProfile,
     };
   },
   components: {
     ReactionComponent,
     ImagesTwo,
+    ImageOne,
     PostUserInfo,
     PostText,
     PostProfilePicture,

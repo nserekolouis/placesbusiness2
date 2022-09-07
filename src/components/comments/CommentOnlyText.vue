@@ -28,11 +28,11 @@
   </div>
 </template>
 <script>
-import ReactionComponent from "@/components/CommentReaction.vue";
+import ReactionComponent from "@/components/comments/CommentReaction.vue";
 import PostUserInfo from "@/components/PostUserInfo.vue";
 import PostText from "@/components/PostText.vue";
 import PostProfilePicture from "@/components/PostProfilePicture.vue";
-import PostPlaceName from "@/components/CommentPlaceName.vue";
+import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
 import PostExtras from "@/components/PostExtras.vue";
 import { ref } from "vue";
 

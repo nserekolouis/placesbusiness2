@@ -130,7 +130,7 @@ const callback = (response) => {
 import placesLogo from "@/assets/images/placeslogo.png";
 import logo from "@/assets/logo.png";
 import happyPeople1 from "@/assets/images/happypeople1.png";
-import AppHeader from "@/components/AppHeader2.vue";
+import AppHeader from "@/components/AppHeader.vue";
 
 import africanMale from "@/assets/images/login/african_male.jpeg";
 import church from "@/assets/images/login/church.jpg";
