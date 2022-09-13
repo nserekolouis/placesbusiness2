@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col-sm-12">
+  <!-- <div class="row"> -->
+    <!-- <div class="col-sm-12"> -->
       <div class="">
         <textarea
           class="form-control form-control-sm"
@@ -11,16 +11,16 @@
         ></textarea>
       </div>
       <div class="row">
-        <div v-if="image_one" class="col-sm-3">
+        <div v-if="image_one" class="col-3">
           <img :src="this.url + image_one" class="post-image" />
         </div>
-        <div v-if="image_two" class="col-sm-3">
+        <div v-if="image_two" class="col-3">
           <img :src="this.url + image_two" class="post-image" />
         </div>
-        <div v-if="image_three" class="col-sm-3">
+        <div v-if="image_three" class="col-3">
           <img :src="this.url + image_three" class="post-image" />
         </div>
-        <div v-if="image_four" class="col-sm-3">
+        <div v-if="image_four" class="col-3">
           <img :src="this.url + image_four" class="post-image" />
         </div>
       </div>
@@ -87,8 +87,8 @@
         </div>
         </div>
       </div>
-      </div>
-  </div>
+      <!-- </div> -->
+  <!-- </div> -->
 </template>
 <script>
 import axios from "axios";
