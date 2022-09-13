@@ -71,11 +71,11 @@ app.use(vue3GoogleLogin, {
   clientId: '114812492797-8blqglcqk8ph7ndl75u68ufcq40t6ip8.apps.googleusercontent.com'
 })
 
-app.config.globalProperties.url = 'http://192.168.43.79:8000/';
-app.provide('url', 'http://192.168.43.79:8000/');
+//app.config.globalProperties.url = 'http://192.168.43.79:8000/';
+//app.provide('url', 'http://192.168.43.79:8000/');
 
-//app.config.globalProperties.url = 'https://dev.thefavplaces.com/';
-//app.provide('url', 'https://dev.thefavplaces.com/');
+app.config.globalProperties.url = 'https://dev.thefavplaces.com/';
+app.provide('url', 'https://dev.thefavplaces.com/');
 
 app.use(router)
 app.use(CoreuiVue)
