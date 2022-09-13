@@ -48,7 +48,7 @@ export default {
     const showModal = ref(props.show);
     const url = inject("url");
     const reasons = ref([]);
-    const post_id = ref(props.post.id);
+    const post_id = ref(props.post.post_id);
 
     watch(
       () => props.show,

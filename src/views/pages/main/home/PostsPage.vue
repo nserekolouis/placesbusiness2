@@ -21,15 +21,15 @@
       @listen-place="searchedPlace"
     />
   </div>
-  <div ref="scrollComponent">
+  <div id="container" ref="scrollComponent">
     <center-infomation :info="alert" v-show="show" class="info-missing" />
-    <ul class="list-group">
+    <ul class="list-group" style="margin-top:10px;">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
-        <post-extras v-if="post.post_extras == 1" :info="info" />
         <four-images
-          v-else-if="post.image_four != null"
+          v-if="post.image_four != null"
           :post="post"
           :index="post.id"
+          :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
         />
@@ -37,6 +37,7 @@
           v-else-if="post.image_three != null"
           :post="post"
           :index="post.id"
+          :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
         />
@@ -44,6 +45,7 @@
           v-else-if="post.image_two != null"
           :post="post"
           :index="post.id"
+          :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
         />
@@ -51,6 +53,7 @@
           v-else-if="post.image_one != null"
           :post="post"
           :index="post.id"
+          :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
         />
@@ -59,6 +62,7 @@
           :post="post"
           :index="index"
           :places="places"
+          :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
         />
@@ -68,17 +72,27 @@
 </template>
 <script>
 import axios from "axios";
-import OnlyText from "@/components/PostOnlyText.vue";
-import OneImage from "@/components/PostImagesOne.vue";
-import TwoImages from "@/components/PostImagesTwo.vue";
-import ThreeImages from "@/components/PostImagesThree.vue";
-import FourImages from "@/components/PostImagesFour.vue";
+import OnlyText from "@/components/posts/PostOnlyText.vue";
+import OneImage from "@/components/posts/PostImagesOne.vue";
+import TwoImages from "@/components/posts/PostImagesTwo.vue";
+import ThreeImages from "@/components/posts/PostImagesThree.vue";
+import FourImages from "@/components/posts/PostImagesFour.vue";
 import NavAppHeaderSearch from "@/components/NavAppHeaderSearch.vue";
-import PostExtras from "@/components/PostExtras.vue";
+//import PostExtras from "@/components/posts/PostExtras.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
 
-import { inject, ref, onMounted, watch, onUnmounted, onActivated } from "vue";
+import {
+  inject,
+  ref,
+  onMounted,
+  watch,
+  onUnmounted,
+  onActivated,
+  onDeactivated,
+} from "vue";
+
+const TAG = "POSTS PAGE";
 
 export default {
   name: "PostsPage",
@@ -89,12 +103,13 @@ export default {
     ThreeImages,
     FourImages,
     NavAppHeaderSearch,
-    PostExtras,
+    //PostExtras,
     CenterInfomation,
     TitleComponent,
   },
   props: {
     new_posts: Boolean,
+    deleted_post_id: Number,
   },
   setup(props, { emit }) {
     const show = ref(true);
@@ -107,6 +122,10 @@ export default {
     const loadMore = ref(true);
     const count = ref(0);
     const total = ref(0);
+    const d_post_id = ref(props.deleted_post_id);
+    const scrollingPosition = ref(0);
+    const active = ref(true);
+    //const scrollLastPostion = ref(0);
 
     watch(
       () => props.new_posts,
@@ -118,8 +137,29 @@ export default {
       }
     );
 
+    watch(
+      () => props.deleted_post_id,
+      (newVal, oldVal) => {
+        console.log("New Value", newVal);
+        console.log("Old Value", oldVal);
+
+        console.log("DELETED POST ID 3", newVal);
+        d_post_id.value = newVal;
+      }
+    );
+
     onActivated(() => {
-      console.log("Activated");
+      console.log("Activated", scrollingPosition.value);
+      active.value = true;
+      window.scrollTo(0, scrollingPosition.value);
+    });
+
+    onDeactivated(() => {
+      active.value = false;
+      console.log("Deactivated", scrollingPosition.value);
+      //var container = this.el.querySelector("#container");
+      //container.scrollTop = container.scrollHeight;
+      //window.scrollTo(0, 500);
     });
 
     onMounted(() => {
@@ -257,6 +297,11 @@ export default {
 
     const handleScroll = () => {
       let element = scrollComponent.value;
+      if (active.value) {
+        scrollingPosition.value = window.scrollY;
+        console.log(TAG + " Scroll Position ", scrollingPosition.value);
+      }
+
       if (
         element.getBoundingClientRect().bottom < window.innerHeight &&
         loadMore.value &&
@@ -264,8 +309,9 @@ export default {
       ) {
         loadMore.value = false;
         id.value = posts.value[posts.value.length - 1].id;
-        console.log("POSTS ID", posts.value[posts.value.length - 1].id);
-        if (place.value == null) {
+        console.log("POSTS", id.value);
+        console.log("POSTS", place.value);
+        if (Object.keys(place.value).length === 0) {
           getPosts();
         } else {
           getPlacePosts();
@@ -295,6 +341,7 @@ export default {
       componentTitle,
       selectPlace,
       searchedPlace,
+      d_post_id,
     };
   },
   data() {

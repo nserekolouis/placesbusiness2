@@ -34,6 +34,10 @@
           Delete
         </button>
 
+        <button class="dropdown-item" type="button" @click="unFollowPlace">
+          Unfollow place
+        </button>
+
         <button
           class="dropdown-item"
           type="button"
@@ -56,11 +60,7 @@
   </div>
 
   <Teleport to="body">
-    <modal 
-    :show="show"
-    :post="post"
-    @listen-report-post="reportPost"
-    >
+    <modal :show="show" :post="post" @listen-report-post="reportPost">
       <template #header>
         <h6>Reasons</h6>
       </template>
@@ -70,8 +70,9 @@
 <script>
 import Auth from "@/Auth.js";
 import axios from "axios";
-import Modal from "@/components/ModalComponent.vue";
+import Modal from "@/components/posts/PostModal.vue";
 import { ref } from "vue";
+import Constants from "@/constants/index.js"
 
 export default {
   name: "PostPlaceName",
@@ -144,7 +145,7 @@ export default {
       console.log("DELETE POST");
       let page_url = this.url + "api/v2/delete_post";
       const data = {
-        post_id: "" + this.post.id,
+        post_id: "" + this.post.post_id,
       };
       axios
         .post(page_url, data)
@@ -159,7 +160,6 @@ export default {
         });
     },
     followAction() {
-      console.log("POSTPLACENAME FOLLOW");
       let page_url = this.url + "api/user_follow";
       const data = {
         followed_id: "" + this.post.user_id,
@@ -178,16 +178,27 @@ export default {
           console.log(error);
         });
     },
+    unFollowPlace() {
+      let page_url = this.url + "api/v2/remove_user_place_subscription";
+      const data = {
+        place_id: "" + this.post.place_id,
+      };
+      axios
+        .post(page_url, data)
+        .then((response) => {
+          console.log("REMOVE PLACE SUB", response);
+          if(response.data.status_code == 1){
+            alert(Constants.REMOVE_PLACE+""+this.post.main_text)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
 <style scoped>
-.div-main {
-}
-
-.div-left {
-}
-
 .div-right {
   text-align: right;
 }
@@ -213,5 +224,8 @@ export default {
   margin-bottom: 0px;
   padding-top: 5px;
   font-size: 0.875rem;
+  font-weight: bold;
+  color: #288c7f;
+  text-decoration: none;
 }
 </style>

@@ -6,10 +6,11 @@
         <form @submit.prevent="uploadProfile">
           <div
             style="
-             max-width: 380px;
-             margin-left: auto;
-             margin-right: auto;
-             min-width: 280px;"
+              max-width: 380px;
+              margin-left: auto;
+              margin-right: auto;
+              min-width: 280px;
+            "
           >
             <div class="form-item">
               <div class="avatar-upload">
@@ -80,9 +81,7 @@
               </ul>
             </div>
             <div class="form-item">
-              <button 
-              type="submit" 
-              class="btn btn-primary btn-userhandle">
+              <button type="submit" class="btn btn-primary btn-next">
                 Next
               </button>
             </div>
@@ -98,6 +97,7 @@ import axios from "axios";
 import Auth from "@/Auth.js";
 import router from "@/router";
 import AppHeader from "@/components/AppHeader.vue";
+import Constants from "@/constants/index";
 
 export default {
   name: "UserHandle",
@@ -123,19 +123,25 @@ export default {
   },
   methods: {
     uploadProfilePicture(event) {
-      let page_url = this.url + "api/upload_profile_picture";
-      let data = new FormData();
-      data.append("image_one", event.target.files[0]);
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("profile_picture", response);
-          this.profile_picture = this.url + response.data.user_photo;
-          this.picture = response.data.user_photo;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      if (event.target.files[0]) {
+        if (event.target.files[0].size > 5242880) {
+          alert(Constants.IMAGE_PROFILE);
+        } else {
+          let page_url = this.url + "api/upload_profile_picture";
+          let data = new FormData();
+          data.append("image_one", event.target.files[0]);
+          axios
+            .post(page_url, data)
+            .then((response) => {
+              console.log("profile_picture", response);
+              this.profile_picture = this.url + response.data.user_photo;
+              this.picture = response.data.user_photo;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      }
     },
     searchCountries() {
       let page_url = this.url + "api/search_countries";
@@ -164,15 +170,14 @@ export default {
       data.append("username", this.username);
       data.append("userbio", this.userbio);
       data.append("country_id", this.country_id);
-
       let page_url = this.url + "api/web_upload_profile";
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("Response: " + response.data.status_code);
+          console.log("Response:",response);
           if (response.data.status_code) {
             Auth.updateUser(response.data.user);
-            router.push({ name: "HomeScreen" });
+            router.push({ name: "SwitchScreen" });
           }
         })
         .catch((err) => {
@@ -296,5 +301,17 @@ label {
   margin-left: auto;
   display: block;
   margin-top: 10px;
+}
+
+.profilescreen {
+  margin-top: 50px;
+}
+
+.btn-next {
+  margin-left: auto;
+  display: block;
+  font-weight: bold;
+  height: 35px;
+  font-size: 15px;
 }
 </style>

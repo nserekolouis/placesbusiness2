@@ -26,13 +26,13 @@
   </div>
 </template>
 <script>
-import OnlyText from "@/components/PostOnlyText.vue";
-import OneImage from "@/components/PostImagesOne.vue";
-import TwoImages from "@/components/PostImagesTwo.vue";
-import ThreeImages from "@/components/PostImagesThree.vue";
-import FourImages from "@/components/PostImagesFour.vue";
+import OnlyText from "@/components/posts/PostOnlyText.vue";
+import OneImage from "@/components/posts/PostImagesOne.vue";
+import TwoImages from "@/components/posts/PostImagesTwo.vue";
+import ThreeImages from "@/components/posts/PostImagesThree.vue";
+import FourImages from "@/components/posts/PostImagesFour.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
-import PostExtras from "@/components/PostExtras.vue";
+import PostExtras from "@/components/posts/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 
 import { ref, onMounted, onUnmounted, watch } from "vue";

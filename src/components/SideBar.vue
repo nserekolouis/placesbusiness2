@@ -130,7 +130,6 @@
 import axios from "axios";
 import placesLogo from "@/assets/images/placeslogo.png";
 import Auth from "@/Auth.js";
-import router from "@/router";
 import { inject, ref, watch } from "vue";
 import { getToken, onMessage } from "firebase/messaging";
 
@@ -145,6 +144,8 @@ export default {
     const url = inject("url");
     const noteCount = ref(0);
     const indicator = ref("#fff");
+    //const deletedArray = ref([]);
+    const deleted_post_id = ref("");
 
     watch(
       () => props.indicatorbg,
@@ -186,6 +187,15 @@ export default {
       console.log("Message received. ", payload);
       if (payload.data.payload === "9") {
         indicator.value = "#288c7f";
+      } else if (payload.data.payload === "6") {
+        //const data = {
+        deleted_post_id.value = payload.data.post_id;
+        console.log("DELETED POST ID 1", deleted_post_id.value);
+        emit("listen-delete-post-id", deleted_post_id.value);
+        //};
+        //deletedArray.value.push(...[data]);
+        //console.log("Deleted Array", deletedArray.value[0].post_id);
+        //emit('listen-delete-array',deletedArray.value);
       } else {
         noteCount.value++;
       }
@@ -229,8 +239,7 @@ export default {
   },
   methods: {
     logout() {
-      Auth.logout;
-      router.push({ name: "LoginScreen" });
+      Auth.logout();
     },
     goToHome() {
       this.$emit("listen-home");

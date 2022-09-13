@@ -11,7 +11,7 @@
           @listen-user-profile="goToUserProfile"
         />
       </div>
-      <div class="col-10" @click="updateNotificationClicked">
+      <div class="col-10 clickable" @click="updateNotificationClicked">
         <post-user-info :post="post" />
         <notification-text :post="post" />
       </div>
@@ -23,7 +23,7 @@
           @listen-user-profile="goToUserProfile"
         />
       </div>
-      <div class="col-10" @click="updateNotificationClicked">
+      <div class="col-10 clickable" @click="updateNotificationClicked">
         <post-user-info :post="post" />
         <notification-text :post="post" />
       </div>
@@ -31,8 +31,8 @@
   </div>
 </template>
 <script>
-import PostUserInfo from "@/components/PostUserInfo.vue";
-import PostProfilePicture from "@/components/PostProfilePicture.vue";
+import PostUserInfo from "@/components/posts/PostUserInfo.vue";
+import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import NotificationText from "@/views/pages/main/notifications/NotificationText.vue";
 import axios from "axios";
 import { ref, inject, onMounted } from "vue";

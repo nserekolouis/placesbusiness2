@@ -25,7 +25,8 @@ import {
   faLongArrowLeft,
   faLocationPin,
   faBars,
-  faEllipsis
+  faEllipsis,
+  faFaceSmile
 } from '@fortawesome/free-solid-svg-icons'
 
   import {faMessage,faHeart} from '@fortawesome/free-regular-svg-icons'
@@ -43,11 +44,15 @@ library.add(faLongArrowLeft )
 library.add(faLocationPin )
 library.add(faBars)
 library.add(faEllipsis)
+library.add(faFaceSmile)
 //..................
 
 import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
+
+import EmojiPicker from "vue3-emoji-picker";
+import "../node_modules/vue3-emoji-picker/dist/style.css";
 
 
 const app = createApp(App)
@@ -55,6 +60,8 @@ const app = createApp(App)
 app.use(BootstrapVue3)
 
 app.component('font-awesome-icon', FontAwesomeIcon)
+
+app.component('EmojiPicker', EmojiPicker)
 
 
 
@@ -65,10 +72,10 @@ app.use(vue3GoogleLogin, {
 })
 
 app.config.globalProperties.url = 'http://192.168.43.79:8000/';
-app.provide('url', 'http://192.168.43.79:8000/')
+app.provide('url', 'http://192.168.43.79:8000/');
 
 //app.config.globalProperties.url = 'https://dev.thefavplaces.com/';
-//app.provide('url', 'https://dev.thefavplaces.com/')
+//app.provide('url', 'https://dev.thefavplaces.com/');
 
 app.use(router)
 app.use(CoreuiVue)

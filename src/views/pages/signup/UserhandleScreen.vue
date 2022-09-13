@@ -1,31 +1,31 @@
 <template>
   <div class="container-fluid">
-    <app-header />
-    <div class="row">
-      <div class="col-sm-6 userhandle">
-        <p :style="{ color: activeColor }" class="p-response">
-          {{ response_handle }}
-        </p>
-        <div class="form-item">
-          <label>Userhandle</label>
-          <input
-            class="form-control"
-            placeholder="@userhandle"
-            v-model="userhandle"
-            @input="onChange"
-            type="text"
-            maxlength="32"
-          />
-        </div>
-        <button
-          type="button"
-          class="btn btn-primary btn-userhandle"
-          @click="next"
-        >
-          Next
-        </button>
+  <app-header />
+  <div class="row">
+    <div class="col-6 userhandle">
+      <p :style="{ color: activeColor }" class="p-response">
+        {{ response_handle }}
+      </p>
+      <div class="form-item">
+        <label>Userhandle</label>
+        <input
+          class="form-control"
+          placeholder="@userhandle"
+          v-model="userhandle"
+          @input="onChange"
+          type="text"
+          maxlength="32"
+        />
       </div>
+      <button
+        type="button"
+        class="btn btn-primary btn-next"
+        @click="next"
+      >
+        Next
+      </button>
     </div>
+  </div>
   </div>
 </template>
 
@@ -93,7 +93,7 @@ export default {
     next() {
       console.log("profilescreen");
       if (this.status_code == 1) {
-        router.push({ name: "ProfileScreen" });
+        router.push({ name: "UploadProfile" });
       } else {
         alert("Put correct userhandle");
       }
@@ -111,10 +111,16 @@ export default {
   text-align: center;
 }
 
-.btn-userhandle {
+.btn-next{
   margin-left: auto;
   display: block;
-  margin-top: 10px;
+  font-weight: bold;
+  height: 35px;
+  font-size: 15px;
 }
 
+.userhandle{
+  min-width: 200px;
+  margin-top: 140px;
+}
 </style>

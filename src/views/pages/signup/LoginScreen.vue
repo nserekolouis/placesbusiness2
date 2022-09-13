@@ -1,10 +1,15 @@
 <template>
   <div class="container-fluid">
     <app-header />
-    <div class="row" style="margin-top: 30px">
+    <div class="row">
       <div
         class="col-md-6"
-        style="margin-left: auto; margin-right: auto; text-align: center"
+        style="
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+          margin-top: 40px;
+        "
       >
         <h1>Stay connected to your favourate Places</h1>
         <div class="row d-md-none">
@@ -75,9 +80,11 @@
             <img :src="travel" class="round-image" />
           </div>
         </div>
-        <div class="row div-gmail">
-          <p class="p-login-gmail">LOGIN WITH GMAIL</p>
-          <GoogleLogin :callback="callback" prompt class="btn-google" />
+        <div class="row">
+          <div class="col div-gmail">
+            <p class="p-login-gmail">LOGIN WITH GMAIL</p>
+            <GoogleLogin :callback="callback" prompt class="btn-google" />
+          </div>
         </div>
       </div>
     </div>
@@ -114,10 +121,11 @@ const callback = (response) => {
         router.push({ name: "UserHandle" });
       } else if (response.data.user.username == null) {
         console.log("3");
-        router.push({ name: "ProfileScreen" });
+        router.push({ name: "UploadProfile" });
       } else {
         console.log("4");
         router.push({ name: "SwitchScreen" });
+        //router.push({ name: "UploadProfile" });
       }
     })
     .catch((error) => {

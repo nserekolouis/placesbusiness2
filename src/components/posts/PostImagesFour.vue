@@ -23,7 +23,6 @@
         <images-two
           :image_one="post.image_three"
           :image_two="post.image_four"
-          style="margin-top: 10px"
         />
         <reaction-component :post="post" @listen-comment="goToComments" />
       </div>
@@ -34,24 +33,40 @@
   </div>
 </template>
 <script>
-import ReactionComponent from "@/components/PostReaction.vue";
+import ReactionComponent from "@/components/posts/PostReaction.vue";
 import ImagesTwo from "@/components/ImagesTwo.vue";
-import PostUserInfo from "@/components/PostUserInfo.vue";
-import PostText from "@/components/PostText.vue";
-import PostProfilePicture from "@/components/PostProfilePicture.vue";
-import PostPlaceName from "@/components/PostPlaceName.vue";
-import PostExtras from "@/components/PostExtras.vue";
-import { ref } from "vue";
+import PostUserInfo from "@/components/posts/PostUserInfo.vue";
+import PostText from "@/components/posts/PostText.vue";
+import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
+import PostPlaceName from "@/components/posts/PostPlaceName.vue";
+import PostExtras from "@/components/posts/PostExtras.vue";
+import { ref, watch } from "vue";
 
 export default {
   name: "OnlyText",
   props: {
     post: {},
     index: Number,
+    deleted_post_id: Number,
   },
   setup(props, { emit }) {
     const showExtras = ref(false);
     const info = ref(null);
+    const post = ref(props.post);
+
+    watch(
+      () => props.deleted_post_id,
+      (newVal, oldVal) => {
+        console.log("New Value", newVal);
+        console.log("Old Value", oldVal);
+        console.log("DELETED POST ID 8", newVal);
+        console.log("DELETED POST ID 8", "" + post.value.post_id);
+        if (newVal === "" + post.value.post_id) {
+          console.log("DELETED POST ID 4 DELETED");
+          deletePost();
+        }
+      }
+    );
 
     const deletePost = () => {
       showExtras.value = true;

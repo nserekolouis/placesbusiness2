@@ -1,6 +1,6 @@
 <template>
   <back-navigation :info="componentName" @listen-move-back="moveBack" />
-  <div class="" ref="scrollComponent" style="margin-top:10px">
+  <div class="" ref="scrollComponent" style="margin-top: 10px">
     <ul class="list-group">
       <li class="list-group-item">
         <four-images v-if="post.image_four != null" :post="post" />
@@ -34,21 +34,23 @@
 </template>
 <script>
 import axios from "axios";
-import OnlyText from "@/components/PostOnlyText.vue";
-import OneImage from "@/components/PostImagesOne.vue";
-import TwoImages from "@/components/PostImagesTwo.vue";
-import ThreeImages from "@/components/PostImagesThree.vue";
-import FourImages from "@/components/PostImagesFour.vue";
+import OnlyText from "@/components/posts/PostOnlyText.vue";
+import OneImage from "@/components/posts/PostImagesOne.vue";
+import TwoImages from "@/components/posts/PostImagesTwo.vue";
+import ThreeImages from "@/components/posts/PostImagesThree.vue";
+import FourImages from "@/components/posts/PostImagesFour.vue";
 import COnlyText from "@/components/comments/CommentOnlyText.vue";
 import COneImage from "@/components/comments/CommentOneImage.vue";
 import CTwoImages from "@/components/comments/CommentTwoImages.vue";
 import CThreeImages from "@/components/comments/CommentThreeImages.vue";
 import CFourImages from "@/components/comments/CommentFourImages.vue";
 import MakeComment from "@/components/comments/MakeComment.vue";
-import PostExtras from "@/components/PostExtras.vue";
+import PostExtras from "@/components/posts/PostExtras.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
 import { ref, onMounted, onUnmounted } from "vue";
 import { inject, watch } from "vue";
+
+const TAG = "Comments Page";
 
 export default {
   name: "CommentsPage",
@@ -76,27 +78,29 @@ export default {
     watch(
       () => props.new_comments,
       (newVal, oldVal) => {
-        console.log("comment clicked", newVal);
-        console.log("comment clicked", oldVal);
-        console.log("comment clicked", props.id);
+        console.log(TAG + "watch newVal", newVal);
+        console.log(TAG + "watch comments", oldVal);
+        console.log(TAG + "watch id", props.id);
+
         count.value = 0;
         return_mine.value = 0;
         totalMine.value = 0;
         totalOthers.value = 0;
         loadMore.value = true;
         post_id.value = props.id;
+        comments.value = [];
         getPost();
       }
     );
 
     onMounted(() => {
-      console.log("LMPAC ON");
+      console.log(TAG + "MOUNTED");
       document.title = "Places | Comments";
       window.addEventListener("scroll", handleScroll);
       window.addEventListener(
         "backbutton",
         function (e) {
-          e.preventDefault()
+          e.preventDefault();
           console.log("BACK BUTTON PRESSED");
         },
         false
@@ -105,7 +109,7 @@ export default {
     });
 
     onUnmounted(() => {
-      console.log("LMPAC OFF");
+      console.log(TAG + "UNMOUNTED");
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("backbutton", moveBack());
     });
@@ -118,14 +122,14 @@ export default {
         count.value < totalMine.value + totalOthers.value &&
         loadMore.value
       ) {
+        console.log(TAG + "SCROLL GET COMMENTS");
         loadMore.value = false;
         getComments();
-        console.log("LMPAC INSIDE");
       }
     };
 
     const getPost = () => {
-      console.log("LMPAC GET POST DETAILS");
+      console.log(TAG + "GET POST");
       let page_url = url + "api/v2/get_post";
       const data = {
         post_id: "" + post_id.value,
@@ -133,7 +137,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("LMPAC POST DETAILS", response);
+          console.log(TAG+"POST DETAILS", response);
           post.value = response.data.post;
           getComments();
         })
@@ -162,13 +166,13 @@ export default {
         return_mine: return_mine.value,
       };
 
-      console.log("LMPAC DATA", data);
+      console.log(TAG+"COMMENTS DATA", data);
 
       axios
         .post(page_url, data)
         .then((response) => {
           loadMore.value = true;
-          console.log("LMPAC COMMENTS ", response);
+          console.log(TAG + "GET COMMENTS REPONSE",response);
           let newComments = response.data.comments;
           comments.value.push(...newComments);
           let newTotalMine = response.data.total_mine;
@@ -181,7 +185,7 @@ export default {
         })
         .catch((error) => {
           loadMore.value = true;
-          console.log("LMPAC", error);
+          console.log(error);
         });
     };
 
@@ -196,15 +200,15 @@ export default {
         return_mine: 0,
       };
 
-      console.log("LMPAC NEW COMMENT", data);
+      console.log(TAG + "NEW COMMENT DATA",data);
 
       axios
         .post(page_url, data)
         .then((response) => {
           loadMore.value = true;
-          console.log("LMPAC COMMENTS ", response);
+          console.log(TAG + " NEW COMMENT RESPONSE", response);
           let newComments = response.data.comments;
-          newComments.push(...comments.value);
+          //newComments.push(...comments.value);
           comments.value = newComments;
           let newTotalMine = response.data.total_mine;
           totalMine.value = newTotalMine;
@@ -253,22 +257,6 @@ export default {
     PostExtras,
     BackNavigation,
   },
-  // methods: {
-  //   goBack() {
-  //     console.log("FROM COMPONENT", this.from_component);
-  //     if (this.from_component == "HomeScreen") {
-  //       this.$emit("listen-home");
-  //     } else if (this.from_Component == "LoadMoreUserPosts") {
-  //       this.$emit("listen-user-profile");
-  //     } else if (this.from_component == "CommentsScreen") {
-  //       this.$emit("listen-comment");
-  //     } else if (this.from_component == "NotificationsScreen") {
-  //       this.$emit("listen-notifications");
-  //     } else {
-  //       console.log("UNKNOWN");
-  //     }
-  //   },
-  // },
 };
 </script>
 <style scoped>

@@ -26,7 +26,9 @@
         </div>
       </li>
     </ul>
-    <make-post-component :place="place" @listen-post="newPost" />
+    <make-post-component 
+    :place="place" 
+    @listen-post="newPost" />
   </div>
 </template>
 <script>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import router from "@/router";
 
 class Auth {
     constructor () {
@@ -26,10 +27,13 @@ class Auth {
         return !! this.token;
     }
     logout () {
-        // window.localStorage.clear();
-        window.localStorage.removeItem('token');
-        window.localStorage.removeItem('user');
-        this.user = null;
+        console.log("LOGOUT")
+        window.localStorage.clear();
+        router.push({ name: "LoginScreen" });
+        //window.localStorage.removeItem('token');
+        //window.localStorage.removeItem('user');
+        //this.user = null;
+        
     }
 }
 export default new Auth();

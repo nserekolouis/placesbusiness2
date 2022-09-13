@@ -24,33 +24,88 @@
           <img :src="this.url + image_four" class="post-image" />
         </div>
       </div>
-      <div class="post-control">
-        <input v-model="counter" class="input-counter" />
-        <label for="chooseFiles">
-          <font-awesome-icon icon="fa-solid fa-image" />
-        </label>
-        <input
-          aria-label="Choose Files"
-          class="choose-files"
-          id="chooseFiles"
-          type="file"
-          accept="image/*"
-          @change="uploadProfilePicture($event)"
-          multiple
-        />
-
-        <label for="make-post" :style="{ color: activeColor }">
-          <font-awesome-icon icon="fa-solid fa-paper-plane" />
-        </label>
-        <input
-          aria-label="Make Post"
-          class="make-post"
-          id="make-post"
-          type="submit"
-          accept="image/*"
-          @click="makepost"
-          multiple
-        />
+      <div class="row">
+        <div class="col">
+          <!-- 1 -->
+          <!-- <div v-show="loading" style="position: absolute"> -->
+          <!-- <div class="post-item">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div> -->
+          <!-- ................. -->
+          <div class="post-item">
+            <label for="chooseFiles">
+              <font-awesome-icon icon="fa-solid fa-image" />
+            </label>
+            <input
+              aria-label="Choose Files"
+              class="choose-files"
+              id="chooseFiles"
+              type="file"
+              accept="image/*"
+              @change="uploadPostImages($event)"
+              multiple
+            />
+          </div>
+          <!-- ........................ -->
+          <div class="post-item">
+            <div class="dropdown emoji-menu">
+              <a
+                class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle caret-off"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <font-awesome-icon
+                  class="emoji"
+                  icon="fa-solid fa-face-smile"
+                />
+              </a>
+              <div class="dropdown-menu dropdown-menu-left">
+                <EmojiPicker :native="true" @select="onSelectEmoji" />
+              </div>
+            </div>
+          </div>
+          <!-- ........................ -->
+          <div class="post-item-right">
+            <input v-model="counter" class="input-counter" />
+            <!-- ... -->
+            <div
+              v-show="loading"
+              class="spinner-border spinner-border-sm"
+              role="status"
+            >
+              <span class="sr-only">Loading...</span>
+            </div>
+            <!-- ... -->
+            <label for="make-post" :style="{ color: activeColor }">
+              <font-awesome-icon icon="fa-solid fa-paper-plane" />
+            </label>
+            <input
+              aria-label="Make Post"
+              class="make-post"
+              id="make-post"
+              type="submit"
+              accept="image/*"
+              @click="makepost"
+              multiple
+            />
+            <!-- ... -->
+          </div>
+          <!-- 2 -->
+          <!-- <input v-model="counter" class="input-counter" /> -->
+          <!-- 2 -->
+          <!-- <div class="emoji">
+              <font-awesome-icon icon="fa-solid fa-face-smile" />
+            </div> -->
+          <!-- <div class="emoji-menu">
+              <EmojiPicker :native="true" @select="onSelectEmoji" />
+            </div> -->
+          <!-- 2 -->
+          <!-- <input v-model="counter" class="input-counter" /> -->
+          <!-- 3 -->
+        </div>
       </div>
     </div>
   </div>
@@ -58,12 +113,18 @@
 <script>
 import axios from "axios";
 import Auth from "@/Auth.js";
+import Constants from "@/constants/index.js";
 
 const bColor = "#288c7f";
 const aColor = "#c1c1c1";
 
+//const TAG = "MAKE POST";
+
 export default {
   name: "MakePostComponent",
+  // components: {
+  //   EmojiPicker
+  // },
   props: {
     place: {},
   },
@@ -77,6 +138,7 @@ export default {
       image_three: "",
       image_four: "",
       activeColor: aColor,
+      loading: false,
     };
   },
   watch: {
@@ -91,54 +153,86 @@ export default {
     },
   },
   methods: {
-    uploadProfilePicture(event) {
-      console.log("Images", event.target.files);
+    uploadPostImages(event) {
+      var count = 0;
+      this.loading = true;
       let page_url = this.url + "api/v2/upload_post_images";
       let data = new FormData();
+
       if (event.target.files[0]) {
-        data.append("image_one", event.target.files[0]);
+        if (event.target.files[0].size > Constants.FILE_SIZE) {
+          alert(Constants.IMAGE_ONE);
+        } else {
+          count++;
+          data.append("image_one", event.target.files[0]);
+        }
       }
+
       if (event.target.files[1]) {
-        data.append("image_two", event.target.files[1]);
+        if (event.target.files[1].size > Constants.FILE_SIZE) {
+          alert(Constants.IMAGE_TWO);
+        } else {
+          data.append("image_two", event.target.files[1]);
+        }
       }
+
       if (event.target.files[2]) {
-        data.append("image_three", event.target.files[2]);
+        if (event.target.files[2].size > Constants.FILE_SIZE) {
+          alert(Constants.IMAGE_THREE);
+        } else {
+          data.append("image_three", event.target.files[2]);
+        }
       }
+
       if (event.target.files[3]) {
-        data.append("image_four", event.target.files[3]);
+        if (event.target.files[3].size > Constants.FILE_SIZE) {
+          alert(Constants.IMAGE_FOUR);
+        } else {
+          data.append("image_four", event.target.files[3]);
+        }
       }
+
+      if (count > 0) {
+        this.activeColor = bColor;
+      } else {
+        this.activeColor = aColor;
+      }
+
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("RESPONSE POST IMAGES ", response.data);
-          if (response.data.images[0]) {
+          console.log("RESPONSE POST IMAGES ", response.data.images.length);
+
+          this.loading = false;
+          if (response.data.images[0].length > 0) {
             this.image_one = response.data.images[0];
           }
-          if (response.data.images[1]) {
+
+          if (response.data.images[1].length > 0) {
             this.image_two = response.data.images[1];
           }
-          if (response.data.images[2]) {
+
+          if (response.data.images[2].length > 0) {
             this.image_three = response.data.images[2];
           }
-          if (response.data.images[3]) {
-            this.image_four = response.data.images[3];
-          }
 
-          if (response.data.images.length > 0) {
-            this.activeColor = bColor;
-          } else {
-            this.activeColor = aColor;
+          if (response.data.images[3].length > 0) {
+            this.image_four = response.data.images[3];
           }
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },
     makepost() {
+      this.loading = true;
       console.log("place", Object.keys(this.place).length);
       if (this.post_text.length === 0 && this.image_one.length === 0) {
+        this.loading = false;
         alert("Post has no information");
       } else if (Object.keys(this.place).length === 0) {
+        this.loading = false;
         alert("Select a Place");
       } else {
         console.log("PLACE ID", this.place);
@@ -150,23 +244,31 @@ export default {
         data.append("image_two", this.image_two);
         data.append("image_three", this.image_three);
         data.append("image_four", this.image_four);
+
+        this.post_text = "";
+        this.image_one = "";
+        this.image_two = "";
+        this.image_three = "";
+        this.image_four = "";
+
         axios
           .post(page_url, data)
           .then((response) => {
             console.log("RESPONSE MAKE POST ", response);
-            this.post_text = "";
-            this.image_one = "";
-            this.image_two = "";
-            this.image_three = "";
-            this.image_four = "";
+            this.loading = false;
             this.activeColor = aColor;
             this.$emit("listen-post");
           })
           .catch((error) => {
+            this.loading = false;
             console.log(error);
           });
       }
     },
+    onSelectEmoji(emoji) {
+      console.log(emoji)
+      this.post_text += emoji.i
+    }
   },
 };
 </script>
@@ -176,27 +278,28 @@ export default {
   width: 50px;
 }
 
-.post-control {
+/* .post-control {
   display: inline-block;
   height: 40px;
-  width: 100%;
-  text-align: end;
-}
+  width: 100%;17px
+  }
+  */
 
-.post-control .choose-files {
+.post-item .choose-files {
   display: none;
+  cursor: pointer;
 }
 
-.post-control .choose-files + label {
+.post-item .choose-files + label {
   display: inline-block;
   cursor: pointer;
 }
 
-.post-control .make-post {
+.post-item-right .make-post {
   display: none;
 }
 
-.post-control .make-post + label {
+.post-item-right .make-post + label {
   display: inline-block;
   cursor: pointer;
 }
@@ -205,5 +308,36 @@ label {
   font-size: 20px;
   margin-right: 5px;
   color: #288c7f;
+  cursor: pointer;
+}
+
+.emoji {
+  display: inline;
+  color: #288c7f;
+  font-size: 18px;
+}
+
+.emoji-menu {
+  width: 284px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.post-item {
+  width: 15px;
+  display: inline;
+}
+
+.caret-off::before {
+  display: none;
+}
+.caret-off::after {
+  display: none;
+}
+
+.post-item-right {
+  display: inline-block;
+  position: absolute;
+  right: 0px;
 }
 </style>

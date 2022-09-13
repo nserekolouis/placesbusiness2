@@ -61,7 +61,7 @@ export default {
       console.log("like clicked");
       let page_url = this.url + "api/v2/like_post";
       let data = new FormData();
-      data.append("post_id", this.post.id);
+      data.append("post_id", this.post.post_id);
       axios
         .post(page_url, data)
         .then((response) => {

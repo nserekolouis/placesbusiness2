@@ -181,10 +181,10 @@ p {
     margin-right: 0px;
 }
 
-.row > *{ 
-    padding-left: 0px;
-    padding-right: 0px;
-}
+// .row > *{ 
+//     padding-left: 0px;
+//     padding-right: 0px;
+// }
 
 .p-h6{
     display: inline-block;
@@ -486,5 +486,9 @@ p {
     width: 240px;
     text-align: center;
     margin-top: 50px;
+}
+
+.clickable{
+    cursor: pointer;
 }
 

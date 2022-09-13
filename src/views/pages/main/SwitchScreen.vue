@@ -1,6 +1,6 @@
 <script>
 import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue";
-import PostsPage from "@/views/pages/main/home/PostsPage.vue"
+import PostsPage from "@/views/pages/main/home/PostsPage.vue";
 import UserPostsPage from "@/views/pages/main/userprofile/UserPostsPage.vue";
 import NotificationSection from "@/views/pages/main/notifications/NotificationSection.vue";
 
@@ -22,7 +22,7 @@ export default {
     PrivacyAndSafety,
     SideBar,
     SearchUsers,
-    PostsPage
+    PostsPage,
   },
   data() {
     return {
@@ -34,6 +34,8 @@ export default {
       new_comments: false,
       bgColor: "",
       new_notifications: false,
+      deleteArray: [],
+      del_post_id: 0,
     };
   },
   methods: {
@@ -85,7 +87,7 @@ export default {
     goToPostDetails(post_id) {
       console.log(post_id);
       this.from_component.push(this.current);
-      this.current = "CommentsScreen";
+      this.current = "CommentsPage";
       this.id = post_id;
     },
     moveBack() {
@@ -102,6 +104,10 @@ export default {
       this.current = "UserPostsPage";
       this.user_id = user_id;
     },
+    deletedPostId(d_post_id) {
+      console.log("DELETED POST ID 2", d_post_id);
+      this.del_post_id = d_post_id;
+    },
   },
 };
 </script>
@@ -109,7 +115,7 @@ export default {
 <template>
   <div class="row main">
     <div class="col-md-3">
-      <sidebar-coreui
+      <side-bar
         :indicatorbg="bgColor"
         @listen-notifications="goToNotifications"
         @listen-home="goToHome"
@@ -117,6 +123,7 @@ export default {
         @listen-accounts="goToAccounts"
         @listen-privacy-safety="goToPrivacyAndSafety"
         @listen-about-places="goToAboutPlaces"
+        @listen-delete-post-id="deletedPostId"
       />
     </div>
     <div class="col-md-6 border-left">
@@ -129,6 +136,7 @@ export default {
           :new_posts="new_posts"
           :new_comments="new_comments"
           :new_notifications="new_notifications"
+          :deleted_post_id="del_post_id"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
