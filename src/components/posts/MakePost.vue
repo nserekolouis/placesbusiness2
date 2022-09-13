@@ -26,13 +26,6 @@
       </div>
       <div class="row">
         <div class="col">
-          <!-- 1 -->
-          <!-- <div v-show="loading" style="position: absolute"> -->
-          <!-- <div class="post-item">
-              <div class="spinner-border spinner-border-sm" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-            </div> -->
           <!-- ................. -->
           <div class="post-item">
             <label for="chooseFiles">
@@ -91,23 +84,10 @@
               @click="makepost"
               multiple
             />
-            <!-- ... -->
-          </div>
-          <!-- 2 -->
-          <!-- <input v-model="counter" class="input-counter" /> -->
-          <!-- 2 -->
-          <!-- <div class="emoji">
-              <font-awesome-icon icon="fa-solid fa-face-smile" />
-            </div> -->
-          <!-- <div class="emoji-menu">
-              <EmojiPicker :native="true" @select="onSelectEmoji" />
-            </div> -->
-          <!-- 2 -->
-          <!-- <input v-model="counter" class="input-counter" /> -->
-          <!-- 3 -->
+        </div>
         </div>
       </div>
-    </div>
+      </div>
   </div>
 </template>
 <script>
@@ -122,9 +102,6 @@ const aColor = "#c1c1c1";
 
 export default {
   name: "MakePostComponent",
-  // components: {
-  //   EmojiPicker
-  // },
   props: {
     place: {},
   },
@@ -277,13 +254,6 @@ export default {
   display: inline-block;
   width: 50px;
 }
-
-/* .post-control {
-  display: inline-block;
-  height: 40px;
-  width: 100%;17px
-  }
-  */
 
 .post-item .choose-files {
   display: none;

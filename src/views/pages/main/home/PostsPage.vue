@@ -125,7 +125,6 @@ export default {
     const d_post_id = ref(props.deleted_post_id);
     const scrollingPosition = ref(0);
     const active = ref(true);
-    //const scrollLastPostion = ref(0);
 
     watch(
       () => props.new_posts,

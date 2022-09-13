@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col">
         <textarea
           class="form-control form-control-sm"
           v-model="post_text"
@@ -23,45 +23,16 @@
             <img :src="this.url + image_four" class="post-image" />
           </div>
         </div>
+
         <!-- <div class="post-control">
-          <input v-model="counter" class="input-counter" />
-          <label for="chooseFiles">
-            <font-awesome-icon icon="fa-solid fa-image" />
-          </label>
-          <input
-            aria-label="Choose Files"
-            class="choose-files"
-            id="chooseFiles"
-            type="file"
-            accept="image/*"
-            @change="uploadProfilePicture($event)"
-            multiple
-          />
-          <label for="makeComment" :style="{ color: activeColor }">
-            <font-awesome-icon icon="fa-solid fa-paper-plane" />
-          </label>
-          <input
-            aria-label="Make Comment"
-            class="make-comment"
-            id="makeComment"
-            type="submit"
-            accept="image/*"
-            @click="makeComment"
-            multiple
-          />
-        </div> -->
-        <div class="post-control">
           <div class="row">
             <div class="col">
-              <!-- 1 -->
               <div v-show="loading" style="position: absolute">
                 <div class="spinner-border spinner-border-sm" role="status">
                   <span class="sr-only">Loading...</span>
                 </div>
               </div>
-              <!-- 2 -->
               <input v-model="counter" class="input-counter" />
-              <!-- 3 -->
               <label for="chooseFiles">
                 <font-awesome-icon icon="fa-solid fa-image" />
               </label>
@@ -74,7 +45,6 @@
                 @change="uploadProfilePicture($event)"
                 multiple
               />
-              <!-- 4 -->
               <label for="make-comment" :style="{ color: activeColor }">
                 <font-awesome-icon icon="fa-solid fa-paper-plane" />
               </label>
@@ -87,6 +57,66 @@
               />
             </div>
           </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <!-- ................. -->
+        <div class="post-item">
+          <label for="chooseFiles">
+            <font-awesome-icon icon="fa-solid fa-image" />
+          </label>
+          <input
+            aria-label="Choose Files"
+            class="choose-files"
+            id="chooseFiles"
+            type="file"
+            accept="image/*"
+            @change="uploadPostImages($event)"
+            multiple
+          />
+        </div>
+        <!-- ........................ -->
+        <div class="post-item">
+          <div class="dropdown emoji-menu">
+            <a
+              class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle caret-off"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <font-awesome-icon class="emoji" icon="fa-solid fa-face-smile" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-left">
+              <EmojiPicker :native="true" @select="onSelectEmoji" />
+            </div>
+          </div>
+        </div>
+        <!-- ........................ -->
+        <div class="post-item-right">
+          <input v-model="counter" class="input-counter" />
+          <!-- ... -->
+          <div
+            v-show="loading"
+            class="spinner-border spinner-border-sm"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+          <!-- ... -->
+          <label for="make-post" :style="{ color: activeColor }">
+            <font-awesome-icon icon="fa-solid fa-paper-plane" />
+          </label>
+          <input
+            aria-label="Make Post"
+            class="make-post"
+            id="make-post"
+            type="submit"
+            accept="image/*"
+            @click="makeComment"
+            multiple
+          />
         </div>
       </div>
     </div>
@@ -235,42 +265,74 @@ export default {
           });
       }
     },
+    onSelectEmoji(emoji) {
+      console.log(emoji);
+      this.post_text += emoji.i;
+    },
   },
 };
 </script>
 <style scoped>
-.post-control {
+/* .post-control {
   display: inline-block;
   height: 40px;
   width: 100%;
   text-align: end;
+} */
+
+.post-item .choose-files {
+  display: none;
+  cursor: pointer;
 }
 
-.post-control .choose-files {
+.post-item .choose-files + label {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.post-item-right .make-post {
   display: none;
 }
 
-.post-control .choose-files + label {
+.post-item-right .make-post + label {
   display: inline-block;
-}
-
-label {
-  font-size: 20px;
-  margin-right: 5px;
-  color: #babcbf;
-}
-
-.post-control .make-comment {
-  display: none;
-}
-
-.post-control .make-comment + label {
-  display: inline-block;
+  cursor: pointer;
 }
 
 label {
   font-size: 20px;
   margin-right: 5px;
   color: #288c7f;
+  cursor: pointer;
+}
+
+.emoji {
+  display: inline;
+  color: #288c7f;
+  font-size: 18px;
+}
+
+.emoji-menu {
+  width: 284px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.post-item {
+  width: 15px;
+  display: inline;
+}
+
+.caret-off::before {
+  display: none;
+}
+.caret-off::after {
+  display: none;
+}
+
+.post-item-right {
+  display: inline-block;
+  position: absolute;
+  right: 0px;
 }
 </style>

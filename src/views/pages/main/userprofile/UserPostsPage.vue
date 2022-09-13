@@ -8,18 +8,31 @@
   <div class="" ref="scrollComponent" style="margin-top: 10px">
     <ul class="list-group">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
-        <post-extras v-if="post.post_extras == 1" :info="info" />
-        <four-images v-else-if="post.image_four != null" :post="post" />
-        <three-images v-else-if="post.image_three != null" :post="post" />
-        <two-images v-else-if="post.image_two != null" :post="post" />
-        <one-image v-else-if="post.image_one != null" :post="post" />
+        <four-images
+          v-if="post.image_four != null"
+          :post="post"
+          @listen-comment="goToComments"
+        />
+        <three-images
+          v-else-if="post.image_three != null"
+          :post="post"
+          @listen-comment="goToComments"
+        />
+        <two-images
+          v-else-if="post.image_two != null"
+          :post="post"
+          @listen-comment="goToComments"
+        />
+        <one-image
+          v-else-if="post.image_one != null"
+          :post="post"
+          @listen-comment="goToComments"
+        />
         <only-text
           v-else
           :post="post"
           :index="index"
-          @listen-userblocked="userBlocked"
-          @listen-reportpost="reportPost"
-          @listen-deletepost="deletePost"
+          @listen-comment="goToComments"
         />
       </li>
     </ul>
@@ -32,7 +45,7 @@ import TwoImages from "@/components/posts/PostImagesTwo.vue";
 import ThreeImages from "@/components/posts/PostImagesThree.vue";
 import FourImages from "@/components/posts/PostImagesFour.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
-import PostExtras from "@/components/posts/PostExtras.vue";
+//import PostExtras from "@/components/posts/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 
 import { ref, onMounted, onUnmounted, watch } from "vue";
@@ -131,11 +144,17 @@ export default {
       emit("listen-move-back");
     };
 
+    const goToComments = (post) => {
+      console.log("comment clicked", post);
+      emit("listen-comment", post);
+    };
+
     return {
       posts,
       scrollComponent,
       moveBack,
       componentName,
+      goToComments
     };
   },
   components: {
@@ -144,7 +163,7 @@ export default {
     TwoImages,
     ThreeImages,
     FourImages,
-    PostExtras,
+    //PostExtras,
     UserProfile,
     BackNavigation,
   },
