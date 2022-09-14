@@ -37,6 +37,8 @@ import NotificationText from "@/views/pages/main/notifications/NotificationText.
 import axios from "axios";
 import { ref, inject, onMounted } from "vue";
 
+const TAG = "NOTIFICATION_ITEM";
+
 export default {
   name: "NotificationItem",
   props: {
@@ -65,6 +67,7 @@ export default {
       const data = {
         notification_id: "" + note_id.value,
       };
+      console.log(TAG,props.post)
       axios
         .post(page_url, data)
         .then((response) => {

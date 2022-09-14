@@ -48,7 +48,7 @@ import BackNavigation from "@/components/BackNavigation.vue";
 //import PostExtras from "@/components/posts/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, onActivated } from "vue";
 import axios from "axios";
 import { inject } from "vue";
 
@@ -68,16 +68,22 @@ export default {
     const posts = ref([]);
     const scrollComponent = ref(null);
 
-    watch(
-      () => props.user_id,
-      (newVal, oldVal) => {
-        console.log("New Value", newVal);
-        console.log("Old Value", oldVal);
-        u_id.value = newVal;
-        posts.value = [];
-        getUserPosts();
-      }
-    );
+    // watch(
+    //   () => props.user_id,
+    //   (newVal, oldVal) => {
+    //     console.log("New Value", newVal);
+    //     console.log("Old Value", oldVal);
+    //     u_id.value = newVal;
+    //     posts.value = [];
+    //     getUserPosts();
+    //   }
+    // );
+
+    onActivated(() => {
+      u_id.value = props.user_id;
+      posts.value = [];
+      getUserPosts();
+    });
 
     const getUserPosts = () => {
       if (posts.value.length != 0) {
@@ -154,7 +160,7 @@ export default {
       scrollComponent,
       moveBack,
       componentName,
-      goToComments
+      goToComments,
     };
   },
   components: {

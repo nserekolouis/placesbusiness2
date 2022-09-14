@@ -23,41 +23,6 @@
             <img :src="this.url + image_four" class="post-image" />
           </div>
         </div>
-
-        <!-- <div class="post-control">
-          <div class="row">
-            <div class="col">
-              <div v-show="loading" style="position: absolute">
-                <div class="spinner-border spinner-border-sm" role="status">
-                  <span class="sr-only">Loading...</span>
-                </div>
-              </div>
-              <input v-model="counter" class="input-counter" />
-              <label for="chooseFiles">
-                <font-awesome-icon icon="fa-solid fa-image" />
-              </label>
-              <input
-                aria-label="Choose Files"
-                class="choose-files"
-                id="chooseFiles"
-                type="file"
-                accept="image/*"
-                @change="uploadProfilePicture($event)"
-                multiple
-              />
-              <label for="make-comment" :style="{ color: activeColor }">
-                <font-awesome-icon icon="fa-solid fa-paper-plane" />
-              </label>
-              <input
-                aria-label="Make Comment"
-                class="make-comment"
-                id="make-comment"
-                type="submit"
-                @click="makeComment"
-              />
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="row">
@@ -78,7 +43,7 @@
           />
         </div>
         <!-- ........................ -->
-        <div class="post-item">
+        <div class="post-item post-item-dropdown">
           <div class="dropdown emoji-menu">
             <a
               class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle caret-off"
@@ -240,13 +205,17 @@ export default {
         alert("Please add info to share");
       } else {
         let page_url = this.url + "api/v2/make_comment";
-        let data = new FormData();
-        data.append("post_id", this.post.id);
-        data.append("comment_text", this.post_text);
-        data.append("image_one", this.image_one);
-        data.append("image_two", this.image_two);
-        data.append("image_three", this.image_three);
-        data.append("image_four", this.image_four);
+
+        const data = {
+          post_id: ""+this.post.id,
+          comment_text: this.post_text,
+          image_one: this.image_one,
+          image_two: this.image_two,
+          image_three: this.image_three,
+          image_four: this.image_four
+        }
+
+        console.log(TAG + "COMMENT DATA", data);
         this.post_text = "";
         this.image_one = "";
         this.image_two = "";
@@ -273,13 +242,6 @@ export default {
 };
 </script>
 <style scoped>
-/* .post-control {
-  display: inline-block;
-  height: 40px;
-  width: 100%;
-  text-align: end;
-} */
-
 .post-item .choose-files {
   display: none;
   cursor: pointer;
@@ -334,5 +296,10 @@ label {
   display: inline-block;
   position: absolute;
   right: 0px;
+}
+
+.post-item-dropdown {
+  position: absolute;
+  top: 114px;
 }
 </style>

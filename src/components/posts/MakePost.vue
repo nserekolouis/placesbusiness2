@@ -1,93 +1,90 @@
 <template>
   <!-- <div class="row"> -->
-    <!-- <div class="col-sm-12"> -->
-      <div class="">
-        <textarea
-          class="form-control form-control-sm"
-          v-model="post_text"
-          :maxlength="320"
-          rows="3"
-          placeholder="What is really happening?"
-        ></textarea>
+  <!-- <div class="col-sm-12"> -->
+  <div class="">
+    <textarea
+      class="form-control form-control-sm"
+      v-model="post_text"
+      :maxlength="320"
+      rows="3"
+      placeholder="What is really happening?"
+    ></textarea>
+  </div>
+  <div class="row">
+    <div v-if="image_one" class="col-3">
+      <img :src="this.url + image_one" class="post-image" />
+    </div>
+    <div v-if="image_two" class="col-3">
+      <img :src="this.url + image_two" class="post-image" />
+    </div>
+    <div v-if="image_three" class="col-3">
+      <img :src="this.url + image_three" class="post-image" />
+    </div>
+    <div v-if="image_four" class="col-3">
+      <img :src="this.url + image_four" class="post-image" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <!-- ................. -->
+      <div class="post-item">
+        <label for="chooseFiles">
+          <font-awesome-icon icon="fa-solid fa-image" />
+        </label>
+        <input
+          aria-label="Choose Files"
+          class="choose-files"
+          id="chooseFiles"
+          type="file"
+          accept="image/*"
+          @change="uploadPostImages($event)"
+          multiple
+        />
       </div>
-      <div class="row">
-        <div v-if="image_one" class="col-3">
-          <img :src="this.url + image_one" class="post-image" />
-        </div>
-        <div v-if="image_two" class="col-3">
-          <img :src="this.url + image_two" class="post-image" />
-        </div>
-        <div v-if="image_three" class="col-3">
-          <img :src="this.url + image_three" class="post-image" />
-        </div>
-        <div v-if="image_four" class="col-3">
-          <img :src="this.url + image_four" class="post-image" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <!-- ................. -->
-          <div class="post-item">
-            <label for="chooseFiles">
-              <font-awesome-icon icon="fa-solid fa-image" />
-            </label>
-            <input
-              aria-label="Choose Files"
-              class="choose-files"
-              id="chooseFiles"
-              type="file"
-              accept="image/*"
-              @change="uploadPostImages($event)"
-              multiple
-            />
+      <!-- ........................ -->
+      <div class="post-item post-item-dropdown">
+        <div class="dropdown emoji-menu">
+          <a
+            class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle caret-off"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <font-awesome-icon class="emoji" icon="fa-solid fa-face-smile" />
+          </a>
+          <div class="dropdown-menu dropdown-menu-left">
+            <EmojiPicker :native="true" @select="onSelectEmoji" />
           </div>
-          <!-- ........................ -->
-          <div class="post-item">
-            <div class="dropdown emoji-menu">
-              <a
-                class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle caret-off"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <font-awesome-icon
-                  class="emoji"
-                  icon="fa-solid fa-face-smile"
-                />
-              </a>
-              <div class="dropdown-menu dropdown-menu-left">
-                <EmojiPicker :native="true" @select="onSelectEmoji" />
-              </div>
-            </div>
-          </div>
-          <!-- ........................ -->
-          <div class="post-item-right">
-            <input v-model="counter" class="input-counter" />
-            <!-- ... -->
-            <div
-              v-show="loading"
-              class="spinner-border spinner-border-sm"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-            <!-- ... -->
-            <label for="make-post" :style="{ color: activeColor }">
-              <font-awesome-icon icon="fa-solid fa-paper-plane" />
-            </label>
-            <input
-              aria-label="Make Post"
-              class="make-post"
-              id="make-post"
-              type="submit"
-              accept="image/*"
-              @click="makepost"
-              multiple
-            />
-        </div>
         </div>
       </div>
-      <!-- </div> -->
+      <!-- ........................ -->
+      <div class="post-item-right">
+        <input v-model="counter" class="input-counter" />
+        <!-- ... -->
+        <div
+          v-show="loading"
+          class="spinner-border spinner-border-sm"
+          role="status"
+        >
+          <span class="sr-only">Loading...</span>
+        </div>
+        <!-- ... -->
+        <label for="make-post" :style="{ color: activeColor }">
+          <font-awesome-icon icon="fa-solid fa-paper-plane" />
+        </label>
+        <input
+          aria-label="Make Post"
+          class="make-post"
+          id="make-post"
+          type="submit"
+          accept="image/*"
+          @click="makepost"
+          multiple
+        />
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
   <!-- </div> -->
 </template>
 <script>
@@ -243,9 +240,9 @@ export default {
       }
     },
     onSelectEmoji(emoji) {
-      console.log(emoji)
-      this.post_text += emoji.i
-    }
+      console.log(emoji);
+      this.post_text += emoji.i;
+    },
   },
 };
 </script>
@@ -309,5 +306,10 @@ label {
   display: inline-block;
   position: absolute;
   right: 0px;
+}
+
+.post-item-dropdown{
+  position: absolute;
+  top: 121px;
 }
 </style>

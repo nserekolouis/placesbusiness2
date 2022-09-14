@@ -21,7 +21,7 @@ import axios from "axios";
 import NotificationItem from "@/views/pages/main/notifications/NotificationItem.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
-import { inject, ref, onMounted, watch, onUnmounted } from "vue";
+import { inject, ref, onMounted, onUnmounted, onActivated } from "vue";
 
 export default {
   name: "NotificationSection",
@@ -33,7 +33,7 @@ export default {
   props: {
     new_notifications: Boolean,
   },
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const url = inject("url");
     const show = ref(true);
     const notifications = ref([]);
@@ -46,17 +46,24 @@ export default {
     const scrollComponent = ref(null);
     const componentName = "Notifications";
 
-    watch(
-      () => props.new_notifications,
-      (newVal, oldVal) => {
-        console.log("New Value", newVal);
-        console.log("Old Value", oldVal);
-        count.value = 0;
-        note_id.value = 0;
-        notifications.value = [];
-        refreshNotifications();
-      }
-    );
+    // watch(
+    //   () => props.new_notifications,
+    //   (newVal, oldVal) => {
+    //     console.log("New Value", newVal);
+    //     console.log("Old Value", oldVal);
+    //     count.value = 0;
+    //     note_id.value = 0;
+    //     notifications.value = [];
+    //     refreshNotifications();
+    //   }
+    // );
+
+    onActivated(() => {
+      count.value = 0;
+          note_id.value = 0;
+          notifications.value = [];
+          refreshNotifications();
+    });
 
     onMounted(() => {
       document.title = "Places | Notifications";
@@ -156,7 +163,7 @@ export default {
       scrollComponent,
       componentName,
       componentTitle,
-      goToUserProfile
+      goToUserProfile,
     };
   },
   methods: {

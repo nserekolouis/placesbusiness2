@@ -23,7 +23,7 @@
   </div>
   <div id="container" ref="scrollComponent">
     <center-infomation :info="alert" v-show="show" class="info-missing" />
-    <ul class="list-group" style="margin-top:10px;">
+    <ul class="list-group" style="margin-top: 10px">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
         <four-images
           v-if="post.image_four != null"
@@ -149,12 +149,14 @@ export default {
 
     onActivated(() => {
       console.log("Activated", scrollingPosition.value);
+      window.addEventListener("scroll", handleScroll);
       active.value = true;
       window.scrollTo(0, scrollingPosition.value);
     });
 
     onDeactivated(() => {
       active.value = false;
+      window.removeEventListener("scroll", handleScroll);
       console.log("Deactivated", scrollingPosition.value);
       //var container = this.el.querySelector("#container");
       //container.scrollTop = container.scrollHeight;
@@ -164,14 +166,14 @@ export default {
     onMounted(() => {
       console.log("Mounted");
       document.title = "Places | Home";
-      window.addEventListener("scroll", handleScroll);
+      //window.addEventListener("scroll", handleScroll);
       id.value = 0;
       getPosts();
       getPlaceSubscriptions();
     });
 
     onUnmounted(() => {
-      window.removeEventListener("scroll", handleScroll);
+      //window.removeEventListener("scroll", handleScroll);
     });
 
     const getPosts = () => {

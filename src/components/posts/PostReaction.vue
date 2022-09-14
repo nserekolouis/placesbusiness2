@@ -21,62 +21,61 @@
 </template>
 <script>
 import axios from "axios";
-//import router from "@/router";
+import { ref, inject} from "vue";
 
 export default {
   name: "ReactionComponent",
   props: {
     post: {},
   },
-  setup(props) {
-    console.log("PR", props);
-  },
-  watch: {
-    post: {
-      immediate: true,
-      handler(val) {
-        if (Object.keys(val).length != 0) {
-          if (val.liked == 1) {
-            this.activeColor = "red";
-          } else {
-            this.activeColor = "";
-          }
-          this.likes = val.num_likes;
-        }
-      },
-    },
-  },
-  data() {
-    return {
-      activeColor: "",
-    };
-  },
-  methods: {
-    commentClicked() {
-      console.log("comment clicked", this.post);
-      this.$emit("listen-comment", this.post);
-      //router.push({ name: "CommentsPage", params: {id: this.post.post_id}});
-    },
-    likeClicked() {
+  setup(props, { emit }) {
+    console.log("ReactionComponent", props.post);
+
+    const post = ref(props.post);
+    const liked = ref(props.post.liked);
+    const likes = ref(props.post.num_likes);
+    const activeColor = ref("");
+    const url = inject('url');
+
+    if (liked.value == 1) {
+      activeColor.value = "red";
+    } else {
+      activeColor.value = "";
+    }
+
+    const likeClicked = () => {
       console.log("like clicked");
-      let page_url = this.url + "api/v2/like_post";
+      let page_url = url + "api/v2/like_post";
       let data = new FormData();
-      data.append("post_id", this.post.post_id);
+      data.append("post_id", post.value.post_id);
       axios
         .post(page_url, data)
         .then((response) => {
           console.log("RESPONSE LIKE POST ", response.data.status_code);
           if (response.data.liked == 1) {
-            this.activeColor = "red";
+            activeColor.value = "red";
           } else {
-            this.activeColor = "";
+            activeColor.value = "";
           }
-          this.likes = response.data.num_likes;
+          likes.value = response.data.num_likes;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
+    };
+
+    const commentClicked = () => {
+      console.log("comment clicked", post.value);
+      emit("listen-comment", post.value);
+    };
+
+    return {
+      liked,
+      likes,
+      activeColor,
+      likeClicked,
+      commentClicked,
+    };
   },
 };
 </script>

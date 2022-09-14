@@ -47,8 +47,8 @@ import CFourImages from "@/components/comments/CommentFourImages.vue";
 import MakeComment from "@/components/comments/MakeComment.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
-import { ref, onMounted, onUnmounted } from "vue";
-import { inject, watch } from "vue";
+import { ref, onMounted, onUnmounted, onActivated } from "vue";
+import { inject } from "vue";
 
 const TAG = "Comments Page";
 
@@ -75,23 +75,35 @@ export default {
 
     const scrollComponent = ref(null);
 
-    watch(
-      () => props.new_comments,
-      (newVal, oldVal) => {
-        console.log(TAG + "watch newVal", newVal);
-        console.log(TAG + "watch comments", oldVal);
-        console.log(TAG + "watch id", props.id);
+    // watch(
+    //   () => props.new_comments,
+    //   (newVal, oldVal) => {
+    //     console.log(TAG + " watch newVal", newVal);
+    //     console.log(TAG + " watch comments", oldVal);
+    //     console.log(TAG + " watch id", props.id);
 
-        count.value = 0;
-        return_mine.value = 0;
-        totalMine.value = 0;
-        totalOthers.value = 0;
-        loadMore.value = true;
-        post_id.value = props.id;
-        comments.value = [];
-        getPost();
-      }
-    );
+    //     count.value = 0;
+    //     return_mine.value = 0;
+    //     totalMine.value = 0;
+    //     totalOthers.value = 0;
+    //     loadMore.value = true;
+    //     post_id.value = props.id;
+    //     comments.value = [];
+    //     getPost();
+    //   }
+    // );
+
+    onActivated(() => {
+      console.log(TAG + " onactivated ", props.id);
+      count.value = 0;
+      return_mine.value = 0;
+      totalMine.value = 0;
+      totalOthers.value = 0;
+      loadMore.value = true;
+      post_id.value = props.id;
+      comments.value = [];
+      getPost();
+    });
 
     onMounted(() => {
       console.log(TAG + "MOUNTED");
@@ -137,7 +149,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log(TAG+"POST DETAILS", response);
+          console.log(TAG + "POST DETAILS", response);
           post.value = response.data.post;
           getComments();
         })
@@ -166,13 +178,13 @@ export default {
         return_mine: return_mine.value,
       };
 
-      console.log(TAG+"COMMENTS DATA", data);
+      console.log(TAG + "COMMENTS DATA", data);
 
       axios
         .post(page_url, data)
         .then((response) => {
           loadMore.value = true;
-          console.log(TAG + "GET COMMENTS REPONSE",response);
+          console.log(TAG + "GET COMMENTS REPONSE", response);
           let newComments = response.data.comments;
           comments.value.push(...newComments);
           let newTotalMine = response.data.total_mine;
@@ -200,7 +212,7 @@ export default {
         return_mine: 0,
       };
 
-      console.log(TAG + "NEW COMMENT DATA",data);
+      console.log(TAG + "NEW COMMENT DATA", data);
 
       axios
         .post(page_url, data)
