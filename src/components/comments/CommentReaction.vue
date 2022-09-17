@@ -12,14 +12,15 @@
 import axios from "axios";
 import { ref, inject } from "vue";
 
+const TAG = "COMMENT_REACTION";
+
 export default {
   name: "CommentReaction",
   props: {
     post: {},
   },
   setup(props, { emit }) {
-    console.log("CommentReaction", props.post);
-
+    console.log(TAG, props.post);
     const post = ref(props.post);
     const liked = ref(props.post.liked);
     const likes = ref(props.post.likes);

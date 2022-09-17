@@ -44,7 +44,7 @@ export default {
     show: Boolean,
     post: {},
   },
-  setup(props,{emit}) {
+  setup(props, { emit }) {
     const showModal = ref(props.show);
     const url = inject("url");
     const reasons = ref([]);
@@ -56,6 +56,9 @@ export default {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
         showModal.value = true;
+        if (showModal.value) {
+          getListReasons();
+        }
       }
     );
     const closeModal = () => {
@@ -63,7 +66,7 @@ export default {
     };
 
     onMounted(() => {
-      getListReasons();
+      //getListReasons();
     });
 
     const getListReasons = () => {
@@ -83,14 +86,14 @@ export default {
     const reportPost = (reason) => {
       let page_url = url + "api/v2/report_post";
       const data = {
-        post_id: ""+post_id.value,
-        reason_id: ""+reason.id,
+        post_id: "" + post_id.value,
+        reason_id: "" + reason.id,
       };
       axios
         .post(page_url, data)
         .then((response) => {
           console.log(response);
-          showModal.value = false
+          showModal.value = false;
           emit("listen-report-post");
         })
         .catch((error) => {
@@ -178,7 +181,7 @@ p {
   font-size: 0.875rem;
 }
 
-.clickable{
+.clickable {
   cursor: pointer;
 }
 </style>

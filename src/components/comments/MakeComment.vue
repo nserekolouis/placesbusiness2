@@ -38,7 +38,7 @@
             id="chooseFiles"
             type="file"
             accept="image/*"
-            @change="uploadPostImages($event)"
+            @change="uploadCommentImages($event)"
             multiple
           />
         </div>
@@ -89,7 +89,7 @@
 </template>
 <script>
 import axios from "axios";
-import Auth from "@/Auth.js";
+//import Auth from "@/Auth.js";
 import Constants from "@/constants/index.js";
 
 const bColor = "#288c7f";
@@ -104,7 +104,8 @@ export default {
   },
   data() {
     return {
-      profile_picture: this.url + Auth.user.user_photo,
+      //profile_picture: this.url + Auth.user.user_photo,
+      profile_picture: "",
       post_text: "",
       counter: "",
       image_one: "",
@@ -127,7 +128,7 @@ export default {
     },
   },
   methods: {
-    uploadProfilePicture(event) {
+    uploadCommentImages(event) {
       this.loading = true;
       var count = 0;
 
@@ -207,13 +208,13 @@ export default {
         let page_url = this.url + "api/v2/make_comment";
 
         const data = {
-          post_id: ""+this.post.id,
+          post_id: "" + this.post.id,
           comment_text: this.post_text,
           image_one: this.image_one,
           image_two: this.image_two,
           image_three: this.image_three,
-          image_four: this.image_four
-        }
+          image_four: this.image_four,
+        };
 
         console.log(TAG + "COMMENT DATA", data);
         this.post_text = "";
@@ -300,6 +301,6 @@ label {
 
 .post-item-dropdown {
   position: absolute;
-  top: 114px;
+  bottom: 7px;
 }
 </style>

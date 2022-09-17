@@ -2,12 +2,14 @@
   <div class="container" v-if="showExtras == false">
     <div class="row">
       <post-place-name
+        v-if="Auth.user != null"
         :post="post"
         :index="index"
         @listen-block-user="blockUser"
         @listen-report-comment="reportComment"
         @listen-delete-comment="deleteComment"
       />
+      <comment-place-name-login v-else />
     </div>
     <div class="row">
       <div class="col-2">
@@ -19,7 +21,7 @@
       <div class="col-10">
         <post-user-info :post="post" />
         <post-text :post="post" />
-        <image-one :image_one="post.image_one" />
+        <image-one :post="post" />
         <reaction-component :post="post" />
       </div>
     </div>
@@ -36,6 +38,8 @@ import PostText from "@/components/posts/PostText.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
+import CommentPlaceNameLogin from "@/components/comments/CommentPlaceNameLogin.vue";
+import Auth from "@/Auth.js";
 
 import { ref } from "vue";
 
@@ -74,6 +78,7 @@ export default {
       blockUser,
       reportComment,
       goToUserProfile,
+      Auth,
     };
   },
   components: {
@@ -84,6 +89,7 @@ export default {
     PostProfilePicture,
     PostPlaceName,
     PostExtras,
+    CommentPlaceNameLogin,
   },
 };
 </script>

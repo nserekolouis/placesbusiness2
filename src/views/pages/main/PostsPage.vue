@@ -78,7 +78,6 @@ import TwoImages from "@/components/posts/PostImagesTwo.vue";
 import ThreeImages from "@/components/posts/PostImagesThree.vue";
 import FourImages from "@/components/posts/PostImagesFour.vue";
 import NavAppHeaderSearch from "@/components/NavAppHeaderSearch.vue";
-//import PostExtras from "@/components/posts/PostExtras.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
 
@@ -103,7 +102,6 @@ export default {
     ThreeImages,
     FourImages,
     NavAppHeaderSearch,
-    //PostExtras,
     CenterInfomation,
     TitleComponent,
   },
@@ -113,6 +111,7 @@ export default {
   },
   setup(props, { emit }) {
     const show = ref(true);
+    const showModal = ref(true);
     const posts = ref([]);
     const places = ref([]);
     const scrollComponent = ref(null);
@@ -148,7 +147,8 @@ export default {
     );
 
     onActivated(() => {
-      console.log("Activated", scrollingPosition.value);
+      console.log(TAG + " Activated");
+      document.title = "Places | Home";
       window.addEventListener("scroll", handleScroll);
       active.value = true;
       window.scrollTo(0, scrollingPosition.value);
@@ -343,6 +343,7 @@ export default {
       selectPlace,
       searchedPlace,
       d_post_id,
+      showModal,
     };
   },
   data() {

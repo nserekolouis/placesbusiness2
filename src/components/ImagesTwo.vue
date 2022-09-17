@@ -1,20 +1,44 @@
 <template>
-  <div class="container">
+  <div class="container" @click="showImages">
     <div class="row">
       <div class="col">
-        <img class="post-one-image" :src="this.url + image_one" />
+        <img class="post-one-image" :src="this.url + post.image_one" />
       </div>
       <div class="col">
-        <img class="post-one-image" :src="this.url + image_two" />
+        <img class="post-one-image" :src="this.url + post.image_two" />
       </div>
     </div>
   </div>
+
+  <Teleport to="body">
+    <modal-images :showModal="show" :post="post"></modal-images>
+  </Teleport>
 </template>
 <script>
+import { ref } from "vue";
+import ModalImages from "@/components/ModalImages.vue";
+
 export default {
+  name: "ImagesTwo",
+  components: {
+    ModalImages,
+  },
   props: {
-    image_one: String,
-    image_two: String,
+    post: {},
+  },
+  setup(props) {
+    console.log("Image_Two", props.post);
+    const show = ref(false);
+
+    const showImages = () => {
+      show.value = !show.value;
+      console.log("SHOW IMAGES", show.value);
+    };
+
+    return {
+      show,
+      showImages,
+    };
   },
 };
 </script>

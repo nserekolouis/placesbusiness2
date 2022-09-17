@@ -2,16 +2,16 @@
   <div class="container" @click="showImages">
     <div class="row">
       <div class="col">
-        <img class="post-one-image" :src="this.url + post.image_one" />
+        <img class="post-one-image" :src="this.url + post.image_three" />
+      </div>
+      <div class="col">
+        <img class="post-one-image" :src="this.url + post.image_four" />
       </div>
     </div>
   </div>
 
   <Teleport to="body">
-    <modal-images 
-    :showModal="show"
-    :post="post"
-    ></modal-images>
+    <modal-images :showModal="show" :post="post"></modal-images>
   </Teleport>
 </template>
 <script>
@@ -19,7 +19,7 @@ import { ref } from "vue";
 import ModalImages from "@/components/ModalImages.vue";
 
 export default {
-  name: "ImageOne",
+  name: "ImagesTwo",
   components: {
     ModalImages,
   },
@@ -27,10 +27,9 @@ export default {
     post: {},
   },
   setup(props) {
-    console.log("Image_One",props.post)
+    console.log("Image_Two", props.post);
     const show = ref(false);
 
-    
     const showImages = () => {
       show.value = !show.value;
       console.log("SHOW IMAGES", show.value);
@@ -44,9 +43,6 @@ export default {
 };
 </script>
 <style scoped>
-.post-one-image {
-  height: auto;
-}
 .col {
   padding: 0px;
 }

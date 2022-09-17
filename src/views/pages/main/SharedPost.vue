@@ -1,35 +1,74 @@
 <template>
-  <back-navigation :info="componentName" @listen-move-back="moveBack" />
-  <div class="" ref="scrollComponent" style="margin-top: 10px">
-    <ul class="list-group">
-      <li class="list-group-item">
-        <four-images v-if="post.image_four != null" :post="post" />
-        <three-images v-else-if="post.image_three != null" :post="post" />
-        <two-images v-else-if="post.image_two != null" :post="post" />
-        <one-image v-else-if="post.image_one != null" :post="post" />
-        <only-text v-else :post="post" />
-      </li>
-      <li class="list-group-item">
-        <make-comment :post="post" @listen-comment="newComment" />
-      </li>
-      <li
-        v-for="(post, index) in comments"
-        :key="post.id"
-        class="list-group-item"
+  <div class="row">
+    <div class="col-md-3">
+      <side-bar-login />
+    </div>
+    <div class="col-md-6 border-left">
+      <!-- <back-navigation :info="componentName" @listen-move-back="moveBack" /> -->
+      <title-component :title="componentName" />
+      <div class="" ref="scrollComponent" style="margin-top: 10px">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <four-images v-if="post.image_four != null" :post="post" />
+            <three-images v-else-if="post.image_three != null" :post="post" />
+            <two-images v-else-if="post.image_two != null" :post="post" />
+            <one-image v-else-if="post.image_one != null" :post="post" />
+            <only-text v-else :post="post" />
+          </li>
+          <li v-if="result" class="list-group-item">
+            <make-comment :post="post" @listen-comment="newComment" />
+          </li>
+          <li class="list-group-item">
+            <div style="text-align: center">COMMENTS</div>
+          </li>
+          <li
+            v-for="(post, index) in comments"
+            :key="post.id"
+            class="list-group-item"
+          >
+            <post-extras v-if="post.post_extras == 1" :info="info" />
+            <c-four-images v-else-if="post.image_four != null" :post="post" />
+            <c-three-images v-else-if="post.image_three != null" :post="post" />
+            <c-two-images v-else-if="post.image_two != null" :post="post" />
+            <c-one-image v-else-if="post.image_one != null" :post="post" />
+            <c-only-text
+              v-else
+              :post="post"
+              :index="index"
+              @listen-user-profile="goToUserProfile"
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-3 border-left">
+      <button
+        class="btn d-md-none btn-menu-right"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasResponsive2"
+        aria-controls="offcanvasResponsive2"
       >
-        <post-extras v-if="post.post_extras == 1" :info="info" />
-        <c-four-images v-else-if="post.image_four != null" :post="post" />
-        <c-three-images v-else-if="post.image_three != null" :post="post" />
-        <c-two-images v-else-if="post.image_two != null" :post="post" />
-        <c-one-image v-else-if="post.image_one != null" :post="post" />
-        <c-only-text
-          v-else
-          :post="post"
-          :index="index"
-          @listen-user-profile="goToUserProfile"
-        />
-      </li>
-    </ul>
+        <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      </button>
+      <div
+        class="offcanvas-md offcanvas-end"
+        tabindex="-1"
+        id="offcanvasResponsive2"
+        aria-labelledby="offcanvasResponsiveLabel2"
+      >
+        <div class="offcanvas-body">
+          <button
+            type="button"
+            class="btn-close btn-close-right"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive2"
+            aria-label="Close"
+          ></button>
+          <search-users @listen-search-user-profile="searchUserProfile" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -46,21 +85,43 @@ import CThreeImages from "@/components/comments/CommentThreeImages.vue";
 import CFourImages from "@/components/comments/CommentFourImages.vue";
 import MakeComment from "@/components/comments/MakeComment.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
-import BackNavigation from "@/components/BackNavigation.vue";
+//import BackNavigation from "@/components/BackNavigation.vue";
+import SideBarLogin from "@/components/SideBarLogin.vue";
+import TitleComponent from "@/components/TitleComponent.vue";
+import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
+import Auth from "@/Auth.js";
 import { ref, onMounted, onUnmounted, onActivated } from "vue";
 import { inject } from "vue";
 
-const TAG = "Comments Page";
+const TAG = "COMMENTS_PAGE";
 
 export default {
   name: "CommentsPage",
+  components: {
+    OnlyText,
+    OneImage,
+    TwoImages,
+    ThreeImages,
+    FourImages,
+    COnlyText,
+    COneImage,
+    CTwoImages,
+    CThreeImages,
+    CFourImages,
+    MakeComment,
+    PostExtras,
+    //BackNavigation,
+    SideBarLogin,
+    TitleComponent,
+    SearchUsers,
+  },
   props: {
     id: String,
     from_component: String,
     new_comments: Boolean,
   },
   setup(props, { emit }) {
-    const componentName = "Comments";
+    const componentName = "Post and Comments";
     const url = inject("url");
     const post_id = ref(props.id);
     const post = ref({});
@@ -72,26 +133,14 @@ export default {
     const totalMine = ref(0);
     const totalOthers = ref(0);
     const loadMore = ref(true);
-
     const scrollComponent = ref(null);
+    const result = ref(true);
 
-    // watch(
-    //   () => props.new_comments,
-    //   (newVal, oldVal) => {
-    //     console.log(TAG + " watch newVal", newVal);
-    //     console.log(TAG + " watch comments", oldVal);
-    //     console.log(TAG + " watch id", props.id);
-
-    //     count.value = 0;
-    //     return_mine.value = 0;
-    //     totalMine.value = 0;
-    //     totalOthers.value = 0;
-    //     loadMore.value = true;
-    //     post_id.value = props.id;
-    //     comments.value = [];
-    //     getPost();
-    //   }
-    // );
+    if (Auth.user === null) {
+      result.value = false;
+    } else {
+      result.value = true;
+    }
 
     onActivated(() => {
       console.log(TAG + " onactivated ", props.id);
@@ -252,22 +301,8 @@ export default {
       goToUserProfile,
       componentName,
       moveBack,
+      result,
     };
-  },
-  components: {
-    OnlyText,
-    OneImage,
-    TwoImages,
-    ThreeImages,
-    FourImages,
-    COnlyText,
-    COneImage,
-    CTwoImages,
-    CThreeImages,
-    CFourImages,
-    MakeComment,
-    PostExtras,
-    BackNavigation,
   },
 };
 </script>
@@ -275,5 +310,77 @@ export default {
 h6 {
   display: inline-block;
   margin-left: 10px;
+}
+html:not([dir="rtl"]) .offcanvas.offcanvas-start {
+  transform: translateX(0%);
+}
+
+.btn-close {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+  .btn-close {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  html:not([dir="rtl"]) .offcanvas-sm.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: none;
+  }
+
+  .btn {
+    border: 0px solid black;
+  }
+
+  .btn-menu-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+
+  .offcanvas-md.offcanvas-start {
+    width: 330px;
+  }
+
+  .offcanvas-md.offcanvas-end {
+    width: 330px;
+  }
+
+  .btn-close-right {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+  }
+
+  .btn-close-left {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+  }
+
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  html:not([dir="rtl"]) .offcanvas-md.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: block;
+  }
+
+  .offcanvas-sm.offcanvas-start {
+    width: 330px;
+  }
 }
 </style>

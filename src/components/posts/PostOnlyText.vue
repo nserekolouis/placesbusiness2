@@ -2,11 +2,16 @@
   <div class="container" v-if="showExtras == false">
     <div class="row">
       <post-place-name
+        v-if="Auth.user != null"
         :post="post"
         :index="index"
         @listen-block-user="blockUser"
         @listen-delete-post="deletePost"
         @listen-report-post="reportPost"
+      />
+      <post-place-name-login
+      v-else
+      :post="post"
       />
     </div>
     <div class="row">
@@ -35,6 +40,8 @@ import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import PostPlaceName from "@/components/posts/PostPlaceName.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
 import { ref, watch } from "vue";
+import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
+import Auth from "@/Auth.js";
 
 export default {
   name: "OnlyText",
@@ -48,7 +55,7 @@ export default {
     const showExtras = ref(false);
     const info = ref(null);
     const post = ref(props.post);
-    
+
     watch(
       () => props.deleted_post_id,
       (newVal, oldVal) => {
@@ -94,6 +101,7 @@ export default {
       reportPost,
       goToComments,
       goToUserProfile,
+      Auth,
     };
   },
   components: {
@@ -103,6 +111,7 @@ export default {
     PostProfilePicture,
     PostPlaceName,
     PostExtras,
+    PostPlaceNameLogin,
   },
 };
 </script>

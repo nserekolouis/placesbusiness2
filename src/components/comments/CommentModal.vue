@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { ref, watch, onMounted, inject } from "vue";
+import { ref, watch, inject } from "vue";
+
 import axios from "axios";
 
 export default {
@@ -56,15 +57,18 @@ export default {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
         showModal.value = true;
+        if (showModal.value) {
+          getListReasons();
+        }
       }
     );
     const closeModal = () => {
       showModal.value = false;
     };
 
-    onMounted(() => {
-      getListReasons();
-    });
+    // onMounted(() => {
+    //   getListReasons();
+    // });
 
     const getListReasons = () => {
       let page_url = url + "api/v2/get_reasons_for_reporting";

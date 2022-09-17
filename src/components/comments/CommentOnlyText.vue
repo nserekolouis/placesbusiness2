@@ -2,11 +2,15 @@
   <div class="container" v-if="showExtras == false">
     <div class="row">
       <post-place-name
+        v-if="Auth.user != null"
         :post="post"
         :index="index"
         @listen-block-user="blockUser"
         @listen-report-comment="reportComment"
         @listen-delete-comment="deleteComment"
+      />
+      <comment-place-name-login
+      v-else
       />
     </div>
     <div class="row">
@@ -34,7 +38,12 @@ import PostText from "@/components/posts/PostText.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
+import CommentPlaceNameLogin from "@/components/comments/CommentPlaceNameLogin.vue";
+import Auth from "@/Auth.js";
+
 import { ref } from "vue";
+
+const TAG = "COMMENT_ONLY_TEXT";
 
 export default {
   name: "OnlyText",
@@ -43,6 +52,7 @@ export default {
     index: Number,
   },
   setup(props, { emit }) {
+    console.log(TAG, props.post);
     const showExtras = ref(false);
     const info = ref(null);
 
@@ -72,6 +82,7 @@ export default {
       blockUser,
       reportComment,
       goToUserProfile,
+      Auth
     };
   },
   components: {
@@ -81,6 +92,7 @@ export default {
     PostProfilePicture,
     PostPlaceName,
     PostExtras,
+    CommentPlaceNameLogin,
   },
 };
 </script>

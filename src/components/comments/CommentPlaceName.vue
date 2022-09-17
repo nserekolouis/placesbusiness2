@@ -12,6 +12,9 @@
           ...
         </a>
         <div class="dropdown-menu dropdown-menu-right">
+          <button class="dropdown-item" type="button" @click="shareAction">
+            Copy link
+          </button>
           <button
             v-if="user_id != post.user_id"
             class="dropdown-item"
@@ -52,10 +55,7 @@
     </div>
   </div>
   <Teleport to="body">
-    <modal 
-    :show="show" 
-    :post="post" 
-    @listen-report-comment="reportComment">
+    <modal :show="show" :post="post" @listen-report-comment="reportComment">
       <template #header>
         <h6>Reasons</h6>
       </template>
@@ -68,16 +68,19 @@ import Auth from "@/Auth.js";
 import axios from "axios";
 import Modal from "@/components/comments/CommentModal.vue";
 
+const TAG = "COMMENT_PLACE_NAME";
+
 export default {
   name: "CommentPlaceName",
+  components: {
+    Modal,
+  },
   props: {
     post: {},
     index: Number,
   },
-  components: {
-    Modal
-  },
-  setup() {
+  setup(props) {
+    console.log(TAG, props.post);
     const show = ref(false);
     const showModal = () => {
       console.log("show modal");
@@ -143,7 +146,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("DELETE COMMENT RESPONSE", response);
+          console.log(TAG, response);
           if (response.data.is_deleted == 1) {
             this.$emit("listen-delete-comment");
           }
@@ -171,6 +174,11 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    shareAction() {
+      var link = window.location.origin + "/post/comment/" + this.post.id;
+      console.log(TAG, link);
+      navigator.clipboard.writeText(link);
     },
   },
 };

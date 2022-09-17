@@ -16,6 +16,9 @@
         ...
       </a>
       <div class="dropdown-menu dropdown-menu-right">
+        <button class="dropdown-item" type="button" @click="shareAction">
+          Copy Link
+        </button>
         <button
           v-if="user_id != post.user_id"
           class="dropdown-item"
@@ -72,7 +75,9 @@ import Auth from "@/Auth.js";
 import axios from "axios";
 import Modal from "@/components/posts/PostModal.vue";
 import { ref } from "vue";
-import Constants from "@/constants/index.js"
+import Constants from "@/constants/index.js";
+
+const TAG = "POST_PLACE_NAME"
 
 export default {
   name: "PostPlaceName",
@@ -187,13 +192,18 @@ export default {
         .post(page_url, data)
         .then((response) => {
           console.log("REMOVE PLACE SUB", response);
-          if(response.data.status_code == 1){
-            alert(Constants.REMOVE_PLACE+""+this.post.main_text)
+          if (response.data.status_code == 1) {
+            alert(Constants.REMOVE_PLACE + "" + this.post.main_text);
           }
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    shareAction() {
+      var link = window.location.origin + "/post/" + this.post.post_id;
+      console.log(TAG, link);
+      navigator.clipboard.writeText(link);
     },
   },
 };

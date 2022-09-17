@@ -2,12 +2,14 @@
   <div class="container" v-if="showExtras == false">
     <div class="row">
       <post-place-name
+        v-if="Auth.user != null"
         :post="post"
         :index="index"
         @listen-block-user="blockUser"
         @listen-report-comment="reportComment"
         @listen-delete-comment="deleteComment"
       />
+      <comment-place-name-login v-else />
     </div>
     <div class="row">
       <div class="col-2">
@@ -19,8 +21,8 @@
       <div class="col-10">
         <post-user-info :post="post" />
         <post-text :post="post" />
-        <images-two :image_one="post.image_one" :image_two="post.image_two" />
-        <image-one :image_one="post.image_three" />
+        <images-two :post="post" />
+        <image-one :post="post" />
         <reaction-component :post="post" />
       </div>
     </div>
@@ -32,12 +34,14 @@
 <script>
 import ReactionComponent from "@/components/comments/CommentReaction.vue";
 import ImagesTwo from "@/components/ImagesTwo.vue";
-import ImageOne from "@/components/ImageOne.vue";
+import ImageOne from "@/components/ImagesThree.vue";
 import PostUserInfo from "@/components/posts/PostUserInfo.vue";
 import PostText from "@/components/posts/PostText.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
+import CommentPlaceNameLogin from "@/components/comments/CommentPlaceNameLogin.vue";
+import Auth from "@/Auth.js";
 
 import { ref } from "vue";
 
@@ -77,6 +81,7 @@ export default {
       reportComment,
       PostExtras,
       goToUserProfile,
+      Auth
     };
   },
   components: {
@@ -87,6 +92,7 @@ export default {
     PostText,
     PostProfilePicture,
     PostPlaceName,
+    CommentPlaceNameLogin,
   },
 };
 </script>

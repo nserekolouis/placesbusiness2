@@ -1,13 +1,13 @@
 <script>
-import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue";
-import PostsPage from "@/views/pages/main/home/PostsPage.vue";
+import CommentsPage from "@/views/pages/main/CommentsPage.vue";
+import PostsPage from "@/views/pages/main/PostsPage.vue";
 import UserPostsPage from "@/views/pages/main/userprofile/UserPostsPage.vue";
 import NotificationSection from "@/views/pages/main/notifications/NotificationSection.vue";
 
-import AboutSection from "@/views/pages/main/aboutplaces/AboutSection.vue";
-import AccountsSection from "@/views/pages/main/accounts/AccountsSection.vue";
-import EditProfileSection from "@/views/pages/main/editprofile/EditProfileSection.vue";
-import PrivacyAndSafety from "@/views/pages/main/privacyandsafety/PrivacyAndSafetySection.vue";
+import AboutSection from "@/views/pages/main/AboutSection.vue";
+import AccountsSection from "@/views/pages/main/AccountsSection.vue";
+import EditProfileSection from "@/views/pages/main/EditProfileSection.vue";
+import PrivacyAndSafety from "@/views/pages/main/PrivacyAndSafetySection.vue";
 import SideBar from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 

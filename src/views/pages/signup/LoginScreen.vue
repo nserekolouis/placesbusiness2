@@ -112,7 +112,7 @@ const callback = (response) => {
   axios
     .post(page_url, data)
     .then((response) => {
-      console.log("Response LOGIN", response.data.exist);
+      console.log("LOGIN", response);
       console.log("Response LOGIN USER", response.data.user.userhandle);
       Auth.login(response.data.token, response.data.user);
       console.log("1");

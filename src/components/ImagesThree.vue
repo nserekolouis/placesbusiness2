@@ -2,16 +2,13 @@
   <div class="container" @click="showImages">
     <div class="row">
       <div class="col">
-        <img class="post-one-image" :src="this.url + post.image_one" />
+        <img class="post-one-image" :src="this.url + post.image_three" />
       </div>
     </div>
   </div>
 
   <Teleport to="body">
-    <modal-images 
-    :showModal="show"
-    :post="post"
-    ></modal-images>
+    <modal-images :showModal="show" :post="post"></modal-images>
   </Teleport>
 </template>
 <script>
@@ -27,10 +24,9 @@ export default {
     post: {},
   },
   setup(props) {
-    console.log("Image_One",props.post)
+    console.log("Image_One", props.post);
     const show = ref(false);
 
-    
     const showImages = () => {
       show.value = !show.value;
       console.log("SHOW IMAGES", show.value);

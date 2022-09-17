@@ -6,8 +6,8 @@ import UploadProfile from '@/views/pages/signup/ProfileScreen.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
 import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
-import PostsPage from "@/views/pages/main/home/PostsPage.vue"
-import CommentsPage from "@/views/pages/main/comments/CommentsPage.vue"
+import SharedPost from "@/views/pages/main/SharedPost.vue"
+import SharedComment from "@/views/pages/main/SharedComment.vue"
 
 
 const routes = [
@@ -33,19 +33,31 @@ const routes = [
     path: '/home',
     name: "SwitchScreen",
     component: SwitchScreen,
-      children:[
-        {
-          path: '',
-          name: 'PostsPage',
-          component: PostsPage
-        },
-        {
-          path: '/home/posts/comments/:id',
-          name: 'CommentsPage',
-          component: CommentsPage,
-          props: true
-        }
-      ]
+      // children:[
+      //   {
+      //     path: '',
+      //     name: 'PostsPage',
+      //     component: PostsPage
+      //   },
+      //   {
+      //     path: '/home/posts/comments/:id',
+      //     name: 'CommentsPage',
+      //     component: CommentsPage,
+      //     props: true
+      //   }
+      // ]
+  },
+  {
+    path: '/post/:id',
+    name: "SharedPost",
+    component: SharedPost,
+    props: true
+  },
+  {
+    path: '/post/comment/:id',
+    name: "SharedComment",
+    component: SharedComment,
+    props: true
   },
   {
     path: '/:catchAll(.*)*',
