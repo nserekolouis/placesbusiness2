@@ -1,5 +1,5 @@
 <template>
-  <div class="" style="position: relative">
+  <div class="top-class">
     <input
       class="form-control form-control-sm"
       type="search"
@@ -26,9 +26,7 @@
         </div>
       </li>
     </ul>
-    <make-post-component 
-    :place="place" 
-    @listen-post="newPost" />
+    <make-post-component :place="place" @listen-post="newPost" />
   </div>
 </template>
 <script>
@@ -113,5 +111,14 @@ export default {
   position: absolute;
   width: -webkit-fill-available;
   z-index: 1;
+}
+.top-class {
+  position: relative;
+  background-color: #b3b3b3;
+  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 5px;
 }
 </style>

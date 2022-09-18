@@ -1,27 +1,27 @@
 <template>
   <title-component :title="componentTitle" />
-  <div class="div-select">
-    <select
-      class="form-select form-select-sm"
-      aria-label="Default select examples"
-      @change="selectPlace($event, $event.target.selectedIndex)"
-    >
-      <option :selected="false">All Places</option>
-      <option v-for="place in places" :key="place.sub_id">
-        <div class="">
-          <p>{{ place.main_text }}</p>
-        </div>
-      </option>
-    </select>
-  </div>
   <div>
-    <nav-app-header-search
-      :selected_place="place"
-      @listen-post="newPost"
-      @listen-place="searchedPlace"
+    <nav-app-header-search 
+    :selected_place="place" 
+    @listen-post="newPost" 
+    @listen-place="searchedPlace"
     />
   </div>
   <div id="container" ref="scrollComponent">
+    <div class="div-select">
+      <select
+        class="form-select form-select-sm"
+        aria-label="Default select examples"
+        @change="selectPlace($event, $event.target.selectedIndex)"
+      >
+        <option :selected="false">Recent Places</option>
+        <option v-for="place in places" :key="place.sub_id">
+          <div class="">
+            <p>{{ place.main_text }}</p>
+          </div>
+        </option>
+      </select>
+    </div>
     <center-infomation :info="alert" v-show="show" class="info-missing" />
     <ul class="list-group" style="margin-top: 10px">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
@@ -224,15 +224,15 @@ export default {
     };
 
     const newPost = () => {
-      if (place.value == null) {
-        id.value = 0;
-        getPosts();
-      } else {
-        count.value = 0;
-        total.value = 0;
-        id.value = 0;
-        getPlacePosts();
-      }
+      //if (place.value == null) {
+      id.value = 0;
+      getPosts();
+      //} else {
+      //count.value = 0;
+      //total.value = 0;
+      //id.value = 0;
+      //getPlacePosts();
+      //}
     };
 
     const goToComments = (post) => {
@@ -323,11 +323,12 @@ export default {
     const componentTitle = "Home";
 
     const searchedPlace = (searched_place) => {
-      place.value = searched_place;
-      count.value = 0;
-      total.value = 0;
-      id.value = 0;
-      getPlacePosts();
+      console.log("SEARCHED_PLACE", searched_place);
+      //place.value = {};
+      //count.value = 0;
+      //total.value = 0;
+      //id.value = 0;
+      //getPlacePosts();
     };
 
     return {
@@ -362,6 +363,12 @@ h6 {
 
 .div-select {
   margin-top: 10px;
+  width: 25%;
+  min-width: 200px;
+  /* position: absolute;
+  top: 220.5px;
+  width: 25%;
+  min-width: 200px; */
 }
 
 @media (max-width: 575.98px) {

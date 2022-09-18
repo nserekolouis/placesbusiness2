@@ -6,7 +6,7 @@
       class="form-control form-control-sm"
       v-model="post_text"
       :maxlength="320"
-      rows="3"
+      rows="4"
       placeholder="What is really happening?"
     ></textarea>
   </div>
@@ -65,6 +65,7 @@
           v-show="loading"
           class="spinner-border spinner-border-sm"
           role="status"
+          style="margin-right:5px;"
         >
           <span class="sr-only">Loading...</span>
         </div>
@@ -93,7 +94,7 @@ import Auth from "@/Auth.js";
 import Constants from "@/constants/index.js";
 
 const bColor = "#288c7f";
-const aColor = "#c1c1c1";
+const aColor = "#fff";
 
 //const TAG = "MAKE POST";
 
@@ -106,7 +107,7 @@ export default {
     return {
       profile_picture: this.url + Auth.user.user_photo,
       post_text: "",
-      counter: "",
+      counter: "0/320",
       image_one: "",
       image_two: "",
       image_three: "",
@@ -310,6 +311,6 @@ label {
 
 .post-item-dropdown{
   position: absolute;
-  top: 121px;
+  bottom: 10px;
 }
 </style>
