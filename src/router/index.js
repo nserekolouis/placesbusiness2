@@ -10,6 +10,7 @@ import SharedPost from "@/views/pages/main/SharedPost.vue"
 import SharedComment from "@/views/pages/main/SharedComment.vue"
 
 
+
 const routes = [
   {
     path: "/",

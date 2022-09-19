@@ -10,6 +10,7 @@ import EditProfileSection from "@/views/pages/main/EditProfileSection.vue";
 import PrivacyAndSafety from "@/views/pages/main/PrivacyAndSafetySection.vue";
 import SideBar from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
+import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 
 export default {
   components: {
@@ -23,6 +24,7 @@ export default {
     SideBar,
     SearchUsers,
     PostsPage,
+    PlaceDetailsPage,
   },
   data() {
     return {
@@ -36,6 +38,7 @@ export default {
       new_notifications: false,
       deleteArray: [],
       del_post_id: 0,
+      place: "",
     };
   },
   methods: {
@@ -108,6 +111,12 @@ export default {
       console.log("DELETED POST ID 2", d_post_id);
       this.del_post_id = d_post_id;
     },
+    goToPlaceDetailsPage(place_details) {
+      console.log("PLACE_DETAILS_PAGE",place_details);
+      this.place = place_details;
+      this.from_component.push(this.current);
+      this.current = "PlaceDetailsPage";
+    },
   },
 };
 </script>
@@ -137,6 +146,7 @@ export default {
           :new_comments="new_comments"
           :new_notifications="new_notifications"
           :deleted_post_id="del_post_id"
+          :place="place"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -147,6 +157,7 @@ export default {
           @listen-user-profile="goToUserProfile"
           @listen-post-details="goToPostDetails"
           @listen-move-back="moveBack"
+          @listen-place-page="goToPlaceDetailsPage"
         ></component>
       </KeepAlive>
     </div>
@@ -217,12 +228,7 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
   .offcanvas-md.offcanvas-start {
     width: 330px;
   }
-
-  .offcanvas-md.offcanvas-end {
-    width: 330px;
-  }
-
-  .btn-close-right {
+  componentTitle .btn-close-right {
     position: absolute;
     left: 1px;
     top: 1px;

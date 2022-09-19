@@ -1,26 +1,36 @@
 <template>
   <title-component :title="componentTitle" />
   <div>
-    <nav-app-header-search 
-    :selected_place="place" 
-    @listen-post="newPost" 
-    @listen-place="searchedPlace"
+    <nav-app-header-search
+      :selected_place="place"
+      @listen-post="newPost"
+      @listen-place="searchedPlace"
     />
   </div>
   <div id="container" ref="scrollComponent">
     <div class="div-select">
-      <select
-        class="form-select form-select-sm"
-        aria-label="Default select examples"
-        @change="selectPlace($event, $event.target.selectedIndex)"
-      >
-        <option :selected="false">Recent Places</option>
-        <option v-for="place in places" :key="place.sub_id">
-          <div class="">
-            <p>{{ place.main_text }}</p>
-          </div>
-        </option>
-      </select>
+      <div class="row">
+        <div class="col-11">
+          <select
+            class="form-select form-select-sm"
+            aria-label="Default select examples"
+            @change="selectPlace($event, $event.target.selectedIndex)"
+          >
+            <option :selected="false" class="select-option">
+              <div>Recent Places</div>
+            </option>
+            <option v-for="place in places" :key="place.sub_id">
+              <div>{{ place.main_text }}</div>
+            </option>
+          </select>
+        </div>
+        <div class="col-1 place-details" @click="goToPlacePage">
+          <font-awesome-icon
+            class="icon-color"
+            icon="fa-solid fa-location-pin"
+          />
+        </div>
+      </div>
     </div>
     <center-infomation :info="alert" v-show="show" class="info-missing" />
     <ul class="list-group" style="margin-top: 10px">
@@ -86,12 +96,11 @@ import {
   ref,
   onMounted,
   watch,
-  onUnmounted,
   onActivated,
   onDeactivated,
 } from "vue";
 
-const TAG = "POSTS PAGE";
+const TAG = "POSTS_PAGE";
 
 export default {
   name: "PostsPage",
@@ -158,23 +167,17 @@ export default {
       active.value = false;
       window.removeEventListener("scroll", handleScroll);
       console.log("Deactivated", scrollingPosition.value);
-      //var container = this.el.querySelector("#container");
-      //container.scrollTop = container.scrollHeight;
-      //window.scrollTo(0, 500);
     });
 
     onMounted(() => {
       console.log("Mounted");
       document.title = "Places | Home";
-      //window.addEventListener("scroll", handleScroll);
       id.value = 0;
       getPosts();
       getPlaceSubscriptions();
     });
 
-    onUnmounted(() => {
-      //window.removeEventListener("scroll", handleScroll);
-    });
+   
 
     const getPosts = () => {
       let page_url = url + "api/v2/get_posts";
@@ -224,15 +227,8 @@ export default {
     };
 
     const newPost = () => {
-      //if (place.value == null) {
       id.value = 0;
       getPosts();
-      //} else {
-      //count.value = 0;
-      //total.value = 0;
-      //id.value = 0;
-      //getPlacePosts();
-      //}
     };
 
     const goToComments = (post) => {
@@ -249,52 +245,12 @@ export default {
       console.log("EVENT", selectedIndex);
       if (selectedIndex == 0) {
         place.value = "";
-        id.value = 0;
-        getPosts();
       } else {
-        console.log(places.value[selectedIndex - 1]);
+        console.log(TAG, places.value[selectedIndex - 1]);
         place.value = places.value[selectedIndex - 1];
-        count.value = 0;
-        total.value = 0;
-        id.value = 0;
-        getPlacePosts();
       }
     };
 
-    const getPlacePosts = () => {
-      let page_url = url + "api/v2/get_place_posts";
-      const data = {
-        id: "" + id.value,
-        place_id: "" + place.value.places_id,
-      };
-      console.log("SEARCHED PLACE", data);
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("POSTS Places", response);
-          loadMore.value = true;
-          let newPosts = response.data.posts;
-          if (newPosts.length > 0) {
-            show.value = false;
-            if (id.value == 0) {
-              posts.value = newPosts;
-            } else {
-              posts.value.push(...newPosts);
-            }
-            count.value += newPosts.length;
-            total.value = response.data.total;
-            console.log("POSTS count", count.value);
-            console.log("POSTS total", total.value);
-          } else {
-            posts.value = [];
-            show.value = true;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          loadMore.value = true;
-        });
-    };
 
     const handleScroll = () => {
       let element = scrollComponent.value;
@@ -312,11 +268,7 @@ export default {
         id.value = posts.value[posts.value.length - 1].id;
         console.log("POSTS", id.value);
         console.log("POSTS", place.value);
-        if (Object.keys(place.value).length === 0) {
-          getPosts();
-        } else {
-          getPlacePosts();
-        }
+        getPosts();
       }
     };
 
@@ -324,11 +276,15 @@ export default {
 
     const searchedPlace = (searched_place) => {
       console.log("SEARCHED_PLACE", searched_place);
-      //place.value = {};
-      //count.value = 0;
-      //total.value = 0;
-      //id.value = 0;
-      //getPlacePosts();
+      getPlaceSubscriptions();
+    };
+
+    const goToPlacePage = () => {
+      if (Object.keys(place.value).length != 0) {
+        emit('listen-place-page',place.value);
+      }else{
+        alert('Select a place');
+      }
     };
 
     return {
@@ -345,6 +301,7 @@ export default {
       searchedPlace,
       d_post_id,
       showModal,
+      goToPlacePage,
     };
   },
   data() {
@@ -363,12 +320,25 @@ h6 {
 
 .div-select {
   margin-top: 10px;
-  width: 25%;
+  width: 98%;
   min-width: 200px;
   /* position: absolute;
   top: 220.5px;
   width: 25%;
   min-width: 200px; */
+}
+
+.place-details {
+  padding-top: 4px;
+  border: 1px solid #ced4da;
+  text-align: center;
+  border-radius: 5px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.icon-color {
+  color: #288c7f;
 }
 
 @media (max-width: 575.98px) {
