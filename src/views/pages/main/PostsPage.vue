@@ -319,6 +319,7 @@ h6 {
 }
 
 .div-select {
+  display: none;
   margin-top: 10px;
   width: 98%;
   min-width: 200px;

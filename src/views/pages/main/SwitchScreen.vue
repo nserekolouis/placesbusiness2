@@ -229,7 +229,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
   .offcanvas-md.offcanvas-start {
     width: 330px;
   }
-  componentTitle .btn-close-right {
+
+  .componentTitle .btn-close-right {
     position: absolute;
     left: 1px;
     top: 1px;

@@ -204,5 +204,8 @@ export default {
 }
 
 @media (max-width: 1399.98px) {
+  .modal-container {
+    width: 30%;
+  }
 }
 </style>
