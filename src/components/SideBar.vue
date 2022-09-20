@@ -21,6 +21,7 @@
         data-bs-dismiss="offcanvas"
         data-bs-target="#offcanvasResponsive"
         aria-label="Close"
+        style="border: 1px solid black"
       ></button>
       <div class="d-flex flex-column flex-shrink-0 p-3 bg-white sb">
         <a

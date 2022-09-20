@@ -7,13 +7,20 @@
     </div>
     <div class="col-6" style="text-align: right">
       <div class="profile-item">
-        <button type="button" class="btn btn-primary btn-sm">UnFollow Place</button>
+        <button type="button" class="btn btn-primary btn-sm">
+          UnFollow Place
+        </button>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { onActivated, inject, ref } from "vue";
+import {
+  // onMounted,
+  onActivated,
+  inject,
+  ref,
+} from "vue";
 import axios from "axios";
 
 const TAG = "PLACE_PROFILE";
@@ -29,7 +36,12 @@ export default {
     const placeDetails = ref({});
     const numFollowers = ref(0);
 
+    // onMounted(() => {
+    //   getPlacePageDetails();
+    // });
+
     onActivated(() => {
+      place.value = props.place;
       getPlacePageDetails();
     });
 

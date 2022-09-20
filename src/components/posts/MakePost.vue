@@ -65,7 +65,7 @@
           v-show="loading"
           class="spinner-border spinner-border-sm"
           role="status"
-          style="margin-right:5px;"
+          style="margin-right: 5px"
         >
           <span class="sr-only">Loading...</span>
         </div>
@@ -120,7 +120,7 @@ export default {
     post_text(currentValue) {
       console.log("Post Text", currentValue.length);
       this.counter = currentValue.length + "/" + "320";
-      if (currentValue.length > 0) {
+      if (currentValue.length > 0 && Object.keys(this.place).length != 0) {
         this.activeColor = bColor;
       } else {
         this.activeColor = aColor;
@@ -309,7 +309,7 @@ label {
   right: 0px;
 }
 
-.post-item-dropdown{
+.post-item-dropdown {
   position: absolute;
   bottom: 10px;
 }

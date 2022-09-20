@@ -152,7 +152,7 @@ export default {
 }
 
 .modal-container {
-  width: 60%;
+  width: 80%;
   min-width: 280px;
   padding: 5px;
   background-color: black;
@@ -179,5 +179,30 @@ export default {
   margin-bottom: 1rem;
   margin-left: 15%;
   list-style: none;
+}
+
+.modal-mask {
+  background-color: black;
+}
+
+@media (max-width: 575.98px) {
+}
+
+@media (max-width: 767.98px) {
+}
+
+@media (max-width: 991.98px) {
+  .modal-container {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .modal-container {
+    width: 30%;
+  }
+}
+
+@media (max-width: 1399.98px) {
 }
 </style>

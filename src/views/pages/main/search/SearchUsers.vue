@@ -1,29 +1,35 @@
 <template>
   <div class="container" style="margin-top: 10px">
     <div class="row">
-      <input
-        class="form-control form-control-sm"
-        type="search"
-        placeholder="Search for users"
-        aria-label="Search User"
-        v-model="search_user"
-        @input="searchUser"
-      />
-      <ul class="list-group" v-if="usersFound">
-        <li
-          v-for="user in users"
-          :key="user.id"
-          class="list-group-item"
-          @click="selectUser(user)"
-        >
+      <div class="col">
+        <input
+          class="form-control form-control-sm"
+          type="search"
+          placeholder="Search for users"
+          aria-label="Search User"
+          v-model="search_user"
+          @input="searchUser"
+          style="min-width: 200px"
+        />
+      </div>
+      <div class="col">
+        <ul class="list-group" v-if="usersFound">
+          <li
+            v-for="user in users"
+            :key="user.id"
+            class="list-group-item"
+            @click="selectUser(user)"
+            style="padding:5px; cursor:pointer"
+          >
             <user-item :post="user" />
-        </li>
-      </ul>
-      <ul class="list-group" v-else>
-        <li class="list-group-item">
+          </li>
+        </ul>
+        <ul class="list-group" v-else>
+          <li class="list-group-item">
             <p>No Users Founder</p>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -84,7 +90,7 @@ export default {
       console.log("selectUser...", user);
       this.search_user = "";
       this.users = [];
-      this.$emit("listen-search-user-profile",user.app_user_id);
+      this.$emit("listen-search-user-profile", user.app_user_id);
     },
   },
 };
@@ -95,7 +101,7 @@ export default {
   margin-left: 1px;
   margin-right: 1px;
 }
-.list-group{
-    padding: 0px;
+.list-group {
+  padding: 0px;
 }
 </style>

@@ -77,7 +77,7 @@ import Modal from "@/components/posts/PostModal.vue";
 import { ref } from "vue";
 import Constants from "@/constants/index.js";
 
-const TAG = "POST_PLACE_NAME"
+const TAG = "POST_PLACE_NAME";
 
 export default {
   name: "PostPlaceName",
@@ -233,9 +233,10 @@ export default {
 .p-place-name {
   margin-bottom: 0px;
   padding-top: 5px;
-  font-size: 0.875rem;
+  font-size: 12px;
   font-weight: bold;
   color: #288c7f;
-  text-decoration: none;
+  text-decoration: underline;
+  text-align: left;
 }
 </style>

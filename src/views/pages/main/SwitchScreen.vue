@@ -112,7 +112,7 @@ export default {
       this.del_post_id = d_post_id;
     },
     goToPlaceDetailsPage(place_details) {
-      console.log("PLACE_DETAILS_PAGE",place_details);
+      console.log("PLACE_DETAILS_PAGE", place_details);
       this.place = place_details;
       this.from_component.push(this.current);
       this.current = "PlaceDetailsPage";
@@ -184,6 +184,7 @@ export default {
             data-bs-dismiss="offcanvas"
             data-bs-target="#offcanvasResponsive2"
             aria-label="Close"
+            style="border: 1px solid black"
           ></button>
           <search-users @listen-search-user-profile="searchUserProfile" />
         </div>

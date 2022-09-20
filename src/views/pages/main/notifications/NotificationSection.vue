@@ -3,12 +3,12 @@
   <center-infomation :info="info" v-show="show" class="info-missing" />
   <ul class="list-group" ref="scrollComponent">
     <li
-      v-for="(post, index) in notifications"
-      :key="post.id"
+      v-for="(notification, index) in notifications"
+      :key="notification.id"
       class="list-group-item"
     >
       <notification-item
-        :post="post"
+        :notification="notification"
         :index="index"
         @listen-post-details="goToPostDetails"
         @listen-user-profile="goToUserProfile"

@@ -1,12 +1,12 @@
 <template>
-  <div class="row">
-    <div class="col-2">
-      <user-photo :post="post" />
+    <div class="row">
+      <div class="col-2">
+        <user-photo :post="post" />
+      </div>
+      <div class="col-10">
+        <post-user-info :post="post" />
+      </div>
     </div>
-    <div class="col-10">
-      <post-user-info :post="post" />
-    </div>
-  </div>
 </template>
 <script>
 import PostUserInfo from "@/views/pages/main/search/UserInfo.vue";

@@ -2,30 +2,30 @@
   <div class="container">
     <div
       class="row"
-      v-if="clicked == false"
+      v-if="clicked === false"
       style="background-color: #f5f5f5; padding: 5px"
     >
       <div class="col-2">
         <post-profile-picture
-          :post="post"
+          :post="notification"
           @listen-user-profile="goToUserProfile"
         />
       </div>
       <div class="col-10 clickable" @click="updateNotificationClicked">
-        <post-user-info :post="post" />
-        <notification-text :post="post" />
+        <post-user-info :post="notification" />
+        <notification-text :post="notification" />
       </div>
     </div>
     <div class="row" v-else>
       <div class="col-2">
         <post-profile-picture
-          :post="post"
+          :post="notification"
           @listen-user-profile="goToUserProfile"
         />
       </div>
       <div class="col-10 clickable" @click="updateNotificationClicked">
-        <post-user-info :post="post" />
-        <notification-text :post="post" />
+        <post-user-info :post="notification" />
+        <notification-text :post="notification" />
       </div>
     </div>
   </div>
@@ -35,26 +35,42 @@ import PostUserInfo from "@/components/posts/PostUserInfo.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import NotificationText from "@/views/pages/main/notifications/NotificationText.vue";
 import axios from "axios";
-import { ref, inject, onMounted } from "vue";
+import {
+  ref,
+  inject,
+  onMounted,
+  onActivated,
+} from "vue";
 
 const TAG = "NOTIFICATION_ITEM";
 
 export default {
   name: "NotificationItem",
   props: {
-    post: {},
+    notification: {},
     index: Number,
   },
   setup(props, { emit }) {
-    console.log("NOTIFICATION ITEM", props.index);
     const clicked = ref(false);
     const url = inject("url");
-    const note_id = ref(props.post.id);
-    const post_id = ref(props.post.post_id);
+    const notification_id = ref(props.notification.id);
+    const post_id = ref(props.notification.post_id);
 
     onMounted(() => {
-      console.log("NOTIFICATIONS ITEM ONMOUNTED", props.post.clicked);
-      if (props.post.clicked == 0) {
+      //console.log(TAG, props.notification.clicked);
+      if (props.notification.clicked == 0) {
+        clicked.value = false;
+      } else {
+        clicked.value = true;
+      }
+    });
+
+    onActivated(() => {
+      //console.log(TAG, props.notification.clicked);
+      notification_id.value = props.notification.id;
+      post_id.value = props.notification.post_id;
+
+      if (props.notification.clicked == 0) {
         clicked.value = false;
       } else {
         clicked.value = true;
@@ -62,17 +78,18 @@ export default {
     });
 
     const updateNotificationClicked = () => {
-      console.log("NOTIFICATION CLICKED");
       let page_url = url + "api/v2/update_clicked";
+
       const data = {
-        notification_id: "" + note_id.value,
+        notification_id: "" + notification_id.value,
       };
-      console.log(TAG,props.post)
+
+      console.log(TAG, data);
+
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log(response);
-          console.log("NOTIFICATION ID", note_id.value);
+          console.log(TAG,response);
           clicked.value = true;
           emit("listen-post-details", post_id.value);
         })
