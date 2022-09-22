@@ -8,6 +8,7 @@
         @listen-block-user="blockUser"
         @listen-delete-post="deletePost"
         @listen-report-post="reportPost"
+        @listen-place-page="goToPlacePage"
       />
       <post-place-name-login v-else :post="post" />
     </div>
@@ -92,6 +93,10 @@ export default {
       emit("listen-user-profile", post);
     };
 
+    const goToPlacePage = (place) => {
+      emit("listen-place-page", place);
+    };
+
     return {
       showExtras,
       info,
@@ -101,6 +106,7 @@ export default {
       goToComments,
       goToUserProfile,
       Auth,
+      goToPlacePage,
     };
   },
   components: {

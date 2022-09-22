@@ -24,12 +24,12 @@
             </option>
           </select>
         </div>
-        <div class="col-1 place-details" @click="goToPlacePage">
+        <!-- <div class="col place-details" @click="goToPlacePage">
           <font-awesome-icon
             class="icon-color"
             icon="fa-solid fa-location-pin"
           />
-        </div>
+        </div> -->
       </div>
     </div>
     <center-infomation :info="alert" v-show="show" class="info-missing" />
@@ -42,6 +42,7 @@
           :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
+          @listen-place-page="goToPlacePage"
         />
         <three-images
           v-else-if="post.image_three != null"
@@ -50,6 +51,7 @@
           :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
+          @listen-place-page="goToPlacePage"
         />
         <two-images
           v-else-if="post.image_two != null"
@@ -58,6 +60,7 @@
           :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
+          @listen-place-page="goToPlacePage"
         />
         <one-image
           v-else-if="post.image_one != null"
@@ -66,6 +69,7 @@
           :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
+          @listen-place-page="goToPlacePage"
         />
         <only-text
           v-else
@@ -75,7 +79,11 @@
           :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
+          @listen-place-page="goToPlacePage"
         />
+      </li>
+      <li v-show="showSpin" class="list-group-item">
+        <spinner-component :spin="spin" :info="spinInfo" />
       </li>
     </ul>
   </div>
@@ -90,15 +98,8 @@ import FourImages from "@/components/posts/PostImagesFour.vue";
 import NavAppHeaderSearch from "@/components/NavAppHeaderSearch.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
-
-import {
-  inject,
-  ref,
-  onMounted,
-  watch,
-  onActivated,
-  onDeactivated,
-} from "vue";
+import SpinnerComponent from "@/components/SpinnerComponent.vue";
+import { inject, ref, onMounted, watch, onActivated, onDeactivated } from "vue";
 
 const TAG = "POSTS_PAGE";
 
@@ -113,6 +114,7 @@ export default {
     NavAppHeaderSearch,
     CenterInfomation,
     TitleComponent,
+    SpinnerComponent,
   },
   props: {
     new_posts: Boolean,
@@ -133,6 +135,9 @@ export default {
     const d_post_id = ref(props.deleted_post_id);
     const scrollingPosition = ref(0);
     const active = ref(true);
+    const spin = ref(false);
+    const spinInfo = ref(null);
+    const showSpin = ref(false);
 
     watch(
       () => props.new_posts,
@@ -177,8 +182,6 @@ export default {
       getPlaceSubscriptions();
     });
 
-   
-
     const getPosts = () => {
       let page_url = url + "api/v2/get_posts";
       const data = {
@@ -187,7 +190,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("POSTS", response);
+          console.log(TAG, response);
           loadMore.value = true;
           let newPosts = response.data.posts;
           if (newPosts.length > 0) {
@@ -200,8 +203,13 @@ export default {
             }
             count.value += newPosts.length;
             total.value = response.data.total;
-            console.log("POSTS count", count.value);
-            console.log("POSTS total", total.value);
+            console.log(TAG + " COUNT ", count.value);
+            console.log(TAG + " TOTAL ", total.value);
+
+            if (count.value < total.value) {
+              spin.value = true;
+              showSpin.value = true;
+            }
           }
         })
         .catch((error) => {
@@ -228,6 +236,8 @@ export default {
 
     const newPost = () => {
       id.value = 0;
+      count.value = 0;
+      total.value = 0;
       getPosts();
     };
 
@@ -251,23 +261,41 @@ export default {
       }
     };
 
-
     const handleScroll = () => {
       let element = scrollComponent.value;
       if (active.value) {
         scrollingPosition.value = window.scrollY;
-        console.log(TAG + " Scroll Position ", scrollingPosition.value);
+        //console.log(TAG + " Scroll Position ", scrollingPosition.value);
+      }
+
+      console.log(
+        TAG + " height ",
+        element.getBoundingClientRect().bottom < window.innerHeight
+      );
+
+      // if (element.getBoundingClientRect().bottom < window.innerHeight){
+      //   showSpin.value = true
+      // }else{
+      //   showSpin.value = false;
+      // }
+
+      console.log(TAG + " load more ", loadMore.value);
+
+      console.log(TAG + " count ", count.value < total.value);
+
+      if (count.value >= total.value) {
+        spin.value = false;
+        spinInfo.value = "NO MORE POSTS";
       }
 
       if (
-        element.getBoundingClientRect().bottom < window.innerHeight &&
+        element.getBoundingClientRect().bottom < window.innerHeight + 10 &&
         loadMore.value &&
         count.value < total.value
       ) {
         loadMore.value = false;
         id.value = posts.value[posts.value.length - 1].id;
-        console.log("POSTS", id.value);
-        console.log("POSTS", place.value);
+        console.log(TAG, "SCROLL LOAD MORE");
         getPosts();
       }
     };
@@ -279,12 +307,13 @@ export default {
       getPlaceSubscriptions();
     };
 
-    const goToPlacePage = () => {
-      if (Object.keys(place.value).length != 0) {
-        emit('listen-place-page',place.value);
-      }else{
-        alert('Select a place');
-      }
+    const goToPlacePage = (p) => {
+      // if (Object.keys(place.value).length != 0) {
+      //   emit("listen-place-page", place.value);
+      // } else {
+      //   alert("Select a place");
+      // }
+      emit("listen-place-page", p);
     };
 
     return {
@@ -302,6 +331,9 @@ export default {
       d_post_id,
       showModal,
       goToPlacePage,
+      spin,
+      spinInfo,
+      showSpin,
     };
   },
   data() {
@@ -319,10 +351,9 @@ h6 {
 }
 
 .div-select {
-  display: none;
   margin-top: 10px;
-  width: 98%;
-  min-width: 200px;
+  width: 40px;
+  /* min-width: 200px; */
   /* position: absolute;
   top: 220.5px;
   width: 25%;
@@ -336,6 +367,7 @@ h6 {
   border-radius: 5px;
   height: 35px;
   cursor: pointer;
+  display: none;
 }
 
 .icon-color {

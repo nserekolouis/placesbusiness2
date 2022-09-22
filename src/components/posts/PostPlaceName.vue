@@ -1,6 +1,8 @@
 <template>
   <div class="col-6 div-left">
-    <u>
+    <u
+    @click="goToPlacePage"
+    >
       <p class="p-place-name">{{ post.main_text }}</p>
     </u>
   </div>
@@ -85,16 +87,30 @@ export default {
     post: {},
     index: Number,
   },
-  setup() {
+  setup(props,{emit}) {
+    console.log(TAG,props.post);
     const show = ref(false);
+    const place = ref({});
+    const post = ref(props.post)
+
     const showModal = () => {
       console.log("show modal");
       show.value = !show.value;
     };
 
+    const goToPlacePage = () => {
+      place.value = {
+        places_id: post.value.place_id,
+        main_text: post.value.main_text,
+      };
+      emit("listen-place-page", place.value);
+    };
+
     return {
       show,
       showModal,
+      place,
+      goToPlacePage,
     };
   },
   components: {
@@ -238,5 +254,6 @@ export default {
   color: #288c7f;
   text-decoration: underline;
   text-align: left;
+  cursor: pointer;
 }
 </style>

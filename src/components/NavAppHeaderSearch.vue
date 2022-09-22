@@ -109,7 +109,7 @@ export default {
 <style scoped>
 .dropdown-places {
   position: absolute;
-  width: -webkit-fill-available;
+  width: 98%;
   z-index: 1;
 }
 .top-class {

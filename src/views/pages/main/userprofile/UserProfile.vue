@@ -12,7 +12,7 @@
     <div class="col-6" style="text-align: right">
       <button
         type="button"
-        class="btn btn-primary btn-follow"
+        class="btn btn btn-outline-primary btn-sm btn-follow"
         @click="followAction"
       >
         {{ follow }}

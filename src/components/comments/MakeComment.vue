@@ -294,9 +294,10 @@ label {
 }
 
 .post-item-right {
-  display: inline-block;
+  /* display: inline-block;
   position: absolute;
-  right: 0px;
+  right: 0px; */
+  float:right
 }
 
 .post-item-dropdown {

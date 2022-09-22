@@ -7,7 +7,7 @@
     </div>
     <div class="col-6" style="text-align: right">
       <div class="profile-item">
-        <button type="button" class="btn btn-primary btn-sm">
+        <button type="button" class="btn btn-outline-primary btn-sm">
           UnFollow Place
         </button>
       </div>
@@ -41,6 +41,7 @@ export default {
     // });
 
     onActivated(() => {
+      placeDetails.value = ref({});
       place.value = props.place;
       getPlacePageDetails();
     });
