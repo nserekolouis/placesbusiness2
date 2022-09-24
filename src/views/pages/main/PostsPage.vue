@@ -10,7 +10,7 @@
   <div id="container" ref="scrollComponent">
     <div class="div-select">
       <div class="row">
-        <div class="col-11">
+        <div class="col">
           <select
             class="form-select form-select-sm"
             aria-label="Default select examples"

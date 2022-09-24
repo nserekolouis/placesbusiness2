@@ -16,6 +16,8 @@ export default {
 <style scoped>
 p {
   margin-bottom: 0px;
-  font-size: 0.875rem;
+  font-size: 14px;
+  white-space: pre-line;
+  overflow-wrap: break-word;
 }
 </style>

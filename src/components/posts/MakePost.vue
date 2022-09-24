@@ -5,7 +5,7 @@
     <textarea
       class="form-control form-control-sm"
       v-model="post_text"
-      :maxlength="320"
+      maxlength="320"
       rows="4"
       placeholder="What is really happening?"
     ></textarea>
@@ -49,6 +49,7 @@
             data-bs-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
+            data-bs-auto-close="false"
           >
             <font-awesome-icon class="emoji" icon="fa-solid fa-face-smile" />
           </a>

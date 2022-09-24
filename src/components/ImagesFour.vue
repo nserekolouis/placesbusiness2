@@ -47,33 +47,33 @@ export default {
   padding: 0px;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 1399.98px) {
   .post-one-image {
-    height: auto;
-  }
-}
-
-@media (max-width: 767.98px) {
-  .post-one-image {
-    height: auto;
-  }
-}
-
-@media (max-width: 991.98px) {
-  .post-one-image {
-    height: auto;
+    height: 240px;
   }
 }
 
 @media (max-width: 1199.98px) {
   .post-one-image {
-    height: auto;
+    height: 240px;
   }
 }
 
-@media (max-width: 1399.98px) {
+@media (max-width: 991.98px) {
   .post-one-image {
-    height: auto;
+    height: 240px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .post-one-image {
+    height: 240px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .post-one-image {
+    height: 120px;
   }
 }
 </style>
