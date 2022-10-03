@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="showExtras == false">
-    <div class="row">
+    <!-- <div class="row">
       <post-place-name
         v-if="Auth.user != null"
         :post="post"
@@ -9,10 +9,9 @@
         @listen-delete-post="deletePost"
         @listen-report-post="reportPost"
         @listen-place-page="goToPlacePage"
-        @listen-promote-post="promotePost"
       />
       <post-place-name-login v-else :post="post" />
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-2">
         <post-profile-picture
@@ -32,19 +31,17 @@
   </div>
 </template>
 <script>
-import ReactionComponent from "@/components/posts/PostReaction.vue";
-import PostUserInfo from "@/components/posts/PostUserInfo.vue";
-import PostText from "@/components/posts/PostText.vue";
-import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
+import ReactionComponent from "@/components/promoted/posts/PostReaction.vue";
+import PostUserInfo from "@/components/promoted/posts/PostUserInfo.vue";
+import PostText from "@/components/promoted/posts/PostText.vue";
+import PostProfilePicture from "@/components/promoted/posts/PostProfilePicture.vue";
 
-import PostPlaceName from "@/components/posts/PostPlaceName.vue";
-import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
+//import PostPlaceName from "@/components/promoted/posts/PostPlaceName.vue";
+//import PostPlaceNameLogin from "@/components/promoted/posts/PostPlaceNameLogin.vue";
 
-import PostExtras from "@/components/posts/PostExtras.vue";
+import PostExtras from "@/components/promoted/posts/PostExtras.vue";
 import { ref, watch } from "vue";
 import Auth from "@/Auth.js";
-
-const TAG = "POST_ONLY_TEXT";
 
 export default {
   name: "OnlyText",
@@ -100,12 +97,6 @@ export default {
       emit("listen-place-page", place);
     };
 
-
-    const promotePost = (post) => {
-      console.log(TAG,"Promote Post");
-      emit("listen-promote-post", post);
-    };
-
     return {
       showExtras,
       info,
@@ -115,8 +106,7 @@ export default {
       goToComments,
       goToUserProfile,
       Auth,
-      goToPlacePage,
-      promotePost
+      goToPlacePage
     };
   },
   components: {
@@ -124,9 +114,9 @@ export default {
     PostUserInfo,
     PostText,
     PostProfilePicture,
-    PostPlaceName,
+    //PostPlaceName,
     PostExtras,
-    PostPlaceNameLogin,
+    //PostPlaceNameLogin,
   },
 };
 </script>

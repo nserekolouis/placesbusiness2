@@ -81,9 +81,9 @@
         <h6>Promote Post</h6>
       </template>
     </promote-post>
-  </Teleport> -->
+  </Teleport>-->
 </template>
-<script>
+<script> 
 
 import Auth from "@/Auth.js";
 import axios from "axios";
@@ -99,7 +99,7 @@ export default {
   name: "PostPlaceName",
   components: {
     Modal,
-    // PromotePost
+    //PromotePost
   },
   props: {
     post: {},
@@ -126,12 +126,9 @@ export default {
     };
 
     const promotePost = () => {
-      console.log(TAG,"promote post");
-      emit("listen-promote-post", post.value);
-    };
-
-     const moveBack = () => {
-      emit("listen-move-back");
+      //console.log(TAG,"promote post");
+      //showPromotePost.value = !showPromotePost.value;
+      emit("listen-promote-post", post);
     };
 
     return {
@@ -140,8 +137,7 @@ export default {
       place,
       goToPlacePage,
       promotePost,
-      showPromotePost,
-      moveBack
+      showPromotePost
     };
   },
   data() {

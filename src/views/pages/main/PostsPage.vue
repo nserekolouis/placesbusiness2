@@ -80,6 +80,7 @@
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
+          @listen-promote-post="promotePost"
         />
       </li>
       <li v-show="showSpin" class="list-group-item">
@@ -138,6 +139,8 @@ export default {
     const spin = ref(false);
     const spinInfo = ref(null);
     const showSpin = ref(false);
+    const first_post_id = ref(0);
+    const last_post_id = ref(0);
 
     watch(
       () => props.new_posts,
@@ -154,7 +157,6 @@ export default {
       (newVal, oldVal) => {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
-
         console.log("DELETED POST ID 3", newVal);
         d_post_id.value = newVal;
       }
@@ -178,6 +180,8 @@ export default {
       console.log("Mounted");
       document.title = "Places | Home";
       id.value = 0;
+      first_post_id.value = 0;
+      last_post_id.value = 0;
       getPosts();
       getPlaceSubscriptions();
     });
@@ -186,6 +190,8 @@ export default {
       let page_url = url + "api/v2/get_posts";
       const data = {
         id: "" + id.value,
+        first_post_id: first_post_id.value,
+        last_post_id: last_post_id.value,
       };
       axios
         .post(page_url, data)
@@ -196,7 +202,6 @@ export default {
           if (newPosts.length > 0) {
             show.value = false;
             if (id.value == 0) {
-              //newPosts.push(...posts.value);
               posts.value = newPosts;
             } else {
               posts.value.push(...newPosts);
@@ -205,7 +210,6 @@ export default {
             total.value = response.data.total;
             console.log(TAG + " COUNT ", count.value);
             console.log(TAG + " TOTAL ", total.value);
-
             if (count.value < total.value) {
               spin.value = true;
               showSpin.value = true;
@@ -238,6 +242,8 @@ export default {
       id.value = 0;
       count.value = 0;
       total.value = 0;
+      first_post_id.value = 0;
+      last_post_id.value = 0;
       getPosts();
     };
 
@@ -265,19 +271,12 @@ export default {
       let element = scrollComponent.value;
       if (active.value) {
         scrollingPosition.value = window.scrollY;
-        //console.log(TAG + " Scroll Position ", scrollingPosition.value);
       }
 
       console.log(
         TAG + " height ",
         element.getBoundingClientRect().bottom < window.innerHeight
       );
-
-      // if (element.getBoundingClientRect().bottom < window.innerHeight){
-      //   showSpin.value = true
-      // }else{
-      //   showSpin.value = false;
-      // }
 
       console.log(TAG + " load more ", loadMore.value);
 
@@ -296,6 +295,10 @@ export default {
         loadMore.value = false;
         id.value = posts.value[posts.value.length - 1].id;
         console.log(TAG, "SCROLL LOAD MORE");
+        first_post_id.value = posts.value[0].id;
+        last_post_id.value = posts.value[posts.value.length - 1].id;
+        console.log(TAG + "first post",first_post_id.value);
+        console.log(TAG + "last post",last_post_id.value);
         getPosts();
       }
     };
@@ -308,12 +311,11 @@ export default {
     };
 
     const goToPlacePage = (p) => {
-      // if (Object.keys(place.value).length != 0) {
-      //   emit("listen-place-page", place.value);
-      // } else {
-      //   alert("Select a place");
-      // }
       emit("listen-place-page", p);
+    };
+
+     const promotePost = (pst) => {
+      emit("listen-promote-post", pst);
     };
 
     return {
@@ -334,6 +336,7 @@ export default {
       spin,
       spinInfo,
       showSpin,
+      promotePost
     };
   },
   data() {

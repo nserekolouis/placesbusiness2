@@ -11,6 +11,7 @@ import PrivacyAndSafety from "@/views/pages/main/PrivacyAndSafetySection.vue";
 import SideBar from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
+import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
 
 export default {
   components: {
@@ -25,6 +26,7 @@ export default {
     SearchUsers,
     PostsPage,
     PlaceDetailsPage,
+    PromotedPostPage
   },
   data() {
     return {
@@ -39,6 +41,7 @@ export default {
       deleteArray: [],
       del_post_id: 0,
       place: "",
+      post:{}
     };
   },
   methods: {
@@ -117,6 +120,11 @@ export default {
       this.from_component.push(this.current);
       this.current = "PlaceDetailsPage";
     },
+    promotePost(post){
+      this.from_component.push(this.current);
+      this.post = post;
+      this.current = "PromotedPostPage";
+    },
   },
 };
 </script>
@@ -147,6 +155,7 @@ export default {
           :new_notifications="new_notifications"
           :deleted_post_id="del_post_id"
           :place="place"
+          :post="post"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -158,6 +167,7 @@ export default {
           @listen-post-details="goToPostDetails"
           @listen-move-back="moveBack"
           @listen-place-page="goToPlaceDetailsPage"
+          @listen-promote-post="promotePost"
         ></component>
       </KeepAlive>
     </div>

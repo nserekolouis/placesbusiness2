@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="showExtras == false">
     <div class="row">
-      <post-place-name
+      <!-- <post-place-name
         v-if="Auth.user != null"
         :post="post"
         :index="index"
@@ -9,9 +9,8 @@
         @listen-delete-post="deletePost"
         @listen-report-post="reportPost"
         @listen-place-page="goToPlacePage"
-        @listen-promote-post="promotePost"
       />
-      <post-place-name-login v-else :post="post" />
+      <post-place-name-login :post="post" v-else /> -->
     </div>
     <div class="row">
       <div class="col-2">
@@ -23,6 +22,7 @@
       <div class="col-10">
         <post-user-info :post="post" />
         <post-text :post="post" />
+        <images-two :post="post" />
         <reaction-component :post="post" @listen-comment="goToComments" />
       </div>
     </div>
@@ -32,24 +32,20 @@
   </div>
 </template>
 <script>
-import ReactionComponent from "@/components/posts/PostReaction.vue";
-import PostUserInfo from "@/components/posts/PostUserInfo.vue";
-import PostText from "@/components/posts/PostText.vue";
-import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
-
-import PostPlaceName from "@/components/posts/PostPlaceName.vue";
-import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
-
-import PostExtras from "@/components/posts/PostExtras.vue";
+import ReactionComponent from "@/components/promoted/posts/PostReaction.vue";
+import ImagesTwo from "@/components/ImagesTwo.vue";
+import PostUserInfo from "@/components/promoted/posts/PostUserInfo.vue";
+import PostText from "@/components/promoted/posts/PostText.vue";
+import PostProfilePicture from "@/components/promoted/posts/PostProfilePicture.vue";
+//import PostPlaceName from "@/components/promoted/posts/PostPlaceName.vue";
+import PostExtras from "@/components/promoted/posts/PostExtras.vue";
 import { ref, watch } from "vue";
+//import PostPlaceNameLogin from "@/components/promoted/posts/PostPlaceNameLogin.vue";
 import Auth from "@/Auth.js";
-
-const TAG = "POST_ONLY_TEXT";
 
 export default {
   name: "OnlyText",
   props: {
-    places: [],
     post: {},
     index: Number,
     deleted_post_id: Number,
@@ -64,8 +60,8 @@ export default {
       (newVal, oldVal) => {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
-        console.log("DELETED POST ID 4", newVal);
-        console.log("DELETED POST ID 4", "" + post.value.post_id);
+        console.log("DELETED POST ID 6", newVal);
+        console.log("DELETED POST ID 6", "" + post.value.post_id);
         if (newVal === "" + post.value.post_id) {
           console.log("DELETED POST ID 4 DELETED");
           deletePost();
@@ -100,12 +96,6 @@ export default {
       emit("listen-place-page", place);
     };
 
-
-    const promotePost = (post) => {
-      console.log(TAG,"Promote Post");
-      emit("listen-promote-post", post);
-    };
-
     return {
       showExtras,
       info,
@@ -116,17 +106,17 @@ export default {
       goToUserProfile,
       Auth,
       goToPlacePage,
-      promotePost
     };
   },
   components: {
     ReactionComponent,
+    ImagesTwo,
     PostUserInfo,
     PostText,
     PostProfilePicture,
-    PostPlaceName,
+    //PostPlaceName,
     PostExtras,
-    PostPlaceNameLogin,
+    //PostPlaceNameLogin,
   },
 };
 </script>
