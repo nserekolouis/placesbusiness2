@@ -99,8 +99,7 @@ export default {
     const goToPlacePage = (place) => {
       emit("listen-place-page", place);
     };
-
-
+    
     const promotePost = (post) => {
       console.log(TAG,"Promote Post");
       emit("listen-promote-post", post);

@@ -9,6 +9,7 @@
         @listen-delete-post="deletePost"
         @listen-report-post="reportPost"
         @listen-place-page="goToPlacePage"
+        @listen-promote-post="promotePost"
       />
       <post-place-name-login v-else :post="post" />
     </div>
@@ -44,6 +45,8 @@ import PostExtras from "@/components/posts/PostExtras.vue";
 import { ref, watch } from "vue";
 import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
 import Auth from "@/Auth.js";
+
+const TAG = "POST_IMAGES_THREE";
 
 export default {
   name: "OnlyText",
@@ -98,6 +101,11 @@ export default {
       emit("listen-place-page", place);
     };
 
+    const promotePost = (post) => {
+      console.log(TAG,"Promote Post");
+      emit("listen-promote-post", post);
+    };
+
     return {
       showExtras,
       info,
@@ -108,6 +116,7 @@ export default {
       goToUserProfile,
       Auth,
       goToPlacePage,
+      promotePost
     };
   },
   components: {

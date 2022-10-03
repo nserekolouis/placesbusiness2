@@ -35,14 +35,18 @@
     <center-infomation :info="alert" v-show="show" class="info-missing" />
     <ul class="list-group" style="margin-top: 10px">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+        <ad-space
+        v-if="post.id === ''"
+        />
         <four-images
-          v-if="post.image_four != null"
+          v-else-if="post.image_four != null"
           :post="post"
           :index="post.id"
           :deleted_post_id="d_post_id"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
+          @listen-promote-post="promotePost"
         />
         <three-images
           v-else-if="post.image_three != null"
@@ -52,6 +56,7 @@
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
+          @listen-promote-post="promotePost"
         />
         <two-images
           v-else-if="post.image_two != null"
@@ -61,6 +66,7 @@
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
+          @listen-promote-post="promotePost"
         />
         <one-image
           v-else-if="post.image_one != null"
@@ -70,6 +76,7 @@
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
+          @listen-promote-post="promotePost"
         />
         <only-text
           v-else
@@ -100,6 +107,7 @@ import NavAppHeaderSearch from "@/components/NavAppHeaderSearch.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
+import AdSpace from "@/components/AdSpace.vue";
 import { inject, ref, onMounted, watch, onActivated, onDeactivated } from "vue";
 
 const TAG = "POSTS_PAGE";
@@ -116,6 +124,7 @@ export default {
     CenterInfomation,
     TitleComponent,
     SpinnerComponent,
+    AdSpace
   },
   props: {
     new_posts: Boolean,
@@ -141,6 +150,7 @@ export default {
     const showSpin = ref(false);
     const first_post_id = ref(0);
     const last_post_id = ref(0);
+    const ad_id = ref(0);
 
     watch(
       () => props.new_posts,
@@ -182,6 +192,7 @@ export default {
       id.value = 0;
       first_post_id.value = 0;
       last_post_id.value = 0;
+      ad_id.value = 0;
       getPosts();
       getPlaceSubscriptions();
     });
@@ -192,6 +203,7 @@ export default {
         id: "" + id.value,
         first_post_id: first_post_id.value,
         last_post_id: last_post_id.value,
+        ad_id: ad_id.value
       };
       axios
         .post(page_url, data)
@@ -293,12 +305,17 @@ export default {
         count.value < total.value
       ) {
         loadMore.value = false;
-        id.value = posts.value[posts.value.length - 1].id;
+        id.value = posts.value[posts.value.length - 2].id;
         console.log(TAG, "SCROLL LOAD MORE");
         first_post_id.value = posts.value[0].id;
-        last_post_id.value = posts.value[posts.value.length - 1].id;
+        last_post_id.value = posts.value[posts.value.length - 2].id;
+        ad_id.value = posts.value[posts.value.length - 1].id;
+        if(ad_id.value === ""){
+          ad_id.value = 0;
+        }
         console.log(TAG + "first post",first_post_id.value);
         console.log(TAG + "last post",last_post_id.value);
+        console.log(TAG + "ad post",ad_id.value);
         getPosts();
       }
     };
