@@ -7,23 +7,32 @@
         {{ response_handle }}
       </p>
       <div class="form-item">
-        <label>Userhandle</label>
+        <label>@userhandle</label>
         <input
           class="form-control"
-          placeholder="@userhandle"
+          placeholder="userhandle"
           v-model="userhandle"
           @input="onChange"
           type="text"
           maxlength="32"
         />
       </div>
-      <button
-        type="button"
-        class="btn btn-primary btn-next"
-        @click="next"
-      >
-        Next
-      </button>
+      <div class="form-item" style="position:relative">
+        <button
+          type="button"
+          class="btn btn-primary btn-next"
+          @click="next"
+          >
+          Next
+        </button>
+         <div 
+         class="spinner-border spinner-border-sm  next-spinner-pos" 
+         role="status"
+         :style="{ display: nextSpin }"
+          >
+          <span class="visually-hidden">Loading...</span>
+         </div>
+      </div>
     </div>
   </div>
   </div>
@@ -47,6 +56,7 @@ export default {
       response_handle: "",
       status_code: 0,
       activeColor: "",
+      nextSpin: "none"
     };
   },
   mounted() {
@@ -58,11 +68,16 @@ export default {
         //nospace
         this.response_handle = "No space";
         this.activeColor = "red";
+      } else if (this.userhandle.indexOf("@") >= 0) {
+        // no @
+        this.response_handle = "remove @ symbol";
+        this.activeColor = "red";
       } else if (this.userhandle.length < 3) {
         //minimumcharacter
         this.response_handle = "3 characters minimum";
         this.activeColor = "red";
       } else {
+        this.nextSpin = "block";
         const data = {
           user_handle: "@" + this.userhandle,
           app_token: "web-platform",
@@ -73,6 +88,7 @@ export default {
           .post(page_url, data)
           .then((response) => {
             console.log("Response", response);
+            this.nextSpin = "none";
             if (response.data.success) {
               this.status_code = response.data.status_code;
               if (this.status_code == 1) {
@@ -86,6 +102,7 @@ export default {
           })
           .catch((error) => {
             this.errorMessage = error.message;
+            this.nextSpin = "none";
             console.error("There was an error!", error);
           });
       }
@@ -122,5 +139,11 @@ export default {
 .userhandle{
   min-width: 200px;
   margin-top: 140px;
+}
+
+.next-spinner-pos {
+  position: absolute;
+  right: 11%;
+  top: 11px;
 }
 </style>

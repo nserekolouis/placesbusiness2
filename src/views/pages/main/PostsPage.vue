@@ -8,30 +8,30 @@
     />
   </div>
   <div id="container" ref="scrollComponent">
-    <div class="div-select">
-      <div class="row">
-        <div class="col">
+    <!-- <div class=""> -->
+      <!-- <div class="row div-select">
+        <div class="col"> -->
           <select
-            class="form-select form-select-sm"
+            class="form-select form-select-sm sel-recent-places"
             aria-label="Default select examples"
             @change="selectPlace($event, $event.target.selectedIndex)"
           >
             <option :selected="false" class="select-option">
               <div>Recent Places</div>
             </option>
-            <option v-for="place in places" :key="place.sub_id">
+            <option v-for="place in places" :key="place.sub_id" class="select-option">
               <div>{{ place.main_text }}</div>
             </option>
           </select>
-        </div>
+        <!-- </div> -->
         <!-- <div class="col place-details" @click="goToPlacePage">
           <font-awesome-icon
             class="icon-color"
             icon="fa-solid fa-location-pin"
           />
         </div> -->
-      </div>
-    </div>
+      <!-- </div> -->
+    <!-- </div> -->
     <center-infomation :info="alert" v-show="show" class="info-missing" />
     <ul class="list-group" style="margin-top: 10px">
       <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
@@ -370,7 +370,7 @@ h6 {
   font-size: 0.9rem;
 }
 
-.div-select {
+.sel-recent-places {
   margin-top: 10px;
   width: 40px;
   /* min-width: 200px; */

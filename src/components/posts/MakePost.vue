@@ -6,21 +6,21 @@
       class="form-control form-control-sm"
       v-model="post_text"
       maxlength="320"
-      rows="4"
+      rows="5"
       placeholder="What is really happening?"
     ></textarea>
   </div>
   <div class="row">
-    <div v-if="image_one" class="col-3">
+    <div v-if="image_one" class="col-md-3">
       <img :src="this.url + image_one" class="post-image" />
     </div>
-    <div v-if="image_two" class="col-3">
+    <div v-if="image_two" class="col-md-3">
       <img :src="this.url + image_two" class="post-image" />
     </div>
-    <div v-if="image_three" class="col-3">
+    <div v-if="image_three" class="col-md-3">
       <img :src="this.url + image_three" class="post-image" />
     </div>
-    <div v-if="image_four" class="col-3">
+    <div v-if="image_four" class="col-md-3">
       <img :src="this.url + image_four" class="post-image" />
     </div>
   </div>
@@ -54,7 +54,7 @@
             <font-awesome-icon class="emoji" icon="fa-solid fa-face-smile" />
           </a>
           <div class="dropdown-menu dropdown-menu-left">
-            <EmojiPicker :native="true" @select="onSelectEmoji" />
+            <EmojiPicker :native="false" @select="onSelectEmoji"/>
           </div>
         </div>
       </div>
@@ -245,6 +245,9 @@ export default {
       console.log(emoji);
       this.post_text += emoji.i;
     },
+    closeSelectEmoji(){
+      console.log("CLOSE EMOJI");
+    }
   },
 };
 </script>
@@ -287,7 +290,7 @@ label {
 }
 
 .emoji-menu {
-  width: 284px;
+  width: 50px;
   display: inline-block;
   cursor: pointer;
 }

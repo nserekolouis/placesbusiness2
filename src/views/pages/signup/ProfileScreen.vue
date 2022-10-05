@@ -61,14 +61,25 @@
             </div>
             <div class="form-item">
               <label for="country">Search country of interest</label>
-              <input
-                id="country"
-                class="form-control"
-                v-model="search_country"
-                @input="searchCountries"
-                type="text"
-                required
-              />
+              <div class="form-item" style="position:relative">
+                <div 
+                class="spinner-border spinner-border-sm  spinner-pos" 
+                role="status"
+                :style="{ display: displayStatus }"
+                >
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+      
+                <input
+                  id="country"
+                  class="form-control"
+                  v-model="search_country"
+                  @input="searchCountries"
+                  type="text"
+                  required
+                />
+
+              </div>
               <ul class="list-group">
                 <li
                   v-for="country in countries"
@@ -80,10 +91,17 @@
                 </li>
               </ul>
             </div>
-            <div class="form-item">
+            <div class="form-item" style="position:relative">
               <button type="submit" class="btn btn-primary btn-next">
                 Next
               </button>
+              <div 
+                class="spinner-border spinner-border-sm  next-spinner-pos" 
+                role="status"
+                :style="{ display: nextSpin }"
+                >
+                  <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
           </div>
         </form>
@@ -116,6 +134,8 @@ export default {
       userbio: "",
       country_id: "",
       picture: "storage/profile/OEAYvPDaKVFE2LaWarmvj5kFHraHjSMRwaghhStj.png",
+      displayStatus: "none",
+      nextSpin: "none"
     };
   },
   mounted() {
@@ -144,6 +164,7 @@ export default {
       }
     },
     searchCountries() {
+      this.displayStatus = "block";
       let page_url = this.url + "api/search_countries";
       const data = {
         keyword: this.search_country,
@@ -152,6 +173,7 @@ export default {
         .post(page_url, data)
         .then((response) => {
           console.log(response.data.countries);
+          this.displayStatus = "none";
           this.countries = response.data.countries;
         })
         .catch((error) => {
@@ -165,6 +187,7 @@ export default {
       this.country_id = country.id;
     },
     uploadProfile: function () {
+      this.nextSpin = "block";
       let data = new FormData();
       data.append("userphoto", this.picture);
       data.append("username", this.username);
@@ -174,6 +197,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
+          this.nextSpin = "none";
           console.log("Response:",response);
           if (response.data.status_code) {
             Auth.updateUser(response.data.user);
@@ -185,6 +209,7 @@ export default {
             typeof err.response !== "undefined"
               ? err.response.data.message
               : err.message;
+          this.nextSpin = "none";
           console.log("error", message);
         });
 
@@ -314,4 +339,17 @@ label {
   height: 35px;
   font-size: 15px;
 }
+
+.spinner-pos {
+  position: absolute;
+  right: 10px;
+  top: 10px
+}
+
+.next-spinner-pos {
+  position: absolute;
+  right: 11%;
+  top: 11px;
+}
+
 </style>
