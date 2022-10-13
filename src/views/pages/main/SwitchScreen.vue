@@ -13,6 +13,8 @@ import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
 
+const TAG = "SWITCH_SCREEN";
+
 export default {
   components: {
     UserPostsPage,
@@ -41,7 +43,9 @@ export default {
       deleteArray: [],
       del_post_id: 0,
       place: "",
-      post:{}
+      post:{},
+      indicator: "#fff",
+      noteCount: 0,
     };
   },
   methods: {
@@ -125,6 +129,14 @@ export default {
       this.post = post;
       this.current = "PromotedPostPage";
     },
+    sharePostsIndicatorColor(color){
+      this.indicator = color;
+      console.log(TAG + "indicator_color",color);
+    },
+    listenNotificationCount(count){
+      this.noteCount = count;
+      console.log(TAG + "notification_color",count)
+    }
   },
 };
 </script>
@@ -141,6 +153,8 @@ export default {
         @listen-privacy-safety="goToPrivacyAndSafety"
         @listen-about-places="goToAboutPlaces"
         @listen-delete-post-id="deletedPostId"
+        @listen-indicator-color="sharePostsIndicatorColor"
+        @listen-notification-count="listenNotificationCount"
       />
     </div>
     <div class="col-md-6 border-left">
@@ -156,6 +170,8 @@ export default {
           :deleted_post_id="del_post_id"
           :place="place"
           :post="post"
+          :indicator="indicator"
+          :noteCount="noteCount"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"

@@ -1,10 +1,20 @@
 <template>
-  <title-component :title="componentTitle" />
+  <title-component class="d-none d-sm-block" :title="componentTitle" />
+  <post-pages-top-component 
+   class="d-md-none"
+   :indicator="color"
+   :noteCount="nCount"
+   :LeftColor="leftColor"
+   :RightColor="rightColor"
+   @listen-home="goToHome"
+   @listen-notifications="goToNotifications"
+  />
   <div>
     <nav-app-header-search
       :selected_place="place"
       @listen-post="newPost"
       @listen-place="searchedPlace"
+      @listen-place-page="goToPlacePage"
     />
   </div>
   <div id="container" ref="scrollComponent">
@@ -12,6 +22,7 @@
       <!-- <div class="row div-select">
         <div class="col"> -->
           <select
+            style="display:none"
             class="form-select form-select-sm sel-recent-places"
             aria-label="Default select examples"
             @change="selectPlace($event, $event.target.selectedIndex)"
@@ -108,7 +119,9 @@ import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
+import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
 import { inject, ref, onMounted, watch, onActivated, onDeactivated } from "vue";
+
 
 const TAG = "POSTS_PAGE";
 
@@ -124,11 +137,14 @@ export default {
     CenterInfomation,
     TitleComponent,
     SpinnerComponent,
-    AdSpace
+    AdSpace,
+    PostPagesTopComponent
   },
   props: {
     new_posts: Boolean,
     deleted_post_id: Number,
+    indicator: String,
+    noteCount: Number
   },
   setup(props, { emit }) {
     const show = ref(true);
@@ -138,7 +154,6 @@ export default {
     const scrollComponent = ref(null);
     const url = inject("url");
     const place = ref({});
-    const id = ref(0);
     const loadMore = ref(true);
     const count = ref(0);
     const total = ref(0);
@@ -148,9 +163,26 @@ export default {
     const spin = ref(false);
     const spinInfo = ref(null);
     const showSpin = ref(false);
+    const id = ref(0);
     const first_post_id = ref(0);
     const last_post_id = ref(0);
     const ad_id = ref(0);
+    const color = ref(props.indicator);
+    const nCount = ref(props.noteCount);
+
+    watch(() => props.indicator,
+            (newVal, oldVal) => {
+                console.log(TAG + "New Value", newVal);
+                console.log(TAG + "Old Value", oldVal);
+                color.value = newVal;
+    });
+
+    watch(() => props.noteCount,
+        (newVal, oldVal) => {
+            console.log("New Value", newVal);
+            console.log("Old Value", oldVal);
+            nCount.value = newVal;
+    });
 
     watch(
       () => props.new_posts,
@@ -205,6 +237,7 @@ export default {
         last_post_id: last_post_id.value,
         ad_id: ad_id.value
       };
+
       axios
         .post(page_url, data)
         .then((response) => {
@@ -279,20 +312,22 @@ export default {
       }
     };
 
+     
+
     const handleScroll = () => {
       let element = scrollComponent.value;
       if (active.value) {
         scrollingPosition.value = window.scrollY;
       }
 
-      console.log(
-        TAG + " height ",
-        element.getBoundingClientRect().bottom < window.innerHeight
-      );
+      // console.log(
+      //   TAG + " height ",
+      //   element.getBoundingClientRect().bottom < window.innerHeight
+      // );
 
-      console.log(TAG + " load more ", loadMore.value);
+      // console.log(TAG + " load more ", loadMore.value);
 
-      console.log(TAG + " count ", count.value < total.value);
+      // console.log(TAG + " count ", count.value < total.value);
 
       if (count.value >= total.value) {
         spin.value = false;
@@ -306,16 +341,16 @@ export default {
       ) {
         loadMore.value = false;
         id.value = posts.value[posts.value.length - 2].id;
-        console.log(TAG, "SCROLL LOAD MORE");
+        //console.log(TAG, "SCROLL LOAD MORE");
         first_post_id.value = posts.value[0].id;
         last_post_id.value = posts.value[posts.value.length - 2].id;
         ad_id.value = posts.value[posts.value.length - 1].id;
         if(ad_id.value === ""){
           ad_id.value = 0;
         }
-        console.log(TAG + "first post",first_post_id.value);
-        console.log(TAG + "last post",last_post_id.value);
-        console.log(TAG + "ad post",ad_id.value);
+        //console.log(TAG + "first post",first_post_id.value);
+        //console.log(TAG + "last post",last_post_id.value);
+        //console.log(TAG + "ad post",ad_id.value);
         getPosts();
       }
     };
@@ -333,6 +368,14 @@ export default {
 
      const promotePost = (pst) => {
       emit("listen-promote-post", pst);
+    };
+
+    const goToHome = () => {
+      emit("listen-home");
+    };
+
+    const goToNotifications = () => {
+      emit("listen-notifications");
     };
 
     return {
@@ -353,13 +396,19 @@ export default {
       spin,
       spinInfo,
       showSpin,
-      promotePost
+      promotePost,
+      color,
+      nCount,
+      goToHome,
+      goToNotifications
     };
   },
   data() {
     return {
       info: "",
       alert: "No posts yet",
+      leftColor: "1px solid #288c7f",
+      rightColor: "1px solid #80808026"
     };
   },
 };

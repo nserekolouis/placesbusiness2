@@ -1,7 +1,7 @@
 <template>
   <div class="col div-pp">
     <img
-      :src="this.url + post.user_photo"
+      :src="post.user_photo"
       class="profile-picture"
       @click="goToProfile"
     />
@@ -57,7 +57,7 @@ p{
 .ad-label{
   position: absolute;
   bottom: 13px;
-  left: 40px
+  left: 40px;
 }
 
 @media (max-width: 1199.98px) {

@@ -1,6 +1,6 @@
 <template>
-    <div class="">
-        <p>{{ info }}</p>
+    <div style="text-align:center">
+        {{ info }}
     </div>
 </template>
 <script>

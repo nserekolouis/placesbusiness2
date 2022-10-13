@@ -134,8 +134,11 @@ import Auth from "@/Auth.js";
 import { inject, ref, watch } from "vue";
 import { getToken, onMessage } from "firebase/messaging";
 
+
+const TAG = "SideBar";
+
 export default {
-  name: "SideBar2",
+  name: "SideBar",
   props: {
     indicatorbg: String,
   },
@@ -144,15 +147,15 @@ export default {
     const vapidKey = inject("vapidKey");
     const url = inject("url");
     const noteCount = ref(0);
-    const indicator = ref("#fff");
+    const indicator = ref(props.indicatorbg);
     //const deletedArray = ref([]);
     const deleted_post_id = ref("");
 
     watch(
       () => props.indicatorbg,
       (newVal, oldVal) => {
-        console.log("indicator", newVal);
-        console.log("indicator", oldVal);
+        console.log(TAG + " indicator", newVal);
+        console.log(TAG + " indicator", oldVal);
         indicator.value = newVal;
       }
     );
@@ -188,17 +191,15 @@ export default {
       console.log("Message received. ", payload);
       if (payload.data.payload === "9") {
         indicator.value = "#288c7f";
+        emit("listen-indicator-color", indicator.value);
       } else if (payload.data.payload === "6") {
-        //const data = {
         deleted_post_id.value = payload.data.post_id;
         console.log("DELETED POST ID 1", deleted_post_id.value);
         emit("listen-delete-post-id", deleted_post_id.value);
-        //};
-        //deletedArray.value.push(...[data]);
-        //console.log("Deleted Array", deletedArray.value[0].post_id);
-        //emit('listen-delete-array',deletedArray.value);
       } else {
         noteCount.value++;
+        emit("listen-notification-count", noteCount.value);
+        console.log(TAG + " noteCount",noteCount.value);
       }
     });
 
@@ -234,7 +235,7 @@ export default {
   data() {
     return {
       places: [],
-      profile_picture: this.url + Auth.user.user_photo,
+      profile_picture: Auth.user.user_photo,
       username: Auth.user.username,
     };
   },
@@ -270,7 +271,7 @@ p {
 }
 
 .bg-places {
-  background-color: #288c7f;
+  background-color: #fff;
 }
 
 .sb {

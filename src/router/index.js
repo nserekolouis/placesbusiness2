@@ -8,6 +8,7 @@ import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
 import SharedPost from "@/views/pages/main/SharedPost.vue"
 import SharedComment from "@/views/pages/main/SharedComment.vue"
+import SharedUserProfile from "@/views/pages/main/SharedUserProfile.vue"
 
 
 
@@ -47,6 +48,12 @@ const routes = [
       //     props: true
       //   }
       // ]
+  },
+  {
+    path: '/user/:id',
+    name: "SharedUserProfile",
+    component: SharedUserProfile,
+    props: true
   },
   {
     path: '/post/:id',

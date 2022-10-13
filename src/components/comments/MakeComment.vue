@@ -5,22 +5,22 @@
         <textarea
           class="form-control form-control-sm"
           v-model="post_text"
-          :maxlength="320"
-          rows="4"
+          maxlength="320"
+          rows="5"
           placeholder="Type comment..."
         ></textarea>
         <div class="row">
           <div v-if="image_one" class="col-sm-3">
-            <img :src="this.url + image_one" class="post-image" />
+            <img :src="image_one" class="post-image" />
           </div>
           <div v-if="image_two" class="col-sm-3">
-            <img :src="this.url + image_two" class="post-image" />
+            <img :src="image_two" class="post-image" />
           </div>
-          <div v-if="image - three" class="col-sm-3">
-            <img :src="this.url + image_three" class="post-image" />
+          <div v-if="image_three" class="col-sm-3">
+            <img :src="image_three" class="post-image" />
           </div>
-          <div v-if="image - four" class="col-sm-3">
-            <img :src="this.url + image_four" class="post-image" />
+          <div v-if="image_four" class="col-sm-3">
+            <img :src="image_four" class="post-image" />
           </div>
         </div>
       </div>
@@ -119,7 +119,8 @@ export default {
   watch: {
     post_text(currentValue) {
       console.log("Post Text", currentValue.length);
-      this.counter = currentValue.length + "/" + "320";
+      //this.counter = currentValue.length + "/" + "320";
+      this.counter = Math.round((currentValue.length/160)) + "/" + "2";
       if (currentValue.length > 0) {
         this.activeColor = bColor;
       } else {
@@ -276,7 +277,7 @@ label {
 }
 
 .emoji-menu {
-  width: 284px;
+  width: 50px;
   display: inline-block;
   cursor: pointer;
 }
@@ -303,5 +304,16 @@ label {
 .post-item-dropdown {
   position: absolute;
   bottom: 7px;
+}
+
+.input-counter {
+  width: 50px;
+  border: 1px solid;
+  font-size: 12px;
+  color: #b1b7c1;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-right: 5px;
 }
 </style>

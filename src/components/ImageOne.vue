@@ -2,7 +2,7 @@
   <div class="container" @click="showImages">
     <div class="row">
       <div class="col">
-        <img class="post-one-image" :src="this.url + post.image_one" />
+        <img class="post-one-image" :src="post.image_one" />
       </div>
     </div>
   </div>

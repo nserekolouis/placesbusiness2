@@ -7,15 +7,26 @@
    </div> -->
   <div class="row">
     <div class="col-6">
-      <img :src="this.url + user.user_photo" class="profile-picture" />
+      <img :src="user.user_photo" class="profile-picture" />
     </div>
-    <div class="col-6" style="text-align: right">
+    <div class="col-6" style="text-align: right"
+    >
       <button
+        v-if="showFollowButton"
         type="button"
         class="btn btn btn-outline-primary btn-sm btn-follow"
         @click="followAction"
       >
         {{ follow }}
+      </button>
+      <button
+        v-if="showCopyButton"
+        type="button"
+        class="btn btn btn-outline-primary btn-sm btn-follow"
+        @click="copyUserLink"
+        style="margin-left:5px;"
+      >
+        Copy Link
       </button>
     </div>
     <div class="row">
@@ -52,10 +63,44 @@
 </template>
 <script>
 import axios from "axios";
+import Auth from "@/Auth";
+import {ref} from "vue";
+
+const TAG = "USER_PROFILE";
+
 export default {
   name: "UserProfile",
   props: {
     user_id: String,
+  },
+  setup(props){
+    console.log(TAG,Auth);
+    const showFollowButton = ref(true);
+    const showCopyButton = ref(true);
+    
+    //const user_id = ref(props.user_id);
+    //if(Auth.user.id === user_id.value){
+    //showButton.value = false;
+    //}else
+
+    if(Object.keys(Auth).length === 0){
+        showFollowButton.value = false;
+        showCopyButton.value = false;
+    }
+
+    const copyUserLink = () => {
+      var link = window.location.origin + "/user/" + props.user_id;
+      console.log(TAG, link);
+      navigator.clipboard.writeText(link);
+      alert("Done");
+    };
+
+    return {
+      showFollowButton,
+      showCopyButton,
+      copyUserLink
+    }
+
   },
   watch: {
     user_id: {

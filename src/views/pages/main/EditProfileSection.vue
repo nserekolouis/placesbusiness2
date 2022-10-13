@@ -8,6 +8,15 @@
           style="width: 300px; margin-left: auto; margin-right: auto"
         >
           <div class="form-item" style="text-align: -webkit-center">
+            <!-- <div class=""> -->
+              <div 
+              class="spinner-border spinner-border-sm profile-image-loader" 
+              role="status"
+              :style="{ display: displayStatus }"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            <!-- </div> -->
             <div class="avatar-upload">
               <div class="avatar-edit">
                 <input
@@ -27,7 +36,7 @@
               <div class="avatar-preview">
                 <div
                   id="imagePreview"
-                  :style="{ backgroundImage: 'url(' + this.url + profile_picture + ')' }"
+                  :style="{ backgroundImage: 'url(' + profile_picture + ')' }"
                 ></div>
               </div>
             </div>
@@ -91,7 +100,7 @@ import TitleComponent from "@/components/TitleComponent.vue";
 import { onMounted } from "vue";
 import Constants from "@/constants/index.js";
 
-const TAG = "Edit Profile Section";
+const TAG = "EDIT_PROFILE_SECTION";
 
 export default {
   name: "UserHandle",
@@ -104,6 +113,7 @@ export default {
 
     onMounted(() => {
       document.title = "Places | Profile";
+      console.log(TAG,Auth);
     });
 
     return {
@@ -118,6 +128,7 @@ export default {
       username: Auth.user.username,
       userbio: Auth.user.user_bio,
       country_id: Auth.user.country_id,
+      displayStatus: "none"
     };
   },
   watch: {
@@ -135,6 +146,7 @@ export default {
         if (event.target.files[0].size > 5242880) {
           alert(Constants.IMAGE_PROFILE);
         } else {
+          this.displayStatus = "initial";
           let page_url = this.url + "api/upload_profile_picture";
           let data = new FormData();
           data.append("image_one", event.target.files[0]);
@@ -142,9 +154,11 @@ export default {
             .post(page_url, data)
             .then((response) => {
               console.log("profile_picture", response);
+              this.displayStatus = "none";
               this.profile_picture = response.data.user_photo;
             })
             .catch((error) => {
+              this.displayStatus = "none";
               console.log(error);
             });
         }
@@ -330,5 +344,11 @@ label {
   margin-top: 5px;
   text-align: center;
   margin-bottom: 10px;
+}
+
+.profile-image-loader{
+  position: absolute;
+  z-index: 1;
+  top: 108px;
 }
 </style>

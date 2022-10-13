@@ -13,6 +13,14 @@
             "
           >
             <div class="form-item">
+              <div 
+                class="spinner-border spinner-border-sm profile-image-loader" 
+                role="status"
+                :style="{ display: dStatus }"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+
               <div class="avatar-upload">
                 <div class="avatar-edit">
                   <input
@@ -125,17 +133,16 @@ export default {
   props: {},
   data() {
     return {
-      profile_picture:
-        this.url +
-        "storage/profile/OEAYvPDaKVFE2LaWarmvj5kFHraHjSMRwaghhStj.png",
+      profile_picture: Constants.PROFILE_IMAGE_URL,
       search_country: "",
       countries: [],
       username: "",
       userbio: "",
-      country_id: "",
-      picture: "storage/profile/OEAYvPDaKVFE2LaWarmvj5kFHraHjSMRwaghhStj.png",
+      country_id: 0,
+      //picture: "storage/profile/OEAYvPDaKVFE2LaWarmvj5kFHraHjSMRwaghhStj.png",
       displayStatus: "none",
-      nextSpin: "none"
+      nextSpin: "none",
+      dStatus: "none"
     };
   },
   mounted() {
@@ -144,9 +151,10 @@ export default {
   methods: {
     uploadProfilePicture(event) {
       if (event.target.files[0]) {
-        if (event.target.files[0].size > 5242880) {
+        if (event.target.files[0].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_PROFILE);
         } else {
+          this.dStatus = "initial";
           let page_url = this.url + "api/upload_profile_picture";
           let data = new FormData();
           data.append("image_one", event.target.files[0]);
@@ -154,10 +162,12 @@ export default {
             .post(page_url, data)
             .then((response) => {
               console.log("profile_picture", response);
-              this.profile_picture = this.url + response.data.user_photo;
-              this.picture = response.data.user_photo;
+              this.dStatus = "none";
+              this.profile_picture = response.data.user_photo;
+              //this.picture = response.data.user_photo;
             })
             .catch((error) => {
+              this.dStatus = "none";
               console.log(error);
             });
         }
@@ -187,34 +197,42 @@ export default {
       this.country_id = country.id;
     },
     uploadProfile: function () {
-      this.nextSpin = "block";
-      let data = new FormData();
-      data.append("userphoto", this.picture);
-      data.append("username", this.username);
-      data.append("userbio", this.userbio);
-      data.append("country_id", this.country_id);
-      let page_url = this.url + "api/web_upload_profile";
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          this.nextSpin = "none";
-          console.log("Response:",response);
-          if (response.data.status_code) {
-            Auth.updateUser(response.data.user);
-            router.push({ name: "SwitchScreen" });
-          }
-        })
-        .catch((err) => {
-          let message =
-            typeof err.response !== "undefined"
-              ? err.response.data.message
-              : err.message;
-          this.nextSpin = "none";
-          console.log("error", message);
-        });
+      if(this.username.length === 0){
+        alert("Please put your username");
+      }else if(this.userbio.length === 0){
+        alert("Please put your userbio");
+      }else if(this.country_id === 0){
+         alert("Please select a country of interest");
+      }else{
+        this.nextSpin = "block";
+        let data = new FormData();
+        data.append("userphoto", this.profile_picture);
+        data.append("username", this.username);
+        data.append("userbio", this.userbio);
+        data.append("country_id", this.country_id);
+        let page_url = this.url + "api/web_upload_profile";
+        axios
+          .post(page_url, data)
+          .then((response) => {
+            this.nextSpin = "none";
+            console.log("Response:",response);
+            if (response.data.status_code === 1) {
+              Auth.updateUser(response.data.user);
+              router.push({ name: "SwitchScreen" });
+            }
+          })
+          .catch((err) => {
+            let message =
+              typeof err.response !== "undefined"
+                ? err.response.data.message
+                : err.message;
+            this.nextSpin = "none";
+            console.log("error", message);
+          });
 
-      this.showModal = false;
-      return true;
+        this.showModal = false;
+        return true;
+      }
     },
   },
 };
@@ -352,4 +370,9 @@ label {
   top: 11px;
 }
 
+.profile-image-loader{
+  position: absolute;
+  z-index: 1;
+  top: 108px;
+}
 </style>

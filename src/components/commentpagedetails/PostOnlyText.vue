@@ -32,9 +32,9 @@
   </div>
 </template>
 <script>
-import ReactionComponent from "@/components/posts/PostReaction.vue";
+import ReactionComponent from "@/components/commentpagedetails/PostReaction.vue";
 import PostUserInfo from "@/components/posts/PostUserInfo.vue";
-import PostText from "@/components/posts/PostText.vue";
+import PostText from "@/components/commentpagedetails/PostText.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 
 import PostPlaceName from "@/components/posts/PostPlaceName.vue";
@@ -49,13 +49,12 @@ const TAG = "POST_ONLY_TEXT";
 export default {
   name: "OnlyText",
   props: {
-    //places: Array,
-    post: Object,
-    //index: Number,
+    places: [],
+    post: {},
+    index: Number,
     deleted_post_id: Number,
   },
   setup(props, { emit }) {
-    console.log(TAG + '-1-',props.post);
     const showExtras = ref(false);
     const info = ref(null);
     const post = ref(props.post);

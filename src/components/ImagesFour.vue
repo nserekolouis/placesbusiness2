@@ -2,10 +2,10 @@
   <div class="container" @click="showImages">
     <div class="row">
       <div class="col">
-        <img class="post-one-image" :src="this.url + post.image_three" />
+        <img class="post-one-image" :src="post.image_three" />
       </div>
       <div class="col">
-        <img class="post-one-image" :src="this.url + post.image_four" />
+        <img class="post-one-image" :src="post.image_four" />
       </div>
     </div>
   </div>

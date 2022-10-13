@@ -29,16 +29,19 @@
           @listen-user-profile="goToUserProfile"
         />
       </li>
+       <li v-show="showSpin" class="list-group-item">
+        <spinner-component :spin="spin" :info="spinInfo" />
+      </li>
     </ul>
   </div>
 </template>
 <script>
 import axios from "axios";
-import OnlyText from "@/components/posts/PostOnlyText.vue";
-import OneImage from "@/components/posts/PostImagesOne.vue";
-import TwoImages from "@/components/posts/PostImagesTwo.vue";
-import ThreeImages from "@/components/posts/PostImagesThree.vue";
-import FourImages from "@/components/posts/PostImagesFour.vue";
+import OnlyText from "@/components/commentpagedetails/PostOnlyText.vue";
+import OneImage from "@/components/commentpagedetails/PostImagesOne.vue";
+import TwoImages from "@/components/commentpagedetails/PostImagesTwo.vue";
+import ThreeImages from "@/components/commentpagedetails/PostImagesThree.vue";
+import FourImages from "@/components/commentpagedetails/PostImagesFour.vue";
 import COnlyText from "@/components/comments/CommentOnlyText.vue";
 import COneImage from "@/components/comments/CommentOneImage.vue";
 import CTwoImages from "@/components/comments/CommentTwoImages.vue";
@@ -47,13 +50,30 @@ import CFourImages from "@/components/comments/CommentFourImages.vue";
 import MakeComment from "@/components/comments/MakeComment.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
+import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import { ref, onMounted, onUnmounted, onActivated } from "vue";
 import { inject } from "vue";
 
-const TAG = "Comments Page";
+const TAG = "COMMENTS_PAGE";
 
 export default {
   name: "CommentsPage",
+  components: {
+    OnlyText,
+    OneImage,
+    TwoImages,
+    ThreeImages,
+    FourImages,
+    COnlyText,
+    COneImage,
+    CTwoImages,
+    CThreeImages,
+    CFourImages,
+    MakeComment,
+    PostExtras,
+    BackNavigation,
+    SpinnerComponent
+  },
   props: {
     id: String,
     from_component: String,
@@ -66,14 +86,20 @@ export default {
     const post = ref({});
     const count = ref(0);
     const comments = ref([]);
-    const comment_id_mine = ref(0);
-    const comment_id_others = ref(0);
+    const timestamp_mine = ref("");
+    const timestamp_others = ref("");
     const return_mine = ref(0);
     const totalMine = ref(0);
     const totalOthers = ref(0);
     const loadMore = ref(true);
 
+    const spin = ref(false);
+    const spinInfo = ref(null);
+    const showSpin = ref(false);
+
     const scrollComponent = ref(null);
+
+    const getCommentsIsRunning = ref(false);
 
     // watch(
     //   () => props.new_comments,
@@ -103,21 +129,24 @@ export default {
       loadMore.value = true;
       post_id.value = props.id;
       comments.value = [];
+      console.log(TAG,"-post_id-"+post_id.value);
+      timestamp_mine.value = '';
+      timestamp_others.value = '';
       getPost();
     });
 
     onMounted(() => {
-      console.log(TAG + "MOUNTED");
+      console.log(TAG,"MOUNTED");
       document.title = "Places | Comments";
       window.addEventListener("scroll", handleScroll);
-      window.addEventListener(
-        "backbutton",
-        function (e) {
-          e.preventDefault();
-          console.log("BACK BUTTON PRESSED");
-        },
-        false
-      );
+      // window.addEventListener(
+      //   "backbutton",
+      //   function (e) {
+      //     e.preventDefault();
+      //     console.log("BACK BUTTON PRESSED");
+      //   },
+      //   false
+      // );
       //getPost();
     });
 
@@ -130,19 +159,29 @@ export default {
     //methods
     const handleScroll = () => {
       let element = scrollComponent.value;
+      console.log(TAG + '-s-height',element.getBoundingClientRect().bottom < (window.innerHeight + 10));
+      console.log(TAG + '-s-count',count.value < (totalMine.value + totalOthers.value));
+      console.log(TAG + '-s-loadmore',loadMore.value);
+      console.log(TAG + '-s-total',count.value >= (totalMine.value + totalOthers.value));
+
+      if (count.value >= (totalMine.value + totalOthers.value)) {
+        spin.value = false;
+        spinInfo.value = "NO MORE COMMENTS";
+      }
+
       if (
-        element.getBoundingClientRect().bottom < window.innerHeight &&
-        count.value < totalMine.value + totalOthers.value &&
+        element.getBoundingClientRect().bottom < (window.innerHeight + 10)&&
+        count.value < (totalMine.value + totalOthers.value) &&
         loadMore.value
       ) {
-        console.log(TAG + "SCROLL GET COMMENTS");
+        console.log(TAG + "-SCROLL-GET-COMMENTS");
         loadMore.value = false;
         getComments();
       }
     };
 
     const getPost = () => {
-      console.log(TAG + "GET POST");
+      console.log(TAG + "-GET-POST");
       let page_url = url + "api/v2/get_post";
       const data = {
         post_id: "" + post_id.value,
@@ -150,7 +189,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log(TAG + "POST DETAILS", response);
+          console.log(TAG + "-POST-DETAILS", response.data.post);
           post.value = response.data.post;
           getComments();
         })
@@ -160,46 +199,57 @@ export default {
     };
 
     const getComments = () => {
-      let page_url = url + "api/v2/get_comments";
-      if (count.value != 0) {
-        if (return_mine.value < totalMine.value) {
-          comment_id_mine.value = comments.value[comments.value.length - 1].id;
-        } else if (return_mine.value == totalMine.value) {
-          comment_id_others.value = 0;
-        } else {
-          comment_id_others.value =
-            comments.value[comments.value.length - 1].id;
+      if(getCommentsIsRunning.value === false){
+        getCommentsIsRunning.value = true;
+        let page_url = url + "api/v2/get_comments";
+        if (count.value != 0) {
+          if (return_mine.value < totalMine.value) {
+            timestamp_mine.value = comments.value[comments.value.length - 1].created_at;
+          } else if (return_mine.value == totalMine.value) {
+            timestamp_others.value = "";
+          } else {
+            timestamp_others.value =
+              comments.value[comments.value.length - 1].created_at;
+          }
+          //timestamp_mine.value = comments.value[comments.value.length - 1].created_at;
+          //timestamp_others.value = comments.value[comments.value.length - 1].created_at;
         }
-      }
 
-      const data = {
-        post_id: "" + post_id.value,
-        comment_id_mine: comment_id_mine.value,
-        comment_id_others: comment_id_others.value,
-        return_mine: return_mine.value,
-      };
+        const data = {
+          post_id: "" + post_id.value,
+          timestamp_mine: timestamp_mine.value,
+          timestamp_others: timestamp_others.value,
+          return_mine: return_mine.value,
+        };
 
-      console.log(TAG + "COMMENTS DATA", data);
+        console.log(TAG + "-GC-DATA", data);
 
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          loadMore.value = true;
-          console.log(TAG + "GET COMMENTS REPONSE", response);
-          let newComments = response.data.comments;
-          comments.value.push(...newComments);
-          let newTotalMine = response.data.total_mine;
-          totalMine.value = newTotalMine;
-          let newTotalOthers = response.data.total_others;
-          totalOthers.value = newTotalOthers;
-          count.value += 5;
-          let newReturnMine = response.data.return_mine;
-          return_mine.value += newReturnMine;
-        })
-        .catch((error) => {
-          loadMore.value = true;
-          console.log(error);
-        });
+        axios
+          .post(page_url, data)
+          .then((response) => {
+            getCommentsIsRunning.value = false;
+            loadMore.value = true;
+            console.log(TAG + "-GC-RESPONSE", response);
+            let newComments = response.data.comments;
+            comments.value.push(...newComments);
+            let newTotalMine = response.data.total_mine;
+            totalMine.value = newTotalMine;
+            let newTotalOthers = response.data.total_others;
+            totalOthers.value = newTotalOthers;
+            count.value += 5;
+            let newReturnMine = response.data.return_mine;
+            return_mine.value += newReturnMine;
+            if (count.value < (totalMine.value + totalOthers.value)) {
+                spin.value = true;
+                showSpin.value = true;
+            }
+          })
+          .catch((error) => {
+            getCommentsIsRunning.value = false;
+            loadMore.value = true;
+            console.log(error);
+          });
+        }
     };
 
     const newComment = () => {
@@ -208,8 +258,8 @@ export default {
 
       const data = {
         post_id: "" + post_id.value,
-        comment_id_mine: 0,
-        comment_id_others: 0,
+        timestamp_mine: "",
+        timestamp_others: "",
         return_mine: 0,
       };
 
@@ -253,22 +303,10 @@ export default {
       goToUserProfile,
       componentName,
       moveBack,
+      spin,
+      spinInfo,
+      showSpin,
     };
-  },
-  components: {
-    OnlyText,
-    OneImage,
-    TwoImages,
-    ThreeImages,
-    FourImages,
-    COnlyText,
-    COneImage,
-    CTwoImages,
-    CThreeImages,
-    CFourImages,
-    MakeComment,
-    PostExtras,
-    BackNavigation,
   },
 };
 </script>

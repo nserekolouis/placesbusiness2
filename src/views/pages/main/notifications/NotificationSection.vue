@@ -1,5 +1,14 @@
 <template>
-  <title-component :title="componentTitle" />
+  <title-component class="d-none d-sm-block" :title="componentTitle" />
+  <post-pages-top-component 
+   class="d-md-none"
+   :indicator="color"
+   :noteCount="nCount"
+   :LeftColor="leftColor"
+   :RightColor="rightColor"
+   @listen-home="goToHome"
+   @listen-notifications="goToNotifications"
+  />
   <center-infomation :info="info" v-show="show" class="info-missing" />
   <ul class="list-group" ref="scrollComponent">
     <li
@@ -21,6 +30,7 @@ import axios from "axios";
 import NotificationItem from "@/views/pages/main/notifications/NotificationItem.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
+import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue"
 import { inject, ref, onMounted, onUnmounted, onActivated } from "vue";
 
 export default {
@@ -29,6 +39,7 @@ export default {
     TitleComponent,
     NotificationItem,
     CenterInfomation,
+    PostPagesTopComponent
   },
   props: {
     new_notifications: Boolean,
@@ -156,6 +167,15 @@ export default {
       emit("listen-user-profile", post);
     };
 
+    const goToHome = () => {
+      emit("listen-home");
+    };
+
+    const goToNotifications = () => {
+      emit("listen-notifications");
+    };
+
+
     return {
       notifications,
       info,
@@ -164,7 +184,15 @@ export default {
       componentName,
       componentTitle,
       goToUserProfile,
+      goToHome,
+      goToNotifications
     };
+  },
+  data(){
+    return {
+      leftColor: "1px solid #80808026",
+      rightColor: "1px solid #288c7f"
+    }
   },
   methods: {
     goToPostDetails(post_id) {

@@ -1,7 +1,7 @@
 <template>
   <div class="col div-pp">
     <img
-      :src="this.url + post.user_photo"
+      :src="post.user_photo"
       class="profile-picture"
       @click="goToProfile"
     />

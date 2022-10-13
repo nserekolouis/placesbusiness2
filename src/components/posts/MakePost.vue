@@ -1,31 +1,33 @@
 <template>
   <!-- <div class="row"> -->
   <!-- <div class="col-sm-12"> -->
-  <div class="">
-    <textarea
+  <div class="row">
+    <div class="col-12">
+      <textarea
       class="form-control form-control-sm"
       v-model="post_text"
-      maxlength="320"
+      maxlength="640"
       rows="5"
       placeholder="What is really happening?"
     ></textarea>
+    </div>
   </div>
   <div class="row">
     <div v-if="image_one" class="col-md-3">
-      <img :src="this.url + image_one" class="post-image" />
+      <img :src="image_one" class="post-image" />
     </div>
     <div v-if="image_two" class="col-md-3">
-      <img :src="this.url + image_two" class="post-image" />
+      <img :src="image_two" class="post-image" />
     </div>
     <div v-if="image_three" class="col-md-3">
-      <img :src="this.url + image_three" class="post-image" />
+      <img :src="image_three" class="post-image" />
     </div>
     <div v-if="image_four" class="col-md-3">
-      <img :src="this.url + image_four" class="post-image" />
+      <img :src="image_four" class="post-image" />
     </div>
   </div>
   <div class="row">
-    <div class="col">
+    <div class="col" style="position:relative">
       <!-- ................. -->
       <div class="post-item">
         <label for="chooseFiles">
@@ -108,7 +110,7 @@ export default {
     return {
       profile_picture: this.url + Auth.user.user_photo,
       post_text: "",
-      counter: "0/320",
+      counter: "0",
       image_one: "",
       image_two: "",
       image_three: "",
@@ -120,7 +122,7 @@ export default {
   watch: {
     post_text(currentValue) {
       console.log("Post Text", currentValue.length);
-      this.counter = currentValue.length + "/" + "320";
+      this.counter = Math.round((currentValue.length/160)) + "/" + "4";
       if (currentValue.length > 0 && Object.keys(this.place).length != 0) {
         this.activeColor = bColor;
       } else {
@@ -316,6 +318,6 @@ label {
 
 .post-item-dropdown {
   position: absolute;
-  bottom: 10px;
+  bottom: -1px;
 }
 </style>
