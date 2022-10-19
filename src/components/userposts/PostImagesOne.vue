@@ -14,17 +14,17 @@
       <post-place-name-login v-else :post="post" />
     </div>
     <div class="row">
-      <div class="col-2">
+      <div class="col-2 d-none">
         <post-profile-picture
           :post="post"
           @listen-user-profile="goToUserProfile"
         />
       </div>
-      <div class="col-10">
+      <div class="col">
         <post-user-info :post="post" />
         <post-text :post="post" />
+        <image-one :post="post" />
         <reaction-component :post="post" @listen-comment="goToComments" />
-        <tag-component :post="post"/>
       </div>
     </div>
   </div>
@@ -34,40 +34,26 @@
 </template>
 <script>
 import ReactionComponent from "@/components/posts/PostReaction.vue";
+import ImageOne from "@/components/ImageOne.vue";
 import PostUserInfo from "@/components/posts/PostUserInfo.vue";
 import PostText from "@/components/posts/PostText.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
-
 import PostPlaceName from "@/components/posts/PostPlaceName.vue";
-import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
-
-import TagComponent from "@/components/posts/TagComponent.vue"
 import PostExtras from "@/components/posts/PostExtras.vue";
 import { ref, watch } from "vue";
+import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
 import Auth from "@/Auth.js";
 
-const TAG = "POST_ONLY_TEXT";
+const TAG = "POST_IMAGES_ONE";
 
 export default {
   name: "OnlyText",
-  components: {
-    ReactionComponent,
-    PostUserInfo,
-    PostText,
-    PostProfilePicture,
-    PostPlaceName,
-    PostExtras,
-    PostPlaceNameLogin,
-    TagComponent
-  },
   props: {
-    //places: Array,
-    post: Object,
-    //index: Number,
+    post: {},
+    index: Number,
     deleted_post_id: Number,
   },
   setup(props, { emit }) {
-    console.log(TAG + '-1-',props.post);
     const showExtras = ref(false);
     const info = ref(null);
     const post = ref(props.post);
@@ -77,8 +63,8 @@ export default {
       (newVal, oldVal) => {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
-        console.log("DELETED POST ID 4", newVal);
-        console.log("DELETED POST ID 4", "" + post.value.post_id);
+        console.log("DELETED POST ID 5", newVal);
+        console.log("DELETED POST ID 5", "" + post.value.post_id);
         if (newVal === "" + post.value.post_id) {
           console.log("DELETED POST ID 4 DELETED");
           deletePost();
@@ -97,6 +83,7 @@ export default {
     };
 
     const reportPost = () => {
+      console.log("Report Post 2");
       showExtras.value = true;
       info.value = "Post Reported";
     };
@@ -112,11 +99,12 @@ export default {
     const goToPlacePage = (place) => {
       emit("listen-place-page", place);
     };
-    
+
     const promotePost = (post) => {
       console.log(TAG,"Promote Post");
       emit("listen-promote-post", post);
     };
+
 
     return {
       showExtras,
@@ -130,6 +118,16 @@ export default {
       goToPlacePage,
       promotePost
     };
+  },
+  components: {
+    ReactionComponent,
+    ImageOne,
+    PostUserInfo,
+    PostText,
+    PostProfilePicture,
+    PostPlaceName,
+    PostExtras,
+    PostPlaceNameLogin,
   },
 };
 </script>

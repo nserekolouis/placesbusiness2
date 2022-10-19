@@ -97,7 +97,7 @@ import Auth from "@/Auth.js";
 import Constants from "@/constants/index.js";
 
 const bColor = "#288c7f";
-const aColor = "#fff";
+const aColor = "#c1c1c1";
 
 //const TAG = "MAKE POST";
 
@@ -319,5 +319,9 @@ label {
 .post-item-dropdown {
   position: absolute;
   bottom: -1px;
+}
+
+.input-counter{
+  border: 1px solid gray;
 }
 </style>

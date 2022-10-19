@@ -27,7 +27,7 @@
               />
               <div class="input-group-append">
                 <button 
-                class="btn btn-outline-light btn-sm" 
+                class="btn btn-secondary btn-sm" 
                 type="button"
                 @click="goToPlacePage"
                 >GO</button>
@@ -186,8 +186,7 @@ export default {
 }
 
 .top-class {
-  /* position: relative; */
-  background-color: #b3b3b3;
+  background-color: white;
   padding-bottom: 10px;
   padding-top: 5px;
   padding-left: 5px;

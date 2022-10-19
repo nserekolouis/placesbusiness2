@@ -14,13 +14,13 @@
       <post-place-name-login v-else :post="post" />
     </div>
     <div class="row">
-      <div class="col-2">
+      <div class="col-2 d-none">
         <post-profile-picture
           :post="post"
           @listen-user-profile="goToUserProfile"
         />
       </div>
-      <div class="col-10">
+      <div class="col">
         <post-user-info :post="post" />
         <post-text :post="post" />
         <reaction-component :post="post" @listen-comment="goToComments" />

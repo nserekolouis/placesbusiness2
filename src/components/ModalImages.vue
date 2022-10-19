@@ -59,28 +59,28 @@
                       v-if="post.image_one != null"
                     >
                       <img
-                        :src="this.url + post.image_one"
+                        :src="post.image_one"
                         class="d-block w-100"
                         alt="African Male"
                       />
                     </div>
                     <div class="carousel-item" v-if="post.image_two != null">
                       <img
-                        :src="this.url + post.image_two"
+                        :src="post.image_two"
                         class="d-block w-100"
                         alt="Church"
                       />
                     </div>
                     <div class="carousel-item" v-if="post.image_three != null">
                       <img
-                        :src="this.url + post.image_three"
+                        :src="post.image_three"
                         class="d-block w-100"
                         alt="People"
                       />
                     </div>
                     <div class="carousel-item" v-if="post.image_four != null">
                       <img
-                        :src="this.url + post.image_four"
+                        :src="post.image_four"
                         class="d-block w-100"
                         alt="Travel"
                       />

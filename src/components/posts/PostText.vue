@@ -4,7 +4,7 @@
       <p v-if="hasMoreText">
         <span class="span-p-text">
           <span v-html="postTextOne"></span>
-          <span class="dots" :style="{display: displayDots}" @click="showMore"> ...More</span>
+          <span class="dots" :style="{display: displayDots}" @click="showMore">  ...More</span>
           <span v-html="postTextTwo" :style="{display: displayMore}"></span>
         </span>
       </p>
@@ -42,7 +42,9 @@ export default {
      
       words.forEach((word) => {
           if (word.charAt(0) === "#"){
-            postText.value = postText.value.replace(word,'<span style="color:#288c7f">'+word+'</span>');
+            postText.value = postText.value.replace(word,'<span style="color:#288c7f">'+word+'</span> ');
+          }else if(word.startsWith("https",0)){
+            postText.value = postText.value.replace(word,'<span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
           }
       });
 
@@ -138,6 +140,7 @@ p {
   color: #288c7f;
   cursor: pointer;
   font-weight: bold;
+  /* display:block; */
 }
 
 @media (max-width: 575.98px) {

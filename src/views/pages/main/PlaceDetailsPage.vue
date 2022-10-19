@@ -1,5 +1,6 @@
 <template>
   <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
+  <hr class="m-0">
   <place-profile :place="place" style="margin-top: 10px" />
   <center-infomation :info="alert" v-show="show" class="info-missing" />
   <ul class="list-group" ref="scrollComponent">
@@ -97,13 +98,13 @@ export default {
     const show = ref(true);
     const posts = ref([]);
     const alert = "No posts yet";
-    const componentTitle = "Place Page";
+    const componentTitle = "PLACE PAGE";
     const active = ref(true);
     const scrollComponent = ref(null);
     const scrollingPosition = ref(0);
 
-    const first_post_id = ref(0);
-    const last_post_id = ref(0);
+    const first_post_id = ref("");
+    const last_post_id = ref("");
     const ad_id = ref(0);
 
     const spin = ref(false);
@@ -132,8 +133,8 @@ export default {
           ad_id.value = 0;
         }
       } else {
-        first_post_id.value = 0;
-        last_post_id.value = 0;
+        first_post_id.value = "";
+        last_post_id.value = "";
         ad_id.value = 0;
       }
 

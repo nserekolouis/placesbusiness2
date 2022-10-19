@@ -1,7 +1,7 @@
 <template>
   <div class="backNav" @click="moveBack">
     <font-awesome-icon icon="fa-solid fa-long-arrow-left"/>
-    <h6>{{ info }}</h6>
+    <p class=" text-uppercase d-inline">{{ ' '+info }}</p>
   </div>
 </template>
 <script>

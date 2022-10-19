@@ -1,20 +1,14 @@
 <template>
-  <!-- <div style="margin-top:5px; margin-bottom:5px">
-        <font-awesome-icon icon="fa-solid fa-long-arrow-left"
-        @click="$router.back()"
-        />
-    <h6>User Profile</h6>
-   </div> -->
   <div class="row">
     <div class="col-6">
-      <img :src="user.user_photo" class="profile-picture" />
+      <img :src="user.user_photo" class="rounded-circle" style="width:70px;"/>
     </div>
     <div class="col-6" style="text-align: right"
     >
       <button
         v-if="showFollowButton"
         type="button"
-        class="btn btn btn-outline-primary btn-sm btn-follow"
+        class="btn btn btn-outline-primary btn-sm btn-follow mt-0"
         @click="followAction"
       >
         {{ follow }}
@@ -22,26 +16,18 @@
       <button
         v-if="showCopyButton"
         type="button"
-        class="btn btn btn-outline-primary btn-sm btn-follow"
+        class="btn btn btn-outline-primary btn-sm btn-follow mt-0"
         @click="copyUserLink"
         style="margin-left:5px;"
       >
-        Copy Link
+      Copy Link
       </button>
     </div>
     <div class="row">
       <p>{{ user.username }}</p>
-      <p>{{ user.userhandle }}</p>
-      <p>{{ user.userbio }}</p>
-      <p>{{ user.created_at }}</p>
-      <!-- <div class="row">
-        <p style="display: inline-block; width: 120px">
-          Followers: {{ user.followers }}
-        </p>
-        <p style="display: inline-block; width: 120px">
-          Following: {{ user.following }}
-        </p>
-      </div> -->
+      <p class="text-muted">{{ user.userhandle }}</p>
+      <p class="text-muted">{{ user.userbio }}</p>
+      <p class="text-muted">{{ user.created_at }}</p>
     </div>
     <div class="row">
       <div class="col-8">
@@ -129,7 +115,7 @@ export default {
           console.log("USER DETAILS", response.data);
           this.user = response.data.user_details;
           if (response.data.user_details.follow_status == true) {
-            this.follow = "Unfollow";
+            this.follow = "Following";
           } else {
             this.follow = "Follow";
           }

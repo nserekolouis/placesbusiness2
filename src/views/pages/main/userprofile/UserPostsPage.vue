@@ -1,6 +1,7 @@
 <template>
   <div class="row">
     <back-navigation :info="componentName" @listen-move-back="moveBack" />
+    <hr class="mt-0 mb-1">
     <div>
       <user-profile :user_id="user_id" />
     </div>
@@ -45,11 +46,11 @@
   </div>
 </template>
 <script>
-import OnlyText from "@/components/posts/PostOnlyText.vue";
-import OneImage from "@/components/posts/PostImagesOne.vue";
-import TwoImages from "@/components/posts/PostImagesTwo.vue";
-import ThreeImages from "@/components/posts/PostImagesThree.vue";
-import FourImages from "@/components/posts/PostImagesFour.vue";
+import OnlyText from "@/components/userposts/PostOnlyText.vue";
+import OneImage from "@/components/userposts/PostImagesOne.vue";
+import TwoImages from "@/components/userposts/PostImagesTwo.vue";
+import ThreeImages from "@/components/userposts/PostImagesThree.vue";
+import FourImages from "@/components/userposts/PostImagesFour.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
 //import PostExtras from "@/components/posts/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";

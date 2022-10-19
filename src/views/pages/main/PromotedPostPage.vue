@@ -57,7 +57,7 @@
   <hr>
   <div class="row">
       <div class="col">
-          <h6>Account Balance : {{ accountBalance }}</h6>
+          <h6 style="color:green">Account Balance : {{ accountBalance }}</h6>
       </div>
   </div>
 

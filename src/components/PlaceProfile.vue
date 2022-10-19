@@ -1,14 +1,26 @@
 <template>
   <div class="row">
     <div class="col-6">
-      <div class="profile-item">Name: {{ placeDetails.main_text }}</div>
-      <div class="profile-item">Address: {{ placeDetails.secondary_text }}</div>
-      <div class="profile-item">Followers: {{ numFollowers }}</div>
+      <div class="">
+        <h6 class="">
+          {{ placeDetails.main_text }}
+          <small class="text-muted d-block">{{ placeDetails.secondary_text }}</small>
+        </h6>
+      </div>
+      <div class="">
+        <p class="text-muted">
+          Followers: {{ numFollowers }}
+        </p>
+      </div>
+      <!-- <div class="profile-item">Name: {{ placeDetails.main_text }}</div>
+      <div class="profile-item">Address: {{ placeDetails.secondary_text }}</div> -->
+      <!-- <div class="profile-item">Followers: {{ numFollowers }}</div> -->
+     
     </div>
     <div class="col-6" style="text-align: right">
       <div class="profile-item">
         <button type="button" class="btn btn-outline-primary btn-sm">
-          UnFollow Place
+          Following
         </button>
       </div>
     </div>

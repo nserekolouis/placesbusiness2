@@ -2,34 +2,34 @@
   <div class="col div-pp">
     <img
       :src="post.user_photo"
-      class="profile-picture"
+      class="rounded-circle" style="width:50px;"
       @click="goToProfile"
     />
 
-    <div v-show="isPromoted" class="ad-label">
+    <!-- <div v-show="isPromoted" class="ad-label">
       <p>AD</p>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
-import { ref } from "vue"
+//import { ref } from "vue"
 export default {
   name: "PostProfilePicture",
   props: {
     post: {},
   },
-  setup(props){
-    const isPromoted = ref(false);
-    const post = ref(props.post);
+  // setup(props){
+  //   const isPromoted = ref(false);
+  //   const post = ref(props.post);
 
-    if(post.value.promoted === 1){
-      isPromoted.value = true;
-    }
+  //   if(post.value.promoted === 1){
+  //     isPromoted.value = true;
+  //   }
 
-    return {
-      isPromoted
-    }
-  },
+  //   return {
+  //     isPromoted
+  //   }
+  // },
   methods: {
     goToProfile() {
       console.log("Notifications CLICKED", this.post);
@@ -47,7 +47,7 @@ export default {
   cursor: pointer;
 }
 
-p{
+/* p{
   margin-bottom: 0px;
   font-size: 10px;
   font-weight: bold;
@@ -64,5 +64,5 @@ p{
   .ad-label{
     left: 54px;
   }
-}
+} */
 </style>
