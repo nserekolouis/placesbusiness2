@@ -8,8 +8,10 @@
   </div>
 </template>
 <script>
-import { ref, 
+import { 
+ref, 
 //onActivated
+watch
  } from "vue";
 
 const TAG = "POST_TEXT";
@@ -24,6 +26,7 @@ export default {
     const postText = ref(props.post.post_text);
     console.log(TAG + ' 2 ',postText.value);
     const pT = ref("");
+
     if(postText.value != null){
       const words = postText.value.split(/\r?\n/);
       console.log(TAG + ' 3 ',words);
@@ -33,6 +36,24 @@ export default {
           }
       });
     }
+
+    watch(
+      () => props.post,
+      (newVal, oldVal) => {
+        console.log("CHANGE-3-",newVal);
+        console.log("CHANGE-3-",oldVal);
+        postText.value = props.post.post_text;
+        if(postText.value != null){
+          const words = postText.value.split(/\r?\n/);
+          console.log(TAG + ' 3 ',words);
+          words.forEach((word) => {
+              if (word.charAt(0) === "#"){
+                postText.value = postText.value.replace(word,'<span style="color:#288c7f">'+word+'</span>');
+              }
+          });
+    }
+      }
+    );
 
     return {
       pT,

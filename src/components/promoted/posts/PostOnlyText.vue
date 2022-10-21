@@ -15,14 +15,14 @@
     <div class="row">
       <div class="col-2">
         <post-profile-picture
-          :post="post"
+          :post="pst"
           @listen-user-profile="goToUserProfile"
         />
       </div>
       <div class="col-10">
-        <post-user-info :post="post" />
-        <post-text :post="post" />
-        <reaction-component :post="post" @listen-comment="goToComments" />
+        <post-user-info :post="pst" />
+        <post-text :post="pst" />
+        <reaction-component :post="pst" @listen-comment="goToComments" />
       </div>
     </div>
   </div>
@@ -54,7 +54,7 @@ export default {
   setup(props, { emit }) {
     const showExtras = ref(false);
     const info = ref(null);
-    const post = ref(props.post);
+    const pst = ref(props.post);
 
     watch(
       () => props.deleted_post_id,
@@ -62,11 +62,20 @@ export default {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
         console.log("DELETED POST ID 4", newVal);
-        console.log("DELETED POST ID 4", "" + post.value.post_id);
-        if (newVal === "" + post.value.post_id) {
+        console.log("DELETED POST ID 4", "" + pst.value.post_id);
+        if (newVal === "" + pst.value.post_id) {
           console.log("DELETED POST ID 4 DELETED");
           deletePost();
         }
+      }
+    );
+
+    watch(
+      () => props.post,
+      (newVal, oldVal) => {
+        console.log("CHANGE-2-",newVal);
+        console.log("CHANGE-2-",oldVal);
+        pst.value = newVal;
       }
     );
 
@@ -106,7 +115,8 @@ export default {
       goToComments,
       goToUserProfile,
       Auth,
-      goToPlacePage
+      goToPlacePage,
+      pst
     };
   },
   components: {

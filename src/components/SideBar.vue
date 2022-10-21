@@ -76,12 +76,11 @@
           >
             <img
               :src="profile_picture"
-              alt=""
-              width="32"
-              height="32"
-              class="rounded-circle me-2"
+              alt="Profile Picture"
+              class="rounded-circle"
+              width="40"
             />
-            <strong>{{ username }}</strong>
+            <p style="font-weight:400">{{ username }}</p>
           </a>
           <ul
             class="dropdown-menu text-small shadow"

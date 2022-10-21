@@ -3,9 +3,9 @@
   <div class="row" style="margin-top:40px;">
     <div class="col">
       <four-images
-      v-if="post.image_four != null"
-      :post="post"
-      :index="post.id"
+      v-if="pst.image_four != null"
+      :post="pst"
+      :index="pst.id"
       :deleted_post_id="d_post_id"
       @listen-comment="goToComments"
       @listen-user-profile="goToUserProfile"
@@ -13,9 +13,9 @@
       />
 
       <three-images
-      v-else-if="post.image_three != null"
-      :post="post"
-      :index="post.id"
+      v-else-if="pst.image_three != null"
+      :post="pst"
+      :index="pst.id"
       :deleted_post_id="d_post_id"
       @listen-comment="goToComments"
       @listen-user-profile="goToUserProfile"
@@ -23,9 +23,9 @@
       />
 
       <two-images
-      v-else-if="post.image_two != null"
-      :post="post"
-      :index="post.id"
+      v-else-if="pst.image_two != null"
+      :post="pst"
+      :index="pst.id"
       :deleted_post_id="d_post_id"
       @listen-comment="goToComments"
       @listen-user-profile="goToUserProfile"
@@ -33,9 +33,9 @@
       />
 
       <one-image
-      v-else-if="post.image_one != null"
-      :post="post"
-      :index="post.id"
+      v-else-if="pst.image_one != null"
+      :post="pst"
+      :index="pst.id"
       :deleted_post_id="d_post_id"
       @listen-comment="goToComments"
       @listen-user-profile="goToUserProfile"
@@ -44,7 +44,7 @@
 
       <only-text
       v-else
-      :post="post"
+      :post="pst"
       :index="index"
       :places="places"
       :deleted_post_id="d_post_id"
@@ -52,6 +52,7 @@
       @listen-user-profile="goToUserProfile"
       @listen-place-page="goToPlacePage"
       />
+    
       </div>
   </div>
   <hr>
@@ -140,7 +141,7 @@
   </div>
   <div class="row" v-for="(promo, index) in promos" :key="promo.id" style="text-align:center; margin-bottom:50px;">
     <div class="col-1" >
-      {{ (index+1) }}
+      {{ (index + 1) }}
     </div>
     <div class="col-3" >
     {{ promo.diff }}
@@ -158,7 +159,13 @@
 </template>
 <script>
 import axios from "axios";
-import { ref, watch, onMounted, inject } from "vue";
+import { 
+ref,
+watch, 
+onMounted, 
+inject,
+//onActivated
+} from "vue";
 import OnlyText from "@/components/promoted/posts/PostOnlyText.vue";
 import OneImage from "@/components/promoted/posts/PostImagesOne.vue";
 import TwoImages from "@/components/promoted/posts/PostImagesTwo.vue";
@@ -195,16 +202,23 @@ export default {
       const componentName = "Promote Post";
       const promos = ref([]);
 
-      watch(() => props.show,
+      watch(() => props.post,
       (newVal, oldVal) => {
-        console.log(TAG,newVal);
-        console.log(TAG,oldVal);
-        showModal.value = true;
+        console.log("CHANGE-1-",newVal);
+        console.log("CHANGE-1-",oldVal);
+        pst.value = newVal;
+        getAccountBalance();
       });
 
       onMounted(() => {
         getAccountBalance();
       });
+
+      // onActivated(() => {
+      //   console.log(TAG + "-OnActivated-",props.post)
+      //   pst.value = props.post;
+      //   getAccountBalance();
+      // });
 
       const getAccountBalance = () => {
         let page_url = url + "api/v2/get_account_details";
@@ -258,6 +272,7 @@ export default {
             .post(page_url,data)
             .then((response) => {
               console.log(TAG,response);
+              accountBalance.value = response.data.amount;
               getPostPromotions();
             })
             .catch((error) => {
@@ -300,7 +315,8 @@ export default {
           onSubmit,
           componentName,
           moveBack,
-          promos
+          promos,
+          pst
       }
   },
 
