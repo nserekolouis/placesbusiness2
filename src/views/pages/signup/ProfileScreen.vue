@@ -10,7 +10,7 @@
               margin-left: auto;
               margin-right: auto;
               min-width: 280px;
-            "
+              "
           >
             <div class="form-item">
               <div 
@@ -79,10 +79,10 @@
                 </div>
       
                 <input
+                  autocomplete="off"
                   id="country"
                   class="form-control"
                   v-model="search_country"
-                  @input="searchCountries"
                   type="text"
                   required
                 />
@@ -100,7 +100,7 @@
               </ul>
             </div>
             <div class="form-item" style="position:relative">
-              <button type="submit" class="btn btn-primary btn-next">
+              <!-- <button type="submit" class="btn btn-primary btn-next">
                 Next
               </button>
               <div 
@@ -109,7 +109,11 @@
                 :style="{ display: nextSpin }"
                 >
                   <span class="visually-hidden">Loading...</span>
-              </div>
+              </div> -->
+              <button type="submit" class="btn btn-primary btn-next"
+              >
+              <span class="span-p-text" v-html="buttonText"></span>
+              </button>
             </div>
           </div>
         </form>
@@ -122,6 +126,7 @@
 import axios from "axios";
 import Auth from "@/Auth.js";
 import router from "@/router";
+import {ref, inject, watch} from "vue";
 import AppHeader from "@/components/AppHeader.vue";
 import Constants from "@/constants/index";
 
@@ -131,91 +136,102 @@ export default {
     AppHeader,
   },
   props: {},
-  data() {
-    return {
-      profile_picture: Constants.PROFILE_IMAGE_URL,
-      search_country: "",
-      countries: [],
-      username: "",
-      userbio: "",
-      country_id: 0,
-      //picture: "storage/profile/OEAYvPDaKVFE2LaWarmvj5kFHraHjSMRwaghhStj.png",
-      displayStatus: "none",
-      nextSpin: "none",
-      dStatus: "none"
-    };
-  },
-  mounted() {
-    console.log("TOKEN", Auth);
-  },
-  methods: {
-    uploadProfilePicture(event) {
+  setup(){
+    const buttonText = ref("Next");
+    const displayStatus = ref("none");
+    const nextSpin = ref("none");
+    const dStatus = ref("none");
+    const profile_picture = ref(Constants.PROFILE_IMAGE_URL);
+    const search_country = ref("");
+    const countries = ref([]);
+    const username = ref("");
+    const userbio = ref("");
+    const country_id = ref(0);
+    const url = inject('url');
+    const searching = ref(true);
+
+
+    //const showLoading = () => {
+      //buttonText.value = "<span class='spinner-border spinner-border-sm'></span> Uploading ...";
+    //};
+
+    const uploadProfilePicture = (event) => {
       if (event.target.files[0]) {
         if (event.target.files[0].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_PROFILE);
         } else {
-          this.dStatus = "initial";
-          let page_url = this.url + "api/upload_profile_picture";
+          dStatus.value = "initial";
+          let page_url = url + "api/upload_profile_picture";
           let data = new FormData();
           data.append("image_one", event.target.files[0]);
           axios
             .post(page_url, data)
             .then((response) => {
               console.log("profile_picture", response);
-              this.dStatus = "none";
-              this.profile_picture = response.data.user_photo;
-              //this.picture = response.data.user_photo;
+              dStatus.value = "none";
+              profile_picture.value = response.data.user_photo;
+              buttonText.value = "";
             })
             .catch((error) => {
-              this.dStatus = "none";
+              dStatus.value = "none";
               console.log(error);
             });
         }
       }
-    },
-    searchCountries() {
-      this.displayStatus = "block";
-      let page_url = this.url + "api/search_countries";
-      const data = {
-        keyword: this.search_country,
-      };
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log(response.data.countries);
-          this.displayStatus = "none";
-          this.countries = response.data.countries;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    selectCountry(country) {
-      console.log("country", country);
-      this.search_country = country.name;
-      this.countries = [];
-      this.country_id = country.id;
-    },
-    uploadProfile: function () {
-      if(this.username.length === 0){
+    }
+
+    watch(search_country, (value) => {
+       if(searching.value){
+          displayStatus.value = "block";
+          let page_url = url + "api/search_countries";
+          const data = {
+            keyword: value,
+          };
+          axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            displayStatus.value = "none";
+            countries.value = response.data.countries
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+       }else{
+         searching.value = true;
+       }
+     });
+
+
+    const selectCountry = (country) => {
+      searching.value = false;
+      search_country.value = country.name;
+      countries.value = [];
+      country_id.value = country.id;
+    }
+
+    const uploadProfile = () => {
+      if(username.value.length === 0){
         alert("Please put your username");
-      }else if(this.userbio.length === 0){
+      }else if(userbio.value.length === 0){
         alert("Please put your userbio");
-      }else if(this.country_id === 0){
-         alert("Please select a country of interest");
+      }else if(country_id.value === 0){
+        alert("Please select a country of interest");
       }else{
-        this.nextSpin = "block";
+        buttonText.value = "<span class='spinner-border spinner-border-sm'></span> Processing ...";
+        nextSpin.value = "block";
         let data = new FormData();
-        data.append("userphoto", this.profile_picture);
-        data.append("username", this.username);
-        data.append("userbio", this.userbio);
-        data.append("country_id", this.country_id);
-        let page_url = this.url + "api/web_upload_profile";
+        data.append("userphoto", profile_picture.value);
+        data.append("username", username.value);
+        data.append("userbio", userbio.value);
+        data.append("country_id", country_id.value);
+        let page_url = url + "api/web_upload_profile";
         axios
           .post(page_url, data)
           .then((response) => {
-            this.nextSpin = "none";
-            console.log("Response:",response);
+            buttonText.value = "Done";
+            nextSpin.value = "none";
+            console.log("Response::",response);
             if (response.data.status_code === 1) {
               Auth.updateUser(response.data.user);
               router.push({ name: "SwitchScreen" });
@@ -226,14 +242,139 @@ export default {
               typeof err.response !== "undefined"
                 ? err.response.data.message
                 : err.message;
-            this.nextSpin = "none";
+            nextSpin.value = "none";
+            buttonText.value = "Next";
             console.log("error", message);
           });
 
-        this.showModal = false;
+        //showModal.value = false;
         return true;
       }
-    },
+    }
+
+    return {
+      buttonText,
+      //showLoading,
+      uploadProfilePicture,
+      displayStatus,
+      nextSpin,
+      dStatus,
+      //searchCountries,
+      selectCountry,
+      uploadProfile,
+      countries,
+      profile_picture,
+      search_country,
+      username,
+      userbio,
+      country_id
+    }
+  },
+  data() {
+    return {
+      //profile_picture: Constants.PROFILE_IMAGE_URL,
+      //search_country: "",
+      //countries: [],
+      //username: "",
+      //userbio: "",
+      //country_id: 0,
+      //displayStatus: "none",
+      //nextSpin: "none",
+      //dStatus: "none",
+      //buttonText: "Next"
+    };
+  },
+  mounted() {
+    console.log("TOKEN", Auth);
+  },
+  methods: {
+    // uploadProfilePicture(event) {
+    //   if (event.target.files[0]) {
+    //     if (event.target.files[0].size > Constants.FILE_SIZE) {
+    //       alert(Constants.IMAGE_PROFILE);
+    //     } else {
+    //       this.dStatus = "initial";
+    //       let page_url = this.url + "api/upload_profile_picture";
+    //       let data = new FormData();
+    //       data.append("image_one", event.target.files[0]);
+    //       axios
+    //         .post(page_url, data)
+    //         .then((response) => {
+    //           console.log("profile_picture", response);
+    //           this.dStatus = "none";
+    //           this.profile_picture = response.data.user_photo;
+    //           //this.picture = response.data.user_photo;
+    //           this.buttonText = ""
+    //         })
+    //         .catch((error) => {
+    //           this.dStatus = "none";
+    //           console.log(error);
+    //         });
+    //     }
+    //   }
+    // },
+    // searchCountries() {
+    //   this.displayStatus = "block";
+    //   let page_url = this.url + "api/search_countries";
+    //   const data = {
+    //     keyword: this.search_country,
+    //   };
+    //   axios
+    //     .post(page_url, data)
+    //     .then((response) => {
+    //       console.log(response.data.countries);
+    //       this.displayStatus = "none";
+    //       this.countries = response.data.countries;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
+    // selectCountry(country) {
+    //   console.log("country", country);
+    //   this.search_country = country.name;
+    //   this.countries = [];
+    //   this.country_id = country.id;
+    // },
+    // uploadProfile: function () {
+    //   this.buttonText = "<span class='spinner-border spinner-border-sm'></span> Processing ...";
+    //   if(this.username.length === 0){
+    //     alert("Please put your username");
+    //   }else if(this.userbio.length === 0){
+    //     alert("Please put your userbio");
+    //   }else if(this.country_id === 0){
+    //     alert("Please select a country of interest");
+    //   }else{
+    //     this.nextSpin = "block";
+    //     let data = new FormData();
+    //     data.append("userphoto", this.profile_picture);
+    //     data.append("username", this.username);
+    //     data.append("userbio", this.userbio);
+    //     data.append("country_id", this.country_id);
+    //     let page_url = this.url + "api/web_upload_profile";
+    //     axios
+    //       .post(page_url, data)
+    //       .then((response) => {
+    //         this.nextSpin = "none";
+    //         console.log("Response:",response);
+    //         if (response.data.status_code === 1) {
+    //           Auth.updateUser(response.data.user);
+    //           //router.push({ name: "SwitchScreen" });
+    //         }
+    //       })
+    //       .catch((err) => {
+    //         let message =
+    //           typeof err.response !== "undefined"
+    //             ? err.response.data.message
+    //             : err.message;
+    //         this.nextSpin = "none";
+    //         console.log("error", message);
+    //       });
+
+    //     this.showModal = false;
+    //     return true;
+    //   }
+    // },
   },
 };
 </script>
@@ -373,6 +514,42 @@ label {
 .profile-image-loader{
   position: absolute;
   z-index: 1;
-  top: 108px;
+  top: 220px;
+  left: 41%;
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .profile-image-loader{
+    position: absolute;
+    z-index: 1;
+    top: 220px;
+    left: 47%;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+  .profile-image-loader{
+    position: absolute;
+    z-index: 1;
+    top: 220px;
+    left: 48%;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+
 }
 </style>

@@ -24,6 +24,7 @@
               aria-label="Search"
               v-model="search_place"
               @input="searchPlace"
+              style="margin-right:-2px; "
               />
               <div class="input-group-append">
                 <button 

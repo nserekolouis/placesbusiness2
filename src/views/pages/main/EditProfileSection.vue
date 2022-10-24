@@ -85,7 +85,9 @@
             </ul>
           </div>
           <div class="form-item" style="text-align: end">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">
+              <span class="span-p-text" v-html="buttonText"></span>
+            </button>
           </div>
         </div>
       </form>
@@ -128,7 +130,8 @@ export default {
       username: Auth.user.username,
       userbio: Auth.user.user_bio,
       country_id: Auth.user.country_id,
-      displayStatus: "none"
+      displayStatus: "none",
+      buttonText: "Update"
     };
   },
   watch: {
@@ -187,6 +190,7 @@ export default {
     },
     uploadProfile: function () {
       console.log(TAG);
+      this.buttonText = "<span class='spinner-border spinner-border-sm'></span> Processing ...";
       let data = new FormData();
       data.append("userphoto", this.profile_picture);
       data.append("username", this.username);
@@ -200,9 +204,11 @@ export default {
         .post(page_url, data)
         .then((response) => {
           console.log(TAG + "Response: ", response);
+
           if (response.data.status_code) {
             Auth.updateUser(response.data.user);
-            alert("Profile Updated");
+            //alert("Profile Updated");
+            this.buttonText = "Update";
           }
         })
         .catch((err) => {
@@ -211,6 +217,7 @@ export default {
               ? err.response.data.message
               : err.message;
           console.log("error", message);
+          this.buttonText = "Next";
         });
 
       this.showModal = false;

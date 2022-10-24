@@ -4,7 +4,7 @@
       <p v-if="hasMoreText">
         <span class="span-p-text">
           <span v-html="postTextOne"></span>
-          <span class="dots" :style="{display: displayDots}" @click="showMore">  ...More</span>
+          <span class="dots" :style="{display: displayDots}" @click="showMore">More</span>
           <span v-html="postTextTwo" :style="{display: displayMore}"></span>
         </span>
       </p>
@@ -42,69 +42,25 @@ export default {
      
       words.forEach((word) => {
           if (word.charAt(0) === "#"){
-            postText.value = postText.value.replace(word,'<span style="color:#288c7f">'+word+'</span> ');
+            postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
           }else if(word.startsWith("https",0)){
-            postText.value = postText.value.replace(word,'<span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
+            postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
           }
       });
 
       if(postText.value.length <= 320){
         hasMoreText.value = false;
+        postTextOne.value = postText.value;
+        
       }else{
         hasMoreText.value = true;
+        postTextOne.value = postText.value.substring(0,319)+'...';
+        postTextTwo.value = postText.value.substring(319,(postText.value.length-1));
       }
 
-      postTextOne.value = postText.value.substring(0,319);
-      postTextTwo.value = postText.value.substring(319,(postText.value.length-1));
+      
     }
 
-    // onActivated(() => {
-    //   console.log(TAG + ' TEXT ',props.post);
-    //   postText.value = props.post.post_text;
-    //   if(postText.value != null){
-    //     const words = postText.value.split(/\r?\n/);
-    //     console.log(TAG + ' 3 ',words);
-    //     words.forEach((word) => {
-    //         if (word.charAt(0) === "#"){
-    //           postText.value = postText.value.replace(word,'<span style="color:#288c7f">'+word+'</span>');
-    //         }
-    //     });
-
-    //     if(postText.value.length <= 320){
-    //       hasMoreText.value = false;
-    //     }else{
-    //       hasMoreText.value = true;
-    //     }
-
-    //     postTextOne.value = postText.value.substring(0,319);
-    //     postTextTwo.value = postText.value.substring(319,(postText.value.length-1));
-    //   }
-    // });
-
-    // onMounted(() => {
-    //   console.log(TAG + ' TEXT ',props.post);
-    //   postText.value = props.post.post_text;
-    //   if(postText.value != null){
-    //     const words = postText.value.split(/\r?\n/);
-    //     console.log(TAG + ' 3 ',words);
-    //     words.forEach((word) => {
-    //         if (word.charAt(0) === "#"){
-    //           postText.value = postText.value.replace(word,'<span style="color:#288c7f">'+word+'</span>');
-    //         }
-    //     });
-
-    //     if(postText.value.length <= 320){
-    //       hasMoreText.value = false;
-    //     }else{
-    //       hasMoreText.value = true;
-    //     }
-
-    //     postTextOne.value = postText.value.substring(0,319);
-    //     postTextTwo.value = postText.value.substring(319,(postText.value.length-1));
-    //   }
-    // });
-    
-    
     const showMore = () => {
       displayMore.value = "block";
       displayDots.value = "none";
@@ -137,10 +93,13 @@ p {
 }
 
 .dots {
-  color: #288c7f;
+  color: white;
   cursor: pointer;
   font-weight: bold;
-  /* display:block; */
+  background-color: #288c7f;
+  padding: 1px;
+  font-size: 10px;
+  text-transform: uppercase;
 }
 
 @media (max-width: 575.98px) {
