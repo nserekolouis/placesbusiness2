@@ -45,7 +45,9 @@ export default {
     new_notifications: Boolean,
   },
   setup(props, { emit }) {
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
     const show = ref(true);
     const notifications = ref([]);
     const info = "No notifications yet";
@@ -89,7 +91,7 @@ export default {
     });
 
     const getNotifications = () => {
-      let page_url = url + "api/v2/get_notifications";
+      let page_url = url_v3 + "/get_notifications";
 
       if (count.value > 0) {
         note_id.value = notifications.value[notifications.value.length - 1];
@@ -122,7 +124,7 @@ export default {
     };
 
     const refreshNotifications = () => {
-      let page_url = url + "api/v2/get_notifications";
+      let page_url = url_v3 + "/get_notifications";
 
       const data = {
         notification_id: "" + 0,

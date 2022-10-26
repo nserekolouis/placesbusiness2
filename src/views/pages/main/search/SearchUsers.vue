@@ -54,7 +54,7 @@ export default {
     searchUser() {
       if (this.searching == false) {
         this.searching = true;
-        let page_url = this.url + "api/search_people";
+        let page_url = this.url_v1 + "/search_people";
 
         const data = {
           query: this.search_user,

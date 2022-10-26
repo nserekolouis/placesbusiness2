@@ -215,7 +215,9 @@ import { inject } from "vue";
 import axios from "axios";
 import Auth from "@/Auth.js";
 
-const url = inject("url");
+//const url = inject("url");
+//const url_v1 = inject("url_v1");
+const url_v3 = inject("url_v3");
 
 const callback = (response) => {
   const userData = decodeCredential(response.credential);
@@ -226,7 +228,7 @@ const callback = (response) => {
     password_confirmation: "password",
     role: "Client",
   };
-  let page_url = url + "api/v2/register";
+  let page_url = url_v3 + "/register";
   axios
     .post(page_url, data)
     .then((response) => {

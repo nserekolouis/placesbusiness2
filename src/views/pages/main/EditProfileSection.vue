@@ -150,7 +150,7 @@ export default {
           alert(Constants.IMAGE_PROFILE);
         } else {
           this.displayStatus = "initial";
-          let page_url = this.url + "api/upload_profile_picture";
+          let page_url = this.url_v1 + "/upload_profile_picture";
           let data = new FormData();
           data.append("image_one", event.target.files[0]);
           axios
@@ -168,7 +168,7 @@ export default {
       }
     },
     searchCountries() {
-      let page_url = this.url + "api/search_countries";
+      let page_url = this.url_v1 + "/search_countries";
       const data = {
         keyword: this.search_country,
       };
@@ -199,7 +199,7 @@ export default {
 
       console.log(TAG + "Edit Profile Section", data);
 
-      let page_url = this.url + "api/web_upload_profile";
+      let page_url = this.url_v1 + "/web_upload_profile";
       axios
         .post(page_url, data)
         .then((response) => {
@@ -224,7 +224,7 @@ export default {
       return true;
     },
     getCountry(country_id) {
-      let page_url = this.url + "api/v2/get_country";
+      let page_url = this.url_v3 + "/get_country";
       const data = {
         country_id: "" + country_id,
       };

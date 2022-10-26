@@ -52,7 +52,9 @@ export default {
   },
   setup(props, { emit }) {
     const clicked = ref(false);
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
     const notification_id = ref(props.notification.id);
     const post_id = ref(props.notification.post_id);
 
@@ -78,7 +80,7 @@ export default {
     });
 
     const updateNotificationClicked = () => {
-      let page_url = url + "api/v2/update_clicked";
+      let page_url = url_v3 + "/update_clicked";
 
       const data = {
         notification_id: "" + notification_id.value,

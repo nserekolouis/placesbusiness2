@@ -81,7 +81,10 @@ export default {
   },
   setup(props, { emit }) {
     const componentName = "Comments";
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject('url_v1');
+    const url_v3 = inject('url_v3');
+
     const post_id = ref(props.id);
     const post = ref({});
     const count = ref(0);
@@ -182,7 +185,7 @@ export default {
 
     const getPost = () => {
       console.log(TAG + "-GET-POST");
-      let page_url = url + "api/v2/get_post";
+      let page_url = url_v3 + "/get_post";
       const data = {
         post_id: "" + post_id.value,
       };
@@ -201,7 +204,7 @@ export default {
     const getComments = () => {
       if(getCommentsIsRunning.value === false){
         getCommentsIsRunning.value = true;
-        let page_url = url + "api/v2/get_comments";
+        let page_url = url_v3 + "/get_comments";
         if (count.value != 0) {
           if (return_mine.value < totalMine.value) {
             timestamp_mine.value = comments.value[comments.value.length - 1].created_at;
@@ -254,7 +257,7 @@ export default {
 
     const newComment = () => {
       count.value = 0;
-      let page_url = url + "api/v2/get_comments";
+      let page_url = url_v3 + "/get_comments";
 
       const data = {
         post_id: "" + post_id.value,

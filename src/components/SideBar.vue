@@ -144,7 +144,9 @@ export default {
   setup(props, { emit }) {
     const messaging = inject("messaging");
     const vapidKey = inject("vapidKey");
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
     const noteCount = ref(0);
     const indicator = ref(props.indicatorbg);
     //const deletedArray = ref([]);
@@ -203,7 +205,7 @@ export default {
     });
 
     const webOnline = (currentToken) => {
-      let page_url = url + "api/v2/web_online";
+      let page_url = url_v3 + "/web_online";
       let data = new FormData();
       data.append("token", currentToken);
       axios

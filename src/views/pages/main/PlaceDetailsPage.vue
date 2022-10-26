@@ -91,7 +91,10 @@ export default {
   setup(props, { emit }) {
     console.log(TAG + " 1 ", props.place);
     const place = ref(props.place);
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
+
     const loadMore = ref(true);
     const count = ref(0);
     const total = ref(0);
@@ -147,7 +150,7 @@ export default {
 
       console.log(TAG+"-G-P-P-DATA", data);
 
-      let page_url = url + "api/v2/get_place_posts";
+      let page_url = url_v3 + "/get_place_posts";
       axios
         .post(page_url, data)
         .then((response) => {

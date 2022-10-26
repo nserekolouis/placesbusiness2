@@ -41,9 +41,11 @@ export default {
   props: {
     place: {},
   },
-  setup(props) {
+  setup(props) { bbb
     console.log(props.place);
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
     const place = ref(props.place);
     const placeDetails = ref({});
     const numFollowers = ref(0);

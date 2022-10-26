@@ -140,7 +140,9 @@ export default {
     const posts = ref([]);
     const places = ref([]);
     const scrollComponent = ref(null);
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject('url_v1');
+    const url_v3 = inject('url_v3');
     const place = ref({});
     const loadMore = ref(true);
     const count = ref(0);
@@ -218,7 +220,7 @@ export default {
     });
 
     const getPosts = () => {
-      let page_url = url + "api/v2/get_posts";
+      let page_url = url_v3 + "/get_posts";
       const data = {
         id: "" + id.value,
         first_post_id: first_post_id.value,
@@ -256,7 +258,7 @@ export default {
     };
 
     const getPlaceSubscriptions = () => {
-      let page_url = url + "api/v2/get_place_subs";
+      let page_url = url_v3 + "api/v2/get_place_subs";
       const data = {
         userplacesub_id: "0",
       };

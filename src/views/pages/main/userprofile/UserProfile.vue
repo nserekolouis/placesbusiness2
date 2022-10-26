@@ -105,7 +105,7 @@ export default {
   },
   methods: {
     getUserDetails(user_id) {
-      let page_url = this.url + "api/get_user_details";
+      let page_url = this.url_v1 + "/get_user_details";
       const data = {
         user_id: "" + user_id,
       };
@@ -125,7 +125,7 @@ export default {
         });
     },
     followAction() {
-      let page_url = this.url + "api/user_follow";
+      let page_url = this.url_v1 + "/user_follow";
       const data = {
         followed_id: "" + this.user.id,
       };

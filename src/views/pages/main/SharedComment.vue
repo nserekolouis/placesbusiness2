@@ -196,7 +196,10 @@ export default {
   setup(props, { emit }) {
     const componentName = "Comments";
     const componentTitle = "Comment Details";
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
+
     const comment_id = ref(props.id);
     const post_id = ref(0);
     const post = ref({});
@@ -270,7 +273,7 @@ export default {
     });
 
     const getCommentDetails = () => {
-      let page_url = url + "api/v2/get_comment";
+      let page_url = url_v3 + "/get_comment";
       const data = {
         comment_id: "" + comment_id.value,
       };
@@ -288,7 +291,7 @@ export default {
     };
 
     const getPost = () => {
-      let page_url = url + "api/v2/get_post";
+      let page_url = url_v3 + "/get_post";
       const data = {
         post_id: "" + post_id.value,
       };
@@ -305,7 +308,7 @@ export default {
     };
 
     const getComments = () => {
-      let page_url = url + "api/v2/get_comments";
+      let page_url = url_v3 + "/get_comments";
       if (count.value != 0) {
         if (return_mine.value < totalMine.value) {
           comment_id_mine.value = comments.value[comments.value.length - 1].id;
@@ -349,7 +352,7 @@ export default {
 
     const newComment = () => {
       count.value = 0;
-      let page_url = url + "api/v2/get_comments";
+      let page_url = url_v3 + "api/v2/get_comments";
 
       const data = {
         post_id: "" + post_id.value,

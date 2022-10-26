@@ -147,7 +147,8 @@ export default {
     const username = ref("");
     const userbio = ref("");
     const country_id = ref(0);
-    const url = inject('url');
+    const url_v1 = inject('url_v1');
+    //const url_v3 = inject('url_v3');
     const searching = ref(true);
 
 
@@ -161,7 +162,7 @@ export default {
           alert(Constants.IMAGE_PROFILE);
         } else {
           dStatus.value = "initial";
-          let page_url = url + "api/upload_profile_picture";
+          let page_url = url_v1 + "/upload_profile_picture";
           let data = new FormData();
           data.append("image_one", event.target.files[0]);
           axios
@@ -183,7 +184,7 @@ export default {
     watch(search_country, (value) => {
        if(searching.value){
           displayStatus.value = "block";
-          let page_url = url + "api/search_countries";
+          let page_url = url_v1 + "/search_countries";
           const data = {
             keyword: value,
           };
@@ -225,7 +226,7 @@ export default {
         data.append("username", username.value);
         data.append("userbio", userbio.value);
         data.append("country_id", country_id.value);
-        let page_url = url + "api/web_upload_profile";
+        let page_url = url_v1 + "/web_upload_profile";
         axios
           .post(page_url, data)
           .then((response) => {
