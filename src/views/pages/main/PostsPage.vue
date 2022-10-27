@@ -97,6 +97,7 @@
 </template>
 <script>
 import axios from "axios";
+import router from "@/router";
 import OnlyText from "@/components/posts/PostOnlyText.vue";
 import OneImage from "@/components/posts/PostImagesOne.vue";
 import TwoImages from "@/components/posts/PostImagesTwo.vue";
@@ -108,7 +109,13 @@ import TitleComponent from "@/components/TitleComponent.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
 import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
-import { inject, ref, onMounted, watch, onActivated, onDeactivated } from "vue";
+
+import { inject, 
+         ref, 
+         onMounted, 
+         watch, 
+         onActivated, 
+         onDeactivated } from "vue";
 
 
 const TAG = "POSTS_PAGE";
@@ -254,6 +261,10 @@ export default {
         .catch((error) => {
           console.log(error);
           loadMore.value = true;
+          console.log(TAG,error.response.status)
+          if(error.response.status === 401){
+            router.push({ name: "LoginScreen" });
+          }
         });
     };
 

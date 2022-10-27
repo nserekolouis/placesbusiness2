@@ -11,7 +11,7 @@
           margin-top: 40px;
         "
       >
-        <h1>Stay connected to your favourate Places</h1>
+        <h1>Stay connected to your favourite Places</h1>
         <div class="row d-md-none">
           <div
             id="carouselExampleIndicators"
@@ -85,6 +85,12 @@
             <p class="p-login-gmail">LOGIN WITH GMAIL</p>
             <GoogleLogin :callback="callback" prompt class="btn-google" />
           </div>
+          <div style="cursor:pointer"
+          >
+            <p
+            @click="goToTermsAndConditions"
+            ><u>By signing in you accept the places terms & conditions</u></p>
+          </div>
         </div>
       </div>
     </div>
@@ -108,6 +114,7 @@ const callback = (response) => {
     password_confirmation: "password",
     role: "Client",
   };
+
   let page_url = url + "/register";
   axios
     .post(page_url, data)
@@ -115,8 +122,11 @@ const callback = (response) => {
       console.log("LOGIN", response);
       console.log("Response LOGIN USER", response.data.user.userhandle);
       Auth.login(response.data.token, response.data.user);
-      console.log("1");
-      if (response.data.user.userhandle == null) {
+    
+      if(response.data.user.deleted_at != null){
+        console.log("1");
+        alert("Your account has been disabled, await administration verification to find out why?")
+      }else if (response.data.user.userhandle == null) {
         console.log("2");
         router.push({ name: "UserHandle" });
       } else if (response.data.user.username == null) {
@@ -125,12 +135,16 @@ const callback = (response) => {
       } else {
         console.log("4");
         router.push({ name: "SwitchScreen" });
-        //router.push({ name: "UploadProfile" });
       }
     })
     .catch((error) => {
       console.error("There was an error!", error.message);
     });
+  
+};
+
+const goToTermsAndConditions = () => {
+  router.push({ name: "TermsAndConditions" });
 };
 </script>
 
@@ -147,8 +161,11 @@ import travel from "@/assets/images/login/travel.jpg";
 
 export default {
   name: "LoginScreen",
+  components: {
+    AppHeader,
+  },
   props: {
-    prompt: Boolean,
+    prompt: Boolean
   },
   setup() {
     return {
@@ -158,11 +175,8 @@ export default {
       africanMale,
       church,
       people,
-      travel,
+      travel
     };
-  },
-  components: {
-    AppHeader,
   },
 };
 </script>

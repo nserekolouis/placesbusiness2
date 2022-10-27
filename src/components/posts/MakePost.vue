@@ -134,7 +134,7 @@ export default {
     uploadPostImages(event) {
       var count = 0;
       this.loading = true;
-      let page_url = this.url + "api/v2/upload_post_images";
+      let page_url = this.url_v3 + "upload_post_images";
       let data = new FormData();
 
       if (event.target.files[0]) {
@@ -214,7 +214,7 @@ export default {
         alert("Select a Place");
       } else {
         console.log("PLACE ID", this.place);
-        let page_url = this.url + "api/v2/make_post";
+        let page_url = this.url_v3 + "/make_post";
         let data = new FormData();
         data.append("place_id", this.place.places_id);
         data.append("post_text", this.post_text);

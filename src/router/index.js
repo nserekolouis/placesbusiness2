@@ -9,7 +9,7 @@ import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
 import SharedPost from "@/views/pages/main/SharedPost.vue"
 import SharedComment from "@/views/pages/main/SharedComment.vue"
 import SharedUserProfile from "@/views/pages/main/SharedUserProfile.vue"
-
+import TermsAndConditions from "@/views/pages/signup/TermsAndConditions.vue"
 
 
 const routes = [
@@ -18,8 +18,13 @@ const routes = [
     name: "LoginScreen",
     component: LoginScreen,
     props: {
-        prompt: true
+        prompt: false
     }
+  },
+  {
+    path: "/termsandconditions",
+    name: "TermsAndConditions",
+    component: TermsAndConditions,
   },
   {
     path: '/userhandle',
@@ -35,19 +40,6 @@ const routes = [
     path: '/home',
     name: "SwitchScreen",
     component: SwitchScreen,
-      // children:[
-      //   {
-      //     path: '',
-      //     name: 'PostsPage',
-      //     component: PostsPage
-      //   },
-      //   {
-      //     path: '/home/posts/comments/:id',
-      //     name: 'CommentsPage',
-      //     component: CommentsPage,
-      //     props: true
-      //   }
-      // ]
   },
   {
     path: '/user/:id',

@@ -46,7 +46,10 @@ export default {
   },
   setup(props, { emit }) {
     const showModal = ref(props.show);
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject('url_v1');
+    const url_v3 = inject('url_v3');
+
     const reasons = ref([]);
     const post_id = ref(props.post.post_id);
 
@@ -70,7 +73,7 @@ export default {
     });
 
     const getListReasons = () => {
-      let page_url = url + "api/v2/get_reasons_for_reporting";
+      let page_url = url_v3 + "/get_reasons_for_reporting";
       axios
         .get(page_url)
         .then((response) => {
@@ -84,7 +87,7 @@ export default {
     };
 
     const reportPost = (reason) => {
-      let page_url = url + "api/v2/report_post";
+      let page_url = url_v3 + "/report_post";
       const data = {
         post_id: "" + post_id.value,
         reason_id: "" + reason.id,

@@ -82,9 +82,9 @@
       </template>
     </promote-post>
   </Teleport> -->
+
 </template>
 <script>
-
 import Auth from "@/Auth.js";
 import axios from "axios";
 import Modal from "@/components/posts/PostModal.vue";
@@ -130,7 +130,7 @@ export default {
       emit("listen-promote-post", post.value);
     };
 
-     const moveBack = () => {
+    const moveBack = () => {
       emit("listen-move-back");
     };
 
@@ -170,7 +170,7 @@ export default {
   methods: {
     blockUser() {
       console.log("BLOCK USER");
-      let page_url = this.url + "api/v2/block_user";
+      let page_url = this.url_v3 + "/block_user";
       const data = {
         blocked_user_id: "" + this.post.user_id,
       };
@@ -192,7 +192,7 @@ export default {
     },
     deletePost() {
       console.log("DELETE POST");
-      let page_url = this.url + "api/v2/delete_post";
+      let page_url = this.url_v3 + "/delete_post";
       const data = {
         post_id: "" + this.post.post_id,
       };
@@ -209,7 +209,7 @@ export default {
         });
     },
     followAction() {
-      let page_url = this.url + "api/user_follow";
+      let page_url = this.url_v1 + "/user_follow";
       const data = {
         followed_id: "" + this.post.user_id,
       };
@@ -228,7 +228,7 @@ export default {
         });
     },
     unFollowPlace() {
-      let page_url = this.url + "api/v2/remove_user_place_subscription";
+      let page_url = this.url_v3 + "/remove_user_place_subscription";
       const data = {
         place_id: "" + this.post.place_id,
       };

@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     searchPlace: function () {
-      let page_url = this.url + "api/v2/search_places";
+      let page_url = this.url_v3 + "/search_places";
       const data = {
         query: this.search_place,
       };
@@ -128,7 +128,7 @@ export default {
     },
     addPlaceSubscription: function (place) {
       console.log("ADD Sub place", place);
-      let page_url = this.url + "api/v2/add_user_place_subscription";
+      let page_url = this.url_v3 + "/add_user_place_subscription";
       const data = {
         place_id: "" + place.places_id,
       };
@@ -144,7 +144,7 @@ export default {
         });
     },
     getPlaceSubscriptions(){
-      let page_url = this.url + "api/v2/get_place_subs";
+      let page_url = this.url_v3 + "/get_place_subs";
       const data = {
         userplacesub_id: "0",
       };

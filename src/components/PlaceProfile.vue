@@ -41,7 +41,7 @@ export default {
   props: {
     place: {},
   },
-  setup(props) { bbb
+  setup(props) { 
     console.log(props.place);
     //const url = inject("url");
     //const url_v1 = inject("url_v1");
@@ -61,7 +61,7 @@ export default {
     });
 
     const getPlacePageDetails = () => {
-      let page_url = url + "api/v2/get_place_page_details";
+      let page_url = url_v3 + "/get_place_page_details";
       const data = {
         place_id: "" + place.value.places_id,
       };
