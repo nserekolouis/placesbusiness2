@@ -1,12 +1,37 @@
 <template>
   <div class="row">
     <div class="col">
-      <p class="d-inline">{{ post.username }}</p>
-      <p class="d-inline text-muted"
-      style="margin-left: 0.25rem; width: 150px;"
-      ><small>{{ post.userhandle }}</small></p>
-      <p class="d-inline text-muted"
-      style="margin-left: 0.25rem"
+      <p class="d-inline-block"
+      style="
+        display: inline-block;
+        margin-left: 0.25rem;
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: white;"
+      >{{ post.username }}</p>
+      <p class="d-inline-block text-muted"
+      ><small
+        style="
+        display: inline-block;
+        margin-left: 0.25rem;
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: white;
+        "
+      >{{ post.userhandle }}</small></p>
+      <p class="d-inline-block text-muted"
+      style="
+        display: inline-block;
+        margin-left: 0.25rem;
+        max-width: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: white;"
       >{{ timestamp }}</p>
     </div>
   </div>
