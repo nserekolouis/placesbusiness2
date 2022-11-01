@@ -1,9 +1,38 @@
 <template>
   <div class="row">
     <div class="col">
-      <p class="p-username">{{ post.username }}</p>
-      <p class="p-userhandle">{{ post.userhandle }}</p>
-      <p class="p-timestamp">{{ timestamp }}</p>
+      <p class="d-inline-block"
+      style="
+        display: inline-block;
+        margin-left: 0.25rem;
+        max-width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: white;"
+      >{{ post.username }}</p>
+      <p class="d-inline-block text-muted"
+      ><small
+        style="
+        display: inline-block;
+        margin-left: 0.25rem;
+        max-width: 80px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: white;
+        "
+      >{{ post.userhandle }}</small></p>
+      <p class="d-inline-block text-muted"
+      style="
+        display: inline-block;
+        margin-left: 0.25rem;
+        max-width: 30px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background-color: white;"
+      >{{ timestamp }}</p>
     </div>
   </div>
 </template>
