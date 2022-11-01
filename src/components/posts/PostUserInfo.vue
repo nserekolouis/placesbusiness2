@@ -1,9 +1,13 @@
 <template>
   <div class="row">
     <div class="col">
-      <p class="p-username">{{ post.username }}</p>
-      <p class="p-userhandle">{{ post.userhandle }}</p>
-      <p class="p-timestamp">{{ timestamp }}</p>
+      <p class="d-inline">{{ post.username }}</p>
+      <p class="d-inline text-muted"
+      style="margin-left: 0.25rem; width: 150px;"
+      ><small>{{ post.userhandle }}</small></p>
+      <p class="d-inline text-muted"
+      style="margin-left: 0.25rem"
+      >{{ timestamp }}</p>
     </div>
   </div>
 </template>
