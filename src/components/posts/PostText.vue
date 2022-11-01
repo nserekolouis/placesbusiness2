@@ -2,23 +2,18 @@
   <div class="row">
     <div class="col">
       <p v-if="readMoreClicked">
-      <small>{{postText}}</small>
-      </p>
-      <p v-else-if="hasMoreText">
       <small>
-        <span v-html="postTextOne"></span>
-        <span class="dots" :style="{display: displayDots}" @click="showMore">More</span>
+        <span class="span-p-text" v-html="postText"></span>
       </small>
       </p>
-      <!-- <p v-if="hasMoreText">
-        <small>
+      <p v-if="hasMoreText">
+       <small>
         <span class="span-p-text">
           <span v-html="postTextOne"></span>
-          <span class="dots" :style="{display: displayDots}" @click="showMore">More</span>
-          <span v-html="postTextTwo" :style="{display: displayMore}"></span>
+          <span class="dots" :style="{ display: displayDots }" @click="showMore">Read More</span>
         </span>
-        </small>
-      </p> -->
+       </small>
+      </p>
       <p v-else>
         <small>
           <span class="span-p-text" v-html="postText"></span>
@@ -29,10 +24,8 @@
 </template>
 <script>
 import { 
-  ref, 
-  //onActivated,
-  //onMounted
- } from "vue";
+  ref
+} from "vue";
 
 const TAG = "POST_TEXT";
 
@@ -46,11 +39,10 @@ export default {
     const postText = ref(props.post.post_text);
     const pT = ref("");
     const displayMore = ref("none");
-    const displayDots = ref("inline");
+    const displayDots = ref("block");
     const hasMoreText = ref(false);
     const readMoreClicked = ref(false);
     const postTextOne = ref("");
-    const postTextTwo = ref("");
 
     if(postText.value != null){
       const words = postText.value.split(/\r?\n/);
@@ -69,8 +61,7 @@ export default {
         
       }else{
         hasMoreText.value = true;
-        postTextOne.value = postText.value.substring(0,319) + '...';
-        postTextTwo.value = postText.value.substring(319,(postText.value.length-1));
+        postTextOne.value = postText.value.substring(0,319);
 
       }
 
@@ -80,6 +71,7 @@ export default {
     const showMore = () => {
       displayMore.value = "block";
       displayDots.value = "none";
+      readMoreClicked.value = true;
     };
 
     return {
@@ -87,7 +79,6 @@ export default {
       postText,
       hasMoreText,
       postTextOne,
-      postTextTwo,
       displayMore,
       displayDots,
       showMore,
@@ -109,14 +100,17 @@ p {
   overflow-wrap: break-word;
 }
 
-.dots {
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  background-color: #288c7f;
-  padding: 1px;
-  font-size: 10px;
-  text-transform: uppercase;
+.dots{
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: #288c7f;
+    padding: 1px;
+    font-size: 10px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    border-radius: 0px;
+    width: 65px;
 }
 
 @media (max-width: 575.98px) {
