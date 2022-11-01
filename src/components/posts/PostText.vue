@@ -2,22 +2,22 @@
   <div class="row">
     <div class="col">
       <p v-if="readMoreClicked">
-      <small>
+      <!-- <small> -->
         <span class="span-p-text" v-html="postText"></span>
-      </small>
+      <!-- </small> -->
       </p>
-      <p v-if="hasMoreText">
-       <small>
+      <p v-else-if="hasMoreText">
+       <!-- <small> -->
         <span class="span-p-text">
           <span v-html="postTextOne"></span>
           <span class="dots" :style="{ display: displayDots }" @click="showMore">Read More</span>
         </span>
-       </small>
+       <!-- </small> -->
       </p>
       <p v-else>
-        <small>
+        <!-- <small> -->
           <span class="span-p-text" v-html="postText"></span>
-        </small>
+        <!-- </small> -->
       </p>
     </div>
   </div>
@@ -90,7 +90,7 @@ export default {
 <style scoped>
 p {
   margin-bottom: 0px;
-  font-size: 14px;
+  font-size: 13px;
   white-space: pre-line;
   overflow-wrap: break-word;
 }
@@ -113,7 +113,7 @@ p {
     width: 65px;
 }
 
-@media (max-width: 575.98px) {
+/* @media (max-width: 575.98px) {
   p {
     font-size: 14px;
   }
@@ -141,5 +141,5 @@ p {
   p {
     font-size: 14px;
   }
-}
+} */
 </style>
