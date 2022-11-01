@@ -195,7 +195,7 @@ export default {
         data-bs-target="#offcanvasResponsive2"
         aria-controls="offcanvasResponsive2"
       >
-        <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      <font-awesome-icon icon="fa-solid fa-ellipsis" />
       </button>
       <div
         class="offcanvas-md offcanvas-end"
@@ -243,7 +243,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
   }
 
   .btn {
-    border: 0px solid black;
+    border: 1px solid #ced4da;
+    padding: 4px 8px 5px 10px;
   }
 
   .btn-menu-right {

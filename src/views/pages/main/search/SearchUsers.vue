@@ -2,7 +2,7 @@
   <div class="container" style="margin-top: 10px">
     <div class="row">
       <div class="col">
-        <input
+        <!-- <input
           class="form-control form-control-sm"
           type="search"
           placeholder="Search for users"
@@ -10,10 +10,27 @@
           v-model="search_user"
           @input="searchUser"
           style="min-width: 240px"
-        />
+        /> -->
+        <div class="input-group"
+        style="min-width:240px"
+        >
+          <div class="input-group-prepend">
+            <span class="input-group-text p-1 mt-1 span-prepend" id="basic-addon1">@</span>
+          </div>
+          <input type="text" 
+          class="form-control form-control-sm mt-1" 
+          placeholder="Search for User" 
+          aria-label="Search for User" 
+          aria-describedby="basic-addon1"
+          @input="searchUser"
+          v-model="search_user"
+          >
+        </div>
       </div>
       <div class="col">
-        <ul class="list-group" v-if="usersFound">
+        <ul class="list-group" 
+            style="min-width:240px;"
+            v-if="usersFound">
           <li
             v-for="user in users"
             :key="user.id"
@@ -103,5 +120,10 @@ export default {
 }
 .list-group {
   padding: 0px;
+}
+.span-prepend{
+  height: 31px;
+  margin-right: -4px;
+  width: 31px;
 }
 </style>

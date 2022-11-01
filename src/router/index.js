@@ -6,10 +6,11 @@ import UploadProfile from '@/views/pages/signup/ProfileScreen.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
 import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
-import SharedPost from "@/views/pages/main/SharedPost.vue"
-import SharedComment from "@/views/pages/main/SharedComment.vue"
-import SharedUserProfile from "@/views/pages/main/SharedUserProfile.vue"
+import SharedPost from "@/views/pages/shared/SharedPost.vue"
+import SharedComment from "@/views/pages/shared/SharedComment.vue"
+import SharedUserProfile from "@/views/pages/shared/SharedUserProfile.vue"
 import TermsAndConditions from "@/views/pages/signup/TermsAndConditions.vue"
+import SharedPlace from "@/views/pages/shared/SharedPlace.vue"
 
 
 const routes = [
@@ -57,6 +58,12 @@ const routes = [
     path: '/post/comment/:id',
     name: "SharedComment",
     component: SharedComment,
+    props: true
+  },
+  {
+    path: '/place/:id',
+    name: "SharedPlace",
+    component: SharedPlace,
     props: true
   },
   {

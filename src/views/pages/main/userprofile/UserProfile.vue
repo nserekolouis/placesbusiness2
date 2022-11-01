@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-6">
-      <img :src="user.user_photo" class="rounded-circle" style="width:70px;"/>
+      <img :src="user.user_photo" class="rounded-circle" width="50" height="50"/>
     </div>
     <div class="col-6" style="text-align: right"
     >

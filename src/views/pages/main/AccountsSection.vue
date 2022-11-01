@@ -1,6 +1,7 @@
 <template>
   <title-component :title="componentTitle" />
-  <div class="row card" style="margin-top: 50px">
+  <hr>
+  <div class="row col card accounts-card">
     <p>{{ email }}</p>
     <p>{{ userhandle }}</p>
     <p>{{ username }}</p>
@@ -46,5 +47,11 @@ h6 {
   margin-top: 5px;
   text-align: center;
   margin-bottom: 10px;
+}
+
+.accounts-card{
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 </style>

@@ -35,7 +35,9 @@ export default {
     const liked = ref(props.post.liked);
     const likes = ref(props.post.num_likes);
     const activeColor = ref("");
-    const url = inject('url');
+    //const url = inject('url');
+    //const url_v1 = inject('url_v1');
+    const url_v3 = inject('url_v3');
 
     if (liked.value == 1) {
       activeColor.value = "red";
@@ -45,7 +47,7 @@ export default {
 
     const likeClicked = () => {
       console.log("like clicked");
-      let page_url = url + "api/v2/like_post";
+      let page_url = url_v3 + "/like_post";
       let data = new FormData();
       data.append("post_id", post.value.post_id);
       axios

@@ -62,7 +62,6 @@ const app = createApp(App)
 
 app.use(BootstrapVue3)
 
-
 app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.component('EmojiPicker', EmojiPicker)
@@ -79,8 +78,11 @@ app.provide('url_v1', 'http://192.168.43.79:8000/api');
 app.config.globalProperties.url_v3 = 'http://192.168.43.79:8000/api/v3';
 app.provide('url_v3', 'http://192.168.43.79:8000/api/v3');
 
-//app.config.globalProperties.url = 'https://dev.thefavplaces.com/';
-//app.provide('url', 'https://dev.thefavplaces.com/');
+//app.config.globalProperties.url_v1 = 'https://dev.thefavplaces.com/api';
+//app.provide('url_v1', 'https://dev.thefavplaces.com/api');
+
+//app.config.globalProperties.url = 'https://dev.thefavplaces.com/api/v3';
+//app.provide('url', 'https://dev.thefavplaces.com/api/v3');
 
 app.use(router)
 app.use(CoreuiVue)

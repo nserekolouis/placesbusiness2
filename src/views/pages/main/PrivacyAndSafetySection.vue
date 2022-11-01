@@ -1,5 +1,6 @@
 <template>
   <title-component :title="componentTitle" />
+  <hr>
   <div>
     <section class="section section-lg">
       <div class="container">

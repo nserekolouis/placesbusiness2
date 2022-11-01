@@ -223,7 +223,7 @@ export default {
       last_post_id.value = 0;
       ad_id.value = 0;
       getPosts();
-      getPlaceSubscriptions();
+      //getPlaceSubscriptions();
     });
 
     const getPosts = () => {
@@ -268,21 +268,21 @@ export default {
         });
     };
 
-    const getPlaceSubscriptions = () => {
-      let page_url = url_v3 + "api/v2/get_place_subs";
-      const data = {
-        userplacesub_id: "0",
-      };
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("PLACE SUBSCRITIONS", response.data.place_subs);
-          places.value = response.data.place_subs;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+    // const getPlaceSubscriptions = () => {
+    //   let page_url = url_v3 + "api/v2/get_place_subs";
+    //   const data = {
+    //     userplacesub_id: "0",
+    //   };
+    //   axios
+    //     .post(page_url, data)
+    //     .then((response) => {
+    //       console.log("PLACE SUBSCRITIONS", response.data.place_subs);
+    //       places.value = response.data.place_subs;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // };
 
     const newPost = () => {
       id.value = 0;
@@ -360,7 +360,7 @@ export default {
 
     const searchedPlace = (searched_place) => {
       console.log("SEARCHED_PLACE", searched_place);
-      getPlaceSubscriptions();
+      //getPlaceSubscriptions();
     };
 
     const goToPlacePage = (p) => {

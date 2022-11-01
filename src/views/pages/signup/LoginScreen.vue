@@ -1,5 +1,4 @@
 <template>
-  <div class="container-fluid">
     <app-header />
     <div class="row">
       <div
@@ -8,7 +7,7 @@
           margin-left: auto;
           margin-right: auto;
           text-align: center;
-          margin-top: 40px;
+          margin-top: 0px;
         "
       >
         <h1>Stay connected to your favourite Places</h1>
@@ -80,21 +79,22 @@
             <img :src="travel" class="round-image" />
           </div>
         </div>
-        <div class="row">
-          <div class="col div-gmail">
-            <p class="p-login-gmail">LOGIN WITH GMAIL</p>
+
+        <div class="container m-2 p-1" style="border: 1px solid rgb(235 232 232)">
+          <div class="w-100">
             <GoogleLogin :callback="callback" prompt class="btn-google" />
           </div>
-          <div style="cursor:pointer"
-          >
+          <div class="w-100">
             <p
             @click="goToTermsAndConditions"
-            ><u>By signing in you accept the places terms & conditions</u></p>
+            class="p-term-conditions"
+            ><small><u>By signing in you accept the 
+              places terms & conditions</u></small></p>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <FooterComponent/>
 </template>
 <script setup>
 import { decodeCredential } from "vue3-google-login";
@@ -153,6 +153,7 @@ import placesLogo from "@/assets/images/placeslogo.png";
 import logo from "@/assets/logo.png";
 import happyPeople1 from "@/assets/images/happypeople1.png";
 import AppHeader from "@/components/AppHeader.vue";
+import FooterComponent from "@/components/FooterComponent.vue"
 
 import africanMale from "@/assets/images/login/african_male.jpeg";
 import church from "@/assets/images/login/church.jpg";
@@ -163,6 +164,7 @@ export default {
   name: "LoginScreen",
   components: {
     AppHeader,
+    FooterComponent
   },
   props: {
     prompt: Boolean
@@ -206,5 +208,9 @@ export default {
   margin-top: 50px;
   border: 1px solid #d9d9d9;
   padding: 10px;
+}
+.p-term-conditions{
+  margin-bottom: 0px;
+  color: burlywood;
 }
 </style>

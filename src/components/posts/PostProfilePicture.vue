@@ -2,10 +2,9 @@
   <div class="col div-pp">
     <img
       :src="post.user_photo"
-      class="rounded-circle" style="width:50px;"
+      class="rounded-circle" style="width:40px; height:40px;"
       @click="goToProfile"
     />
-
     <!-- <div v-show="isPromoted" class="ad-label">
       <p>AD</p>
     </div> -->

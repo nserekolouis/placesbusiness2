@@ -66,7 +66,10 @@
           </li>
         </ul> -->
         <hr />
-        <GoogleLogin :callback="callback" prompt class="btn-google" />
+        <GoogleLogin 
+        :callback="callback"
+        :prompt="prompt"
+        class="btn-google" />
       </div>
     </div>
   </div>

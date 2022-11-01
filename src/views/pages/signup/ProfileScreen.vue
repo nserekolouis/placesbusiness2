@@ -148,7 +148,7 @@ export default {
     const userbio = ref("");
     const country_id = ref(0);
     const url_v1 = inject('url_v1');
-    //const url_v3 = inject('url_v3');
+    const url_v3 = inject('url_v3');
     const searching = ref(true);
 
 
@@ -226,7 +226,7 @@ export default {
         data.append("username", username.value);
         data.append("userbio", userbio.value);
         data.append("country_id", country_id.value);
-        let page_url = url_v1 + "/web_upload_profile";
+        let page_url = url_v3 + "/web_upload_profile";
         axios
           .post(page_url, data)
           .then((response) => {
@@ -239,13 +239,13 @@ export default {
             }
           })
           .catch((err) => {
-            let message =
-              typeof err.response !== "undefined"
-                ? err.response.data.message
-                : err.message;
+            // let message =
+            //   typeof err.response !== "undefined"
+            //     ? err.response.data.message
+            //     : err.message;
             nextSpin.value = "none";
             buttonText.value = "Next";
-            console.log("error", message);
+            console.log("error", err);
           });
 
         //showModal.value = false;

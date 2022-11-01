@@ -1,7 +1,7 @@
 <template>
   <div class="top-class">
         <div class="row">
-          <div class="col-2 col-sm-1" style="min-width:45px;">
+          <!-- <div class="col-2 col-sm-1" style="min-width:45px;">
             <select
               class="form-select form-select-sm sel-recent-places"
               aria-label="Default select examples"
@@ -14,8 +14,8 @@
                 <p>{{ place.main_text }}</p>
               </option>
             </select>
-          </div>
-          <div class="col-10 col-sm-11">
+          </div> -->
+          <!-- <div class="col-10 col-sm-11">
             <div class="input-group">
               <input
               class="form-control form-control-sm"
@@ -24,7 +24,7 @@
               aria-label="Search"
               v-model="search_place"
               @input="searchPlace"
-              style="margin-right:-2px; "
+              style="margin-right:-2px;"
               />
               <div class="input-group-append">
                 <button 
@@ -34,6 +34,36 @@
                 >GO</button>
               </div>
             </div>
+          </div> -->
+          <div class="col" style="height:35px">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="goToPlacePage">GO</button>
+                <button class="btn btn-outline-secondary dropdown-toggle btn-sm" 
+                type="button" 
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"></button>
+                <div class="dropdown-menu">
+                  <!-- <a class="dropdown-item" href="#">Recent Places</a>
+                  <div role="separator" class="dropdown-divider"></div> -->
+                  <a 
+                      v-for="place in sub_places"
+                      :key="place.id"
+                      class="dropdown-item"
+                      @click="dropDownSelectPlace(place)"
+                      >{{ place.main_text }}</a>
+                  </div>
+              </div>
+            <input 
+            type="search" 
+            class="form-control form-control-sm" 
+            aria-label="Text input with dropdown button"
+            v-model="search_place"
+            @input="searchPlace"
+            placeholder="Search for any place in the world"
+            >
+          </div>
           </div>
         </div>
         <div class="row">
@@ -109,7 +139,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("RESPONSE SEARCH PLACES", response.data.predictions);
+          console.log(TAG + "USER_PLACE_SUBSCRIPTIONS", response.data.predictions);
           this.places = response.data.predictions;
         })
         .catch((error) => {
@@ -146,35 +176,40 @@ export default {
     getPlaceSubscriptions(){
       let page_url = this.url_v3 + "/get_place_subs";
       const data = {
-        userplacesub_id: "0",
+        userplacesub_id: "",
       };
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("PLACE SUBSCRITIONS", response.data.place_subs);
+          console.log("PLACE_SUBSCRITIONS", response);
           this.sub_places = response.data.place_subs;
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    dropDownSelectPlace: function(e, selectedIndex){
-      console.log("EVENT", e);
-      console.log("EVENT", selectedIndex);
-      if (selectedIndex == 0) {
-        this.place = "";
-      } else {
-        console.log(TAG, this.sub_places[selectedIndex - 1]);
-        this.place = this.sub_places[selectedIndex - 1];
-        this.search_place = this.place.main_text;
-      }
-    },
+    // dropDownSelectPlace: function(e, selectedIndex){
+    //   console.log("EVENT", e);
+    //   console.log("EVENT", selectedIndex);
+    //   if (selectedIndex == 0) {
+    //     this.place = "";
+    //   } else {
+    //     console.log(TAG, this.sub_places[selectedIndex - 1]);
+    //     this.place = this.sub_places[selectedIndex - 1];
+    //     this.search_place = this.place.main_text;
+    //   }
+    // },
     goToPlacePage(){
       if(Object.keys(this.place).length != 0){
         this.$emit("listen-place-page", this.place);
       }else{
         alert("Please select a place");
       }
+    },
+    dropDownSelectPlace(place){
+      console.log(TAG, place);
+      this.place = place;
+      this.search_place = place.main_text;
     }
   },
 };

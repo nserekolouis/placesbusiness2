@@ -133,7 +133,7 @@ export default {
       this.loading = true;
       var count = 0;
 
-      let page_url = this.url + "api/v2/upload_post_images";
+      let page_url = this.url_v3 + "/upload_post_images";
       let data = new FormData();
 
       if (event.target.files[0]) {
@@ -206,7 +206,7 @@ export default {
         this.loading = false;
         alert("Please add info to share");
       } else {
-        let page_url = this.url + "api/v2/make_comment";
+        let page_url = this.url_v3 + "/make_comment";
 
         const data = {
           post_id: "" + this.post.id,

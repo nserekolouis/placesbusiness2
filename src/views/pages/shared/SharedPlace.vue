@@ -1,7 +1,12 @@
 <template>
+<div class="container-fluid row">
+    <div class="col-md-3">
+    <side-bar-login />
+</div>
+<div class="col-md-6">
   <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
   <hr class="m-0">
-  <place-profile :place="place" style="margin-top: 10px" />
+  <place-profile :id="place_id" style="margin-top: 10px" />
   <center-infomation :info="alert" v-show="show" class="info-missing" />
   <ul class="list-group" ref="scrollComponent">
     <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
@@ -54,6 +59,36 @@
       <spinner-component :spin="spin" :info="spinInfo" />
     </li>
   </ul>
+</div>
+<div class="col-md-3 border-left">
+    <button
+    class="btn d-md-none btn-menu-right"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasResponsive2"
+    aria-controls="offcanvasResponsive2"
+    >
+    <font-awesome-icon icon="fa-solid fa-ellipsis" />
+    </button>
+    <div
+    class="offcanvas-md offcanvas-end"
+    tabindex="-1"
+    id="offcanvasResponsive2"
+    aria-labelledby="offcanvasResponsiveLabel2"
+    >
+    <div class="offcanvas-body">
+        <button
+        type="button"
+        class="btn-close btn-close-right"
+        data-bs-dismiss="offcanvas"
+        data-bs-target="#offcanvasResponsive2"
+        aria-label="Close"
+        ></button>
+        <search-users @listen-search-user-profile="searchUserProfile" />
+    </div>
+    </div>
+</div>
+</div>
 </template>
 <script>
   import axios from "axios";
@@ -64,12 +99,14 @@
   import FourImages from "@/components/posts/PostImagesFour.vue";
   import CenterInfomation from "@/components/CenterInformation.vue";
   import BackNavigation from "@/components/BackNavigation.vue";
-  import PlaceProfile from "@/components/PlaceProfile.vue";
+  import PlaceProfile from "@/views/pages/shared/SharedPlaceProfile.vue";
   import SpinnerComponent from "@/components/SpinnerComponent.vue";
   import AdSpace from "@/components/AdSpace.vue";
-  import { onActivated, onDeactivated, ref, inject } from "vue";
+  import { onMounted, onUnmounted, ref, inject } from "vue";
+  import SideBarLogin from "@/components/SideBarLogin.vue";
+  import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
-  const TAG = "PLACE_DETAILS_PAGE";
+  const TAG = "SHARED_PLACE";
 
   export default {
     name: "PlaceDetailsPage",
@@ -83,24 +120,26 @@
       BackNavigation,
       PlaceProfile,
       SpinnerComponent,
-      AdSpace
+      AdSpace,
+      SideBarLogin,
+      SearchUsers
     },
     props: {
-      place: {},
+      id: String,
     },
     setup(props, { emit }) {
-      console.log(TAG + " 1 ", props.place);
-      const place = ref(props.place);
-      
-      const url_v3 = inject("url_v3");
 
+      console.log(TAG +'-1-', props.id);
+      const place_id = ref(props.id);
+      const url_v3 = inject("url_v3");
       const loadMore = ref(true);
       const count = ref(0);
       const total = ref(0);
+
       const show = ref(true);
       const posts = ref([]);
       const alert = "No posts yet";
-      const componentTitle = "PLACE PAGE";
+      const componentTitle = "PLACE_PAGE";
       const active = ref(true);
       const scrollComponent = ref(null);
       const scrollingPosition = ref(0);
@@ -113,14 +152,14 @@
       const spinInfo = ref(null);
       const showSpin = ref(false);
 
-      onActivated(() => {
+      onMounted(() => {
         window.addEventListener("scroll", handleScroll);
-        place.value = props.place;
+        place_id.value = props.id;
         posts.value = [];
         getPlacePosts();
       });
 
-      onDeactivated(() => {
+      onUnmounted(() => {
         active.value = false;
         window.removeEventListener("scroll", handleScroll);
       });
@@ -141,15 +180,16 @@
         }
 
         const data = {
-          place_id: place.value.places_id,
+          place_id: place_id.value,
           first_post_id: first_post_id.value,
           last_post_id: last_post_id.value,
           ad_id: ad_id.value
         };
 
-        console.log(TAG+"-G-P-P-DATA", data);
+        console.log(TAG + "-G-P-P-DATA", data);
 
         let page_url = url_v3 + "/get_place_posts";
+
         axios
           .post(page_url, data)
           .then((response) => {
@@ -228,7 +268,108 @@
         spin,
         spinInfo,
         showSpin,
+        place_id
       };
     },
   };
 </script>
+<style scoped>
+.btn_home {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+h6 {
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.btn-home {
+  margin-top: 5px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.btn {
+  display: none;
+}
+
+h6 {
+  display: inline-block;
+  margin-left: 10px;
+}
+html:not([dir="rtl"]) .offcanvas.offcanvas-start {
+  transform: translateX(0%);
+}
+
+.btn-close {
+  display: none;
+}
+
+@media (max-width: 1199.98px) {
+  .btn-close {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  html:not([dir="rtl"]) .offcanvas-sm.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: none;
+  }
+
+  .btn {
+    border: 0px solid black;
+  }
+
+  .btn-menu-right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+
+  .offcanvas-md.offcanvas-start {
+    width: 330px;
+  }
+
+  .offcanvas-md.offcanvas-end {
+    width: 330px;
+  }
+
+  .btn-close-right {
+    position: absolute;
+    left: 1px;
+    top: 1px;
+  }
+
+  .btn-close-left {
+    position: absolute;
+    right: 20px;
+    top: 5px;
+  }
+
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  html:not([dir="rtl"]) .offcanvas-md.offcanvas-start {
+    transform: translateX(0%);
+  }
+
+  .btn-close {
+    display: block;
+  }
+
+  .offcanvas-sm.offcanvas-start {
+    width: 330px;
+  }
+}
+</style>

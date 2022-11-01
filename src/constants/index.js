@@ -7,5 +7,6 @@ const endpoint_constants = {
     FILE_SIZE: 2097152,
     REMOVE_PLACE: "You are nolonger following ",
     PROFILE_IMAGE_URL: "https://placesbucket1.s3.amazonaws.com/images/nb4AYFDcmc8ORqD4qNjjaUhT8SXJLjXkF2PRh1iN.png",
+    SEARCH_USERS: "Search for user."
 };
 export default endpoint_constants

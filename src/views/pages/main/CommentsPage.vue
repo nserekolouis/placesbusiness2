@@ -81,8 +81,6 @@ export default {
   },
   setup(props, { emit }) {
     const componentName = "Comments";
-    //const url = inject("url");
-    //const url_v1 = inject('url_v1');
     const url_v3 = inject('url_v3');
 
     const post_id = ref(props.id);
@@ -104,23 +102,6 @@ export default {
 
     const getCommentsIsRunning = ref(false);
 
-    // watch(
-    //   () => props.new_comments,
-    //   (newVal, oldVal) => {
-    //     console.log(TAG + " watch newVal", newVal);
-    //     console.log(TAG + " watch comments", oldVal);
-    //     console.log(TAG + " watch id", props.id);
-
-    //     count.value = 0;
-    //     return_mine.value = 0;
-    //     totalMine.value = 0;
-    //     totalOthers.value = 0;
-    //     loadMore.value = true;
-    //     post_id.value = props.id;
-    //     comments.value = [];
-    //     getPost();
-    //   }
-    // );
 
     onActivated(() => {
       console.log(TAG + " onactivated ", props.id);
@@ -142,15 +123,6 @@ export default {
       console.log(TAG,"MOUNTED");
       document.title = "Places | Comments";
       window.addEventListener("scroll", handleScroll);
-      // window.addEventListener(
-      //   "backbutton",
-      //   function (e) {
-      //     e.preventDefault();
-      //     console.log("BACK BUTTON PRESSED");
-      //   },
-      //   false
-      // );
-      //getPost();
     });
 
     onUnmounted(() => {
@@ -214,8 +186,6 @@ export default {
             timestamp_others.value =
               comments.value[comments.value.length - 1].created_at;
           }
-          //timestamp_mine.value = comments.value[comments.value.length - 1].created_at;
-          //timestamp_others.value = comments.value[comments.value.length - 1].created_at;
         }
 
         const data = {
@@ -274,7 +244,6 @@ export default {
           loadMore.value = true;
           console.log(TAG + " NEW COMMENT RESPONSE", response);
           let newComments = response.data.comments;
-          //newComments.push(...comments.value);
           comments.value = newComments;
           let newTotalMine = response.data.total_mine;
           totalMine.value = newTotalMine;
