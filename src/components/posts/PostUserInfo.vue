@@ -1,38 +1,14 @@
 <template>
   <div class="row">
-    <div class="col">
-      <p class="d-inline-block"
-      style="
-        display: inline-block;
-        margin-left: 0.25rem;
-        max-width: 100px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background-color: white;"
-      >{{ post.username }}</p>
-      <p class="d-inline-block text-muted"
-      ><small
-        style="
-        display: inline-block;
-        margin-left: 0.25rem;
-        max-width: 80px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background-color: white;
-        "
-      >{{ post.userhandle }}</small></p>
-      <p class="d-inline-block text-muted"
-      style="
-        display: inline-block;
-        margin-left: 0.25rem;
-        max-width: 30px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background-color: white;"
-      >{{ timestamp }}</p>
+    <div class="col" style="height:17px;">
+      <p class="d-inline-block username"
+      >{{ username }}</p>
+      <p class="d-inline-block text-muted userhandle"
+      >
+      {{ userhandle +' '+timestamp }}
+      </p>
+      <!-- <p class="d-inline-block text-muted timestamp">
+      {{ timestamp }}</p> -->
     </div>
   </div>
 </template>
@@ -45,6 +21,8 @@ export default {
   data() {
     return {
       timestamp: "",
+      username: "",
+      userhandle: "",
     };
   },
   watch: {
@@ -52,6 +30,9 @@ export default {
       immediate: true,
       handler(val) {
         if (Object.keys(val).length != 0) {
+          this.username = val.username.substring(0,10);
+          this.userhandle = val.userhandle.substring(0,6);
+
           const created = new Date(val.created_at);
           console.log("Created: ", created.toLocaleString());
           let diffTime = Math.abs(Date.now() - new Date(val.created_at));
@@ -86,5 +67,39 @@ export default {
 p {
   margin-bottom: 0px;
   font-size: 0.875rem;
+}
+
+.username {
+  margin-top: 0px;
+  margin-left: 0px;
+  /* max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip; */
+  background-color: white;
+} 
+
+.userhandle {
+  margin-top: 0px;
+  margin-left: 0.25rem;
+  /* display: inline-block;
+  margin-left: 0.25rem;
+  max-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: white; */
+  font-size: 0.775rem;
+}
+
+.timestamp {
+  display: inline-block;
+  margin-left: 0.25rem;
+  max-width: 40px;
+  /* white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; */
+  background-color: white;
+  font-size: 0.800rem;
 }
 </style>

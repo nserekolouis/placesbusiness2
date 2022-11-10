@@ -59,7 +59,9 @@
             <a href="#" class="nav-link link-dark">
               <font-awesome-icon icon="fa-solid fa-bell" />
               <p>Notifications</p>
-              <span class="badge bg-places" style="margin-left: 10px">{{
+              <span class="badge bg-places ml-10"
+              :style="{ color: noteColor }"
+              >{{
                 noteCount
               }}</span>
             </a>
@@ -79,6 +81,7 @@
               alt="Profile Picture"
               class="rounded-circle"
               width="40"
+              height="40"
             />
             <p style="font-weight:400">{{ username }}</p>
           </a>
@@ -134,7 +137,7 @@ import { inject, ref, watch } from "vue";
 import { getToken, onMessage } from "firebase/messaging";
 
 
-const TAG = "SideBar";
+const TAG = "SIDEBAR";
 
 export default {
   name: "SideBar",
@@ -144,63 +147,60 @@ export default {
   setup(props, { emit }) {
     const messaging = inject("messaging");
     const vapidKey = inject("vapidKey");
-    //const url = inject("url");
-    //const url_v1 = inject("url_v1");
     const url_v3 = inject("url_v3");
     const noteCount = ref(0);
     const indicator = ref(props.indicatorbg);
-    //const deletedArray = ref([]);
     const deleted_post_id = ref("");
+    const noteColor = ref("#fff");
 
     watch(
       () => props.indicatorbg,
       (newVal, oldVal) => {
-        console.log(TAG + " indicator", newVal);
-        console.log(TAG + " indicator", oldVal);
+        console.log(TAG + "NEW-INDICATOR", newVal);
+        console.log(TAG + "OLD-INDICATOR", oldVal);
         indicator.value = newVal;
       }
     );
 
     const requestPermission = () => {
-      console.log("Requesting permission...");
+      console.log(TAG + "REQUESTING_PERMISSION ...");
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          console.log("Notification permision granted");
+          console.log("NOTIFICATION_PERMISSION_GRANTED");
           getToken(messaging, { vapidKey: vapidKey })
             .then((currentToken) => {
               if (currentToken) {
-                console.log("Token", currentToken);
+                console.log(TAG + "CURRENT_TOKEN", currentToken);
                 webOnline(currentToken);
               } else {
-                console.log("Token not available");
+                console.log(TAG,"TOKEN NOT AVAILABLE");
               }
             })
             .catch((err) => {
-              console.log(
-                "Token An error occurred while retrieving token. ",
+              console.log(TAG,
+                "AN ERROR OCCURED WHILE RETREIVING THE TOKEN",
                 err
               );
             });
         } else {
-          console.log("Notification permision not granted");
+          console.log(TAG,"NOTIFICATION PERMISSION NOT GRANTED");
         }
       });
     };
     requestPermission();
 
     onMessage(messaging, (payload) => {
-      console.log("Message received. ", payload);
+      console.log(TAG + "MESSAGE_RECEIVED", payload);
       if (payload.data.payload === "9") {
         indicator.value = "#288c7f";
         emit("listen-indicator-color", indicator.value);
       } else if (payload.data.payload === "6") {
         deleted_post_id.value = payload.data.post_id;
-        console.log("DELETED POST ID 1", deleted_post_id.value);
         emit("listen-delete-post-id", deleted_post_id.value);
       } else {
+        noteColor.value = "#000";
         noteCount.value++;
         emit("listen-notification-count", noteCount.value);
-        console.log(TAG + " noteCount",noteCount.value);
       }
     });
 
@@ -213,7 +213,13 @@ export default {
         .then((response) => {
           console.log("RESPONSE WEB ONLINE", response);
           if (response.data.success) {
+           
             noteCount.value = response.data.count;
+            if(noteCount.value > 0){
+              noteColor.value = "#000";
+            }else{
+               noteColor.value = "#fff";
+            }
           }
         })
         .catch((error) => {
@@ -222,11 +228,13 @@ export default {
     };
 
     const goToNotifications = () => {
+      noteColor.value = "#fff";
       noteCount.value = 0;
-      emit("listen-notifications");
+      emit("listen-notifications",noteCount.value);
     };
 
     return {
+      noteColor,
       noteCount,
       placesLogo,
       indicator,

@@ -81,10 +81,9 @@
             <div class="col-md-7 col-lg-8 text-center text-md-start">
               <!-- Copyright -->
               <div class="p-1">
-                © 2022 Copyright:
+                <small>© 2022 Copyright: </small>
                 <a class="text-white" href="https://www.thefavplaces.com"
-                   >Places Inc</a
-                  >
+                   ><small>Places Inc</small></a>
               </div>
               <!-- Copyright -->
             </div>

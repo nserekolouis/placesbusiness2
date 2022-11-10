@@ -24,7 +24,9 @@
   </div>
 </template>
 <script>
-import { ref, 
+import { 
+  ref,
+  watch
   //onActivated,
   //onMounted
  } from "vue";
@@ -45,31 +47,38 @@ export default {
     const hasMoreText = ref(false);
     const readMoreClicked = ref(false);
     const postTextOne = ref("");
-    //const postTextTwo = ref("");
 
-    if(postText.value != null){
-      const words = postText.value.split(/\r?\n/);
-     
-      words.forEach((word) => {
-          if (word.charAt(0) === "#"){
-            postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
-          }else if(word.startsWith("https",0)){
-            postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
-          }
-      });
 
-      if(postText.value.length <= 320){
-        hasMoreText.value = false;
-        postTextOne.value = postText.value;
-        
-      }else{
-        hasMoreText.value = true;
-        postTextOne.value = postText.value.substring(0,319);
-        //postTextTwo.value = postText.value.substring(319,(postText.value.length-1));
+    watch(
+      () => props.post,
+      (newVal, oldVal) => {
+        console.log("NEW",newVal);
+        console.log("OLD",oldVal);
+        postText.value = props.post.post_text;
+        if(postText.value != null){
+          if(postText.value != null){
+            const words = postText.value.split(/\r?\n/);
+            words.forEach((word) => {
+              if (word.charAt(0) === "#"){
+                postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
+              }else if(word.startsWith("https",0)){
+                postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
+              }
+        });
+
+        if(postText.value.length <= 320){
+          hasMoreText.value = false;
+          postTextOne.value = postText.value;
+          
+        }else{
+          hasMoreText.value = true;
+          postTextOne.value = postText.value.substring(0,319);
+        }
       }
-
-      
     }
+    }
+    );
+
 
     const showMore = () => {
       displayMore.value = "block";
@@ -82,7 +91,6 @@ export default {
       postText,
       hasMoreText,
       postTextOne,
-      //postTextTwo,
       displayMore,
       displayDots,
       showMore,

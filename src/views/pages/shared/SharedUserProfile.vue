@@ -1,14 +1,18 @@
 <template>
-  <div class="row">
-    <back-navigation :info="componentName" @listen-move-back="moveBack" />
-    <hr class="mt-0 mb-1">
-    <div>
-      <user-profile :user_id="id" />
+<div class="container-fluid row">
+    <div class="col-md-3">
+      <side-bar-login />
     </div>
-  </div>
-  <div class="" ref="scrollComponent" style="margin-top: 10px">
-    <ul class="list-group">
-      <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+
+    <div class="col-md-6 border-left">
+      <back-navigation :info="componentName" @listen-move-back="moveBack" />
+      <hr class="mt-0 mb-1">
+      <div>
+        <user-profile :user_id="id" />
+      </div>
+      <div class="" ref="scrollComponent" style="margin-top: 10px">
+      <ul class="list-group">
+        <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
         <ad-space
         v-if="post.id === ''"
         />
@@ -44,6 +48,37 @@
       </li>
     </ul>
   </div>
+  </div>
+
+  <div class="col-md-3 border-left">
+    <button
+      class="btn d-md-none btn-menu-right"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasResponsive2"
+      aria-controls="offcanvasResponsive2"
+      >
+      <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      </button>
+    <div
+    class="offcanvas-md offcanvas-end"
+    tabindex="-1"
+    id="offcanvasResponsive2"
+    aria-labelledby="offcanvasResponsiveLabel2"
+    >
+      <div class="offcanvas-body">
+      <button
+        type="button"
+        class="btn-close btn-close-right"
+        data-bs-dismiss="offcanvas"
+        data-bs-target="#offcanvasResponsive2"
+        aria-label="Close"
+        ></button>
+        <search-users @listen-search-user-profile="searchUserProfile" />
+      </div>
+      </div>
+  </div>
+</div>
 </template>
 <script>
 import OnlyText from "@/components/userposts/PostOnlyText.vue";
@@ -55,6 +90,8 @@ import BackNavigation from "@/components/BackNavigation.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
+import SideBarLogin from "@/components/SideBarLogin.vue";
+import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
 import { ref, onMounted, onUnmounted} from "vue";
 import axios from "axios";
@@ -76,7 +113,9 @@ export default {
     UserProfile,
     BackNavigation,
     SpinnerComponent,
-    AdSpace
+    AdSpace,
+    SideBarLogin,
+    SearchUsers
   },
   setup(props, { emit }) {
     const componentName = "User Profile";

@@ -12,6 +12,7 @@ import SideBar from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
+import CommentDetailsPage from "@/views/pages/main/CommentDetailsPage.vue";
 
 const TAG = "SWITCH_SCREEN";
 
@@ -28,7 +29,8 @@ export default {
     SearchUsers,
     PostsPage,
     PlaceDetailsPage,
-    PromotedPostPage
+    PromotedPostPage,
+    CommentDetailsPage
   },
   data() {
     return {
@@ -46,6 +48,7 @@ export default {
       post:{},
       indicator: "#fff",
       noteCount: 0,
+      comment_id: "",
     };
   },
   methods: {
@@ -102,10 +105,7 @@ export default {
     },
     moveBack() {
       console.log("length", this.from_component.length);
-      console.log(
-        "length",
-        this.from_component[this.from_component.length - 1]
-      );
+      console.log("length",this.from_component[this.from_component.length - 1]);
       this.current = this.from_component[this.from_component.length - 1];
       this.from_component.pop();
     },
@@ -136,7 +136,12 @@ export default {
     listenNotificationCount(count){
       this.noteCount = count;
       console.log(TAG + "notification_color",count)
-    }
+    },
+    goToCommentDetailsPage(comment_id) {
+      this.comment_id = comment_id;
+      this.from_component.push(this.current);
+      this.current = "CommentDetailsPage";
+    },
   },
 };
 </script>
@@ -172,6 +177,7 @@ export default {
           :post="post"
           :indicator="indicator"
           :noteCount="noteCount"
+          :comment_id="comment_id"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -184,6 +190,7 @@ export default {
           @listen-move-back="moveBack"
           @listen-place-page="goToPlaceDetailsPage"
           @listen-promote-post="promotePost"
+          @listen-comment-details="goToCommentDetailsPage"
         ></component>
       </KeepAlive>
     </div>
@@ -240,6 +247,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
 
   .btn-close {
     display: none;
+    position: absolute;
+    top: 1px;
   }
 
   .btn {
@@ -265,8 +274,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
 
   .btn-close-left {
     position: absolute;
-    right: 20px;
-    top: 5px;
+    right: 2px;
+    top: 1px;
   }
 
   .main {
@@ -282,6 +291,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
 
   .btn-close {
     display: block;
+    position: absolute;
+    top: 1px;
   }
 
   .offcanvas-sm.offcanvas-start {

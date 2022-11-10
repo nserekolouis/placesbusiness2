@@ -52,6 +52,7 @@
 </template>
 <script>
 import axios from "axios";
+import router from "@/router";
 import UserItem from "@/views/pages/main/search/UserItem.vue";
 
 export default {
@@ -96,6 +97,9 @@ export default {
             this.searching = false;
             this.users = [];
             this.usersFound = true;
+            if(error.response.status === 401){
+              router.push({ name: "LoginScreen" });
+            }
           });
       }
     },

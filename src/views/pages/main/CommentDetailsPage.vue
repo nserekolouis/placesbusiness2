@@ -1,71 +1,103 @@
 <template>
   <div class="row">
-    <div class="col-md-3">
-      <side-bar-login />
-    </div>
-    <div class="col-md-6 border-left">
-      <!-- <back-navigation :info="componentName" @listen-move-back="moveBack" /> -->
-      <title-component :title="componentName" />
-      <div class="" ref="scrollComponent" style="margin-top: 10px">
+    <div class="col">
+      <!-- <title-component :title="componentTitle" /> -->
+      <back-navigation :info="componentName" @listen-move-back="moveBack" />
+      <div class="" ref="scrollComponent">
         <ul class="list-group">
           <li class="list-group-item">
-            <four-images v-if="post.image_four != null" :post="post" />
-            <three-images v-else-if="post.image_three != null" :post="post" />
-            <two-images v-else-if="post.image_two != null" :post="post" />
-            <one-image v-else-if="post.image_one != null" :post="post" />
-            <only-text v-else :post="post" />
-          </li>
-          <li v-if="result" class="list-group-item">
-            <make-comment :post="post" @listen-comment="newComment" />
-          </li>
-          <li class="list-group-item">
-            <div style="text-align: center">COMMENTS</div>
-          </li>
-          <li
-            v-for="(post, index) in comments"
-            :key="post.id"
-            class="list-group-item"
-          >
-            <post-extras v-if="post.post_extras == 1" :info="info" />
-            <c-four-images v-else-if="post.image_four != null" :post="post" />
-            <c-three-images v-else-if="post.image_three != null" :post="post" />
-            <c-two-images v-else-if="post.image_two != null" :post="post" />
-            <c-one-image v-else-if="post.image_one != null" :post="post" />
+            <c-four-images
+              v-if="comment.image_four != null"
+              :post="comment"
+              @listen-user-profile="goToUserProfile"
+            />
+            <c-three-images
+              v-else-if="comment.image_three != null"
+              :post="comment"
+              @listen-user-profile="goToUserProfile"
+            />
+            <c-two-images
+              v-else-if="comment.image_two != null"
+              :post="comment"
+              @listen-user-profile="goToUserProfile"
+            />
+            <c-one-image
+              v-else-if="comment.image_one != null"
+              :post="comment"
+              @listen-user-profile="goToUserProfile"
+            />
             <c-only-text
               v-else
-              :post="post"
-              :index="index"
+              :post="comment"
               @listen-user-profile="goToUserProfile"
             />
           </li>
         </ul>
-      </div>
-    </div>
-    <div class="col-md-3 border-left">
-      <button
-        class="btn d-md-none btn-menu-right"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasResponsive2"
-        aria-controls="offcanvasResponsive2"
-      >
-        <font-awesome-icon icon="fa-solid fa-ellipsis" />
-      </button>
-      <div
-        class="offcanvas-md offcanvas-end"
-        tabindex="-1"
-        id="offcanvasResponsive2"
-        aria-labelledby="offcanvasResponsiveLabel2"
-      >
-        <div class="offcanvas-body">
-          <button
-            type="button"
-            class="btn-close btn-close-right"
-            data-bs-dismiss="offcanvas"
-            data-bs-target="#offcanvasResponsive2"
-            aria-label="Close"
-          ></button>
-          <search-users @listen-search-user-profile="searchUserProfile" />
+        <div class="row">
+          <div class="col">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-2"></div>
+                  <div class="col-10">
+                    <four-images v-if="post.image_four != null" :post="post" />
+                    <three-images
+                      v-else-if="post.image_three != null"
+                      :post="post"
+                    />
+                    <two-images
+                      v-else-if="post.image_two != null"
+                      :post="post"
+                    />
+                    <one-image
+                      v-else-if="post.image_one != null"
+                      :post="post"
+                    />
+                    <only-text v-else :post="post" />
+                  </div>
+                </div>
+              </li>
+              <li v-show="result"  class="list-group-item">
+                <make-comment :post="post" @listen-comment="newComment" />
+              </li>
+              <li class="list-group-item">
+                <div style="text-align: center">OTHER COMMENTS</div>
+              </li>
+              <li
+                v-for="(post, index) in comments"
+                :key="post.id"
+                class="list-group-item"
+              >
+                <post-extras v-if="post.post_extras == 1" :info="info" />
+                <c-four-images
+                  v-else-if="post.image_four != null"
+                  :post="post"
+                  @listen-user-profile="goToUserProfile"
+                />
+                <c-three-images
+                  v-else-if="post.image_three != null"
+                  :post="post"
+                  @listen-user-profile="goToUserProfile"
+                />
+                <c-two-images
+                  v-else-if="post.image_two != null"
+                  :post="post"
+                  @listen-user-profile="goToUserProfile"
+                />
+                <c-one-image
+                  v-else-if="post.image_one != null"
+                  :post="post"
+                  @listen-user-profile="goToUserProfile"
+                />
+                <c-only-text
+                  v-else
+                  :post="post"
+                  :index="index"
+                  @listen-user-profile="goToUserProfile"
+                />
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -85,18 +117,25 @@ import CThreeImages from "@/components/comments/CommentThreeImages.vue";
 import CFourImages from "@/components/comments/CommentFourImages.vue";
 import MakeComment from "@/components/comments/MakeComment.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
-//import BackNavigation from "@/components/BackNavigation.vue";
-import SideBarLogin from "@/components/SideBarLogin.vue";
-import TitleComponent from "@/components/TitleComponent.vue";
-import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
-import Auth from "@/Auth.js";
-import { ref, onMounted, onUnmounted} from "vue";
+import BackNavigation from "@/components/BackNavigation.vue";
+import { 
+    ref, 
+    //onMounted, 
+    //onUnmounted, 
+    onActivated,
+    onDeactivated 
+    } from "vue";
 import { inject } from "vue";
+//import SideBar from "@/components/SideBar.vue";
+//import SideBarLogin from "@/components/SideBarLogin.vue";
+//import TitleComponent from "@/components/TitleComponent.vue";
+//import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
+import Auth from "@/Auth.js";
 
-const TAG = "SHARED-POST";
+const TAG = "COMMENT-DETAILS-PAGE";
 
 export default {
-  name: "CommentsPage",
+  name: "CommentDetailsPage",
   components: {
     OnlyText,
     OneImage,
@@ -110,33 +149,37 @@ export default {
     CFourImages,
     MakeComment,
     PostExtras,
-    //BackNavigation,
-    SideBarLogin,
-    TitleComponent,
-    SearchUsers,
+    BackNavigation
+    //TitleComponent,
+    //SideBar,
+    //SearchUsers,
+    //SideBarLogin,
   },
   props: {
-    id: String,
+    comment_id: String,
     from_component: String,
     new_comments: Boolean,
   },
   setup(props, { emit }) {
-    const componentName = "Post and Comments";
-    //const url = inject("url");
-    //const url_v1 = inject("url_v1");
+    const componentName = "Comments";
+    const componentTitle = "Comment Details";
     const url_v3 = inject("url_v3");
-    const post_id = ref(props.id);
+    const comment_id = ref(props.comment_id);
+    const post_id = ref(0);
     const post = ref({});
     const count = ref(0);
     const comments = ref([]);
+    const result = ref(true);
     const comment_id_mine = ref(0);
     const comment_id_others = ref(0);
     const return_mine = ref(0);
     const totalMine = ref(0);
     const totalOthers = ref(0);
     const loadMore = ref(true);
+    const comment = ref({});
     const scrollComponent = ref(null);
-    const result = ref(true);
+
+    console.log(TAG, Auth.user);
 
     if (Auth.user === null) {
       result.value = false;
@@ -144,56 +187,60 @@ export default {
       result.value = true;
     }
 
-    onMounted(() => {
-      console.log(TAG + "MOUNTED");
-      document.title = "Places | Comments";
+    
+
+    //onMounted(() => {
+      //console.log(TAG + " onmounted ");
+      //count.value = 0;
+      //return_mine.value = 0;
+      //totalMine.value = 0;
+      //totalOthers.value = 0;
+      //loadMore.value = true;
+      //post_id.value = props.id;
+      //comments.value = [];
+      //getPost();
+    //});
+
+    onActivated(() => {
+      document.title = "Places | Comment Details";
       window.addEventListener("scroll", handleScroll);
       window.addEventListener(
         "backbutton",
         function (e) {
           e.preventDefault();
-          console.log("BACK BUTTON PRESSED");
+          alert("BACK BUTTON PRESSED");
         },
         false
       );
-
-      //console.log(TAG + " onactivated ", props.id);
-      count.value = 0;
-      return_mine.value = 0;
-      totalMine.value = 0;
-      totalOthers.value = 0;
-      loadMore.value = true;
-      post_id.value = props.id;
-      comments.value = [];
-      getPost();
+      comment_id.value = props.comment_id;
+      console.log(TAG + "-COMMENT-ID",comment_id.value);
+      getCommentDetails();
     });
 
-    //onMounted(() => {
-      //getPost();
-    //});
-
-    onUnmounted(() => {
-      console.log(TAG + "UNMOUNTED");
+    onDeactivated(() => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("backbutton", moveBack());
     });
 
-    //methods
-    const handleScroll = () => {
-      let element = scrollComponent.value;
-      if (
-        element.getBoundingClientRect().bottom < window.innerHeight &&
-        count.value < totalMine.value + totalOthers.value &&
-        loadMore.value
-      ) {
-        console.log(TAG + "SCROLL GET COMMENTS");
-        loadMore.value = false;
-        getComments();
-      }
+    const getCommentDetails = () => {
+      let page_url = url_v3 + "/get_comment";
+      const data = {
+        comment_id: "" + comment_id.value,
+      };
+      axios
+        .post(page_url, data)
+        .then((response) => {
+          console.log(TAG + " COMMENT RESPONSE", response);
+          comment.value = response.data.comment[0];
+          post_id.value = comment.value.post_id;
+          getPost();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
 
     const getPost = () => {
-      console.log(TAG + "GET POST");
       let page_url = url_v3 + "/get_post";
       const data = {
         post_id: "" + post_id.value,
@@ -201,7 +248,7 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log(TAG + "-POST-DETAILS", response);
+          console.log(TAG + " POST RESPONSE", response);
           post.value = response.data.post;
           getComments();
         })
@@ -230,7 +277,7 @@ export default {
         return_mine: return_mine.value,
       };
 
-      console.log(TAG + "COMMENTS_DATA", data);
+      console.log(TAG + "COMMENTS DATA", data);
 
       axios
         .post(page_url, data)
@@ -288,6 +335,20 @@ export default {
         });
     };
 
+    /** scroll method */
+    const handleScroll = () => {
+      let element = scrollComponent.value;
+      if (
+        element.getBoundingClientRect().bottom < window.innerHeight &&
+        count.value < totalMine.value + totalOthers.value &&
+        loadMore.value
+      ) {
+        console.log(TAG + "SCROLL GET COMMENTS");
+        loadMore.value = false;
+        getComments();
+      }
+    };
+
     const goToUserProfile = (post) => {
       emit("listen-user-profile", post);
     };
@@ -304,6 +365,8 @@ export default {
       goToUserProfile,
       componentName,
       moveBack,
+      componentTitle,
+      comment,
       result,
     };
   },
@@ -314,6 +377,7 @@ h6 {
   display: inline-block;
   margin-left: 10px;
 }
+
 html:not([dir="rtl"]) .offcanvas.offcanvas-start {
   transform: translateX(0%);
 }

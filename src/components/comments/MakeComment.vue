@@ -11,15 +11,43 @@
         ></textarea>
         <div class="row">
           <div v-if="image_one" class="col-sm-3">
+            <button 
+            type="button" 
+            class="btn-close" 
+            aria-label="Close"
+            style="float:right;"
+            @click="deleteImageOne(image_one)"
+            ></button>
             <img :src="image_one" class="post-image" />
           </div>
           <div v-if="image_two" class="col-sm-3">
+            <button 
+            type="button" 
+            class="btn-close" 
+            aria-label="Close"
+            style="float:right;"
+            @click="deleteImageTwo(image_two)"
+            ></button>
             <img :src="image_two" class="post-image" />
           </div>
           <div v-if="image_three" class="col-sm-3">
+            <button 
+            type="button" 
+            class="btn-close" 
+            aria-label="Close"
+            style="float:right;"
+            @click="deleteImageThree(image_three)"
+            ></button>
             <img :src="image_three" class="post-image" />
           </div>
           <div v-if="image_four" class="col-sm-3">
+            <button 
+            type="button" 
+            class="btn-close" 
+            aria-label="Close"
+            style="float:right;"
+            @click="deleteImageFour(image_four)"
+            ></button>
             <img :src="image_four" class="post-image" />
           </div>
         </div>
@@ -104,14 +132,13 @@ export default {
   },
   data() {
     return {
-      //profile_picture: this.url + Auth.user.user_photo,
       profile_picture: "",
       post_text: "",
       counter: "",
-      image_one: "",
-      image_two: "",
-      image_three: "",
-      image_four: "",
+      image_one: window.localStorage.getItem('comment_image_one') ? JSON.parse(window.localStorage.getItem('comment_image_one')) : '',
+      image_two: window.localStorage.getItem('comment_image_two') ? JSON.parse(window.localStorage.getItem('comment_image_two')) : '',
+      image_three: window.localStorage.getItem('comment_image_three') ? JSON.parse(window.localStorage.getItem('comment_image_three')) : '',
+      image_four: window.localStorage.getItem('comment_image_four') ? JSON.parse(window.localStorage.getItem('comment_image_four')) : '',
       activeColor: aColor,
       loading: false,
     };
@@ -133,7 +160,7 @@ export default {
       this.loading = true;
       var count = 0;
 
-      let page_url = this.url_v3 + "/upload_post_images";
+      let page_url = this.url_v3 + "/upload_comment_images";
       let data = new FormData();
 
       if (event.target.files[0]) {
@@ -182,15 +209,22 @@ export default {
           this.loading = false;
           if (response.data.images[0].length > 0) {
             this.image_one = response.data.images[0];
+            window.localStorage.setItem("comment_image_one",response.data.images[0]);
           }
+
           if (response.data.images[1].length > 0) {
             this.image_two = response.data.images[1];
+            window.localStorage.setItem("comment_image_two",response.data.images[1]);
           }
+
           if (response.data.images[2].length > 0) {
             this.image_three = response.data.images[2];
+            window.localStorage.setItem("comment_image_three",response.data.images[2]);
           }
+
           if (response.data.images[3].length > 0) {
             this.image_four = response.data.images[3];
+            window.localStorage.setItem("comment_image_four",response.data.images[3]);
           }
         })
         .catch((error) => {
@@ -223,12 +257,17 @@ export default {
         this.image_two = "";
         this.image_three = "";
         this.image_four = "";
+
         axios
           .post(page_url, data)
           .then((response) => {
             this.loading = false;
             console.log("RESPONSE MAKE COMMENT ", response);
             this.$emit("listen-comment", this.post.id);
+            window.localStorage.setItem("comment_image_one","");
+            window.localStorage.setItem("comment_image_two","");
+            window.localStorage.setItem("comment_image_three","");
+            window.localStorage.setItem("comment_image_four","");
           })
           .catch((error) => {
             this.loading = false;
@@ -236,10 +275,83 @@ export default {
           });
       }
     },
+
     onSelectEmoji(emoji) {
       console.log(emoji);
       this.post_text += emoji.i;
     },
+
+    deleteImageOne(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_one = "";
+              window.localStorage.setItem("comment_image_one","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+
+    deleteImageTwo(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_two = "";
+              window.localStorage.setItem("comment_image_two","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+
+    deleteImageThree(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_three = "";
+              window.localStorage.setItem("comment_image_three","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+
+    deleteImageFour(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_four = "";
+              window.localStorage.setItem("comment_image_four","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
   },
 };
 </script>

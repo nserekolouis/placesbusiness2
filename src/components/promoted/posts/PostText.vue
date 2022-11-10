@@ -9,9 +9,8 @@
 </template>
 <script>
 import { 
-ref, 
-//onActivated
-watch
+  ref,
+  watch
  } from "vue";
 
 const TAG = "POST_TEXT";
@@ -26,6 +25,8 @@ export default {
     const postText = ref(props.post.post_text);
     console.log(TAG + ' 2 ',postText.value);
     const pT = ref("");
+
+    
 
     if(postText.value != null){
       const words = postText.value.split(/\r?\n/);

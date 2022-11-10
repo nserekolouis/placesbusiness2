@@ -19,13 +19,16 @@
     </div>
     <div class="col-6" style="text-align: right">
       <div class="profile-item">
-        <button type="button" class="btn btn-outline-primary btn-sm">
+        <button type="button" class="btn btn-outline-primary btn-sm mr-2"
+        style="height:25px; padding-top:0px;"
+        >
           Following
         </button>
         <button type="button" class="btn btn-outline-primary btn-sm ml-2"
+        style="height:25px; padding-top:0px; margin-left:2px;"
         @click="copyPlaceLink"
         >
-          Share Link
+          Copy Link
         </button>
       </div>
     </div>

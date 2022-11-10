@@ -1,83 +1,86 @@
 <template>
 <div class="container-fluid row">
     <div class="col-md-3">
-    <side-bar-login />
-</div>
-<div class="col-md-6">
-  <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
-  <hr class="m-0">
-  <place-profile :id="place_id" style="margin-top: 10px" />
-  <center-infomation :info="alert" v-show="show" class="info-missing" />
-  <ul class="list-group" ref="scrollComponent">
-    <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
-      <ad-space
-        v-if="post.id === ''"
-      />
-      <four-images
-        v-else-if="post.image_four != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <three-images
-        v-else-if="post.image_three != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <two-images
-        v-else-if="post.image_two != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <one-image
-        v-else-if="post.image_one != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <only-text
-        v-else
-        :post="post"
-        :index="index"
-        :places="places"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-    </li>
-    <li v-show="showSpin" class="list-group-item">
-      <spinner-component :spin="spin" :info="spinInfo" />
-    </li>
-  </ul>
-</div>
-<div class="col-md-3 border-left">
-    <button
-    class="btn d-md-none btn-menu-right"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#offcanvasResponsive2"
-    aria-controls="offcanvasResponsive2"
-    >
-    <font-awesome-icon icon="fa-solid fa-ellipsis" />
-    </button>
+      <side-bar-login />
+    </div>
+    
+    <div class="col-md-6 border-left">
+      <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
+      <hr class="m-0">
+      <place-profile :id="place_id" style="margin-top: 10px" />
+      <center-infomation :info="alert" v-show="show" class="info-missing" />
+
+      <ul class="list-group" ref="scrollComponent">
+        <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+          <ad-space
+            v-if="post.id === ''"
+          />
+          <four-images
+            v-else-if="post.image_four != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <three-images
+            v-else-if="post.image_three != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <two-images
+            v-else-if="post.image_two != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <one-image
+            v-else-if="post.image_one != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <only-text
+            v-else
+            :post="post"
+            :index="index"
+            :places="places"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+        </li>
+        <li v-show="showSpin" class="list-group-item">
+          <spinner-component :spin="spin" :info="spinInfo" />
+        </li>
+      </ul>
+    </div>
+    
+    <div class="col-md-3 border-left">
+      <button
+      class="btn d-md-none btn-menu-right"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasResponsive2"
+      aria-controls="offcanvasResponsive2"
+      >
+      <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      </button>
     <div
     class="offcanvas-md offcanvas-end"
     tabindex="-1"
     id="offcanvasResponsive2"
     aria-labelledby="offcanvasResponsiveLabel2"
     >
-    <div class="offcanvas-body">
-        <button
+      <div class="offcanvas-body">
+      <button
         type="button"
         class="btn-close btn-close-right"
         data-bs-dismiss="offcanvas"
@@ -85,9 +88,9 @@
         aria-label="Close"
         ></button>
         <search-users @listen-search-user-profile="searchUserProfile" />
+      </div>
+      </div>
     </div>
-    </div>
-</div>
 </div>
 </template>
 <script>
