@@ -81,7 +81,8 @@ export default {
   },
   setup(props, { emit }) {
     const componentName = "Comments";
-    const url = inject("url");
+    const url_v3 = inject('url_v3');
+
     const post_id = ref(props.id);
     const post = ref({});
     const count = ref(0);
@@ -101,23 +102,6 @@ export default {
 
     const getCommentsIsRunning = ref(false);
 
-    // watch(
-    //   () => props.new_comments,
-    //   (newVal, oldVal) => {
-    //     console.log(TAG + " watch newVal", newVal);
-    //     console.log(TAG + " watch comments", oldVal);
-    //     console.log(TAG + " watch id", props.id);
-
-    //     count.value = 0;
-    //     return_mine.value = 0;
-    //     totalMine.value = 0;
-    //     totalOthers.value = 0;
-    //     loadMore.value = true;
-    //     post_id.value = props.id;
-    //     comments.value = [];
-    //     getPost();
-    //   }
-    // );
 
     onActivated(() => {
       console.log(TAG + " onactivated ", props.id);
@@ -139,21 +123,12 @@ export default {
       console.log(TAG,"MOUNTED");
       document.title = "Places | Comments";
       window.addEventListener("scroll", handleScroll);
-      // window.addEventListener(
-      //   "backbutton",
-      //   function (e) {
-      //     e.preventDefault();
-      //     console.log("BACK BUTTON PRESSED");
-      //   },
-      //   false
-      // );
-      //getPost();
     });
 
     onUnmounted(() => {
       console.log(TAG + "UNMOUNTED");
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("backbutton", moveBack());
+      //window.removeEventListener("backbutton", moveBack());
     });
 
     //methods
@@ -182,7 +157,7 @@ export default {
 
     const getPost = () => {
       console.log(TAG + "-GET-POST");
-      let page_url = url + "api/v2/get_post";
+      let page_url = url_v3 + "/get_post";
       const data = {
         post_id: "" + post_id.value,
       };
@@ -201,7 +176,7 @@ export default {
     const getComments = () => {
       if(getCommentsIsRunning.value === false){
         getCommentsIsRunning.value = true;
-        let page_url = url + "api/v2/get_comments";
+        let page_url = url_v3 + "/get_comments";
         if (count.value != 0) {
           if (return_mine.value < totalMine.value) {
             timestamp_mine.value = comments.value[comments.value.length - 1].created_at;
@@ -211,8 +186,6 @@ export default {
             timestamp_others.value =
               comments.value[comments.value.length - 1].created_at;
           }
-          //timestamp_mine.value = comments.value[comments.value.length - 1].created_at;
-          //timestamp_others.value = comments.value[comments.value.length - 1].created_at;
         }
 
         const data = {
@@ -254,7 +227,7 @@ export default {
 
     const newComment = () => {
       count.value = 0;
-      let page_url = url + "api/v2/get_comments";
+      let page_url = url_v3 + "/get_comments";
 
       const data = {
         post_id: "" + post_id.value,
@@ -271,7 +244,6 @@ export default {
           loadMore.value = true;
           console.log(TAG + " NEW COMMENT RESPONSE", response);
           let newComments = response.data.comments;
-          //newComments.push(...comments.value);
           comments.value = newComments;
           let newTotalMine = response.data.total_mine;
           totalMine.value = newTotalMine;

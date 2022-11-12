@@ -1,10 +1,11 @@
 <template>
   <div class="backNav" @click="moveBack">
     <font-awesome-icon icon="fa-solid fa-long-arrow-left"/>
-    <p class=" text-uppercase d-inline">{{ ' '+info }}</p>
+    <p class="text-uppercase d-inline">{{ ' '+info }}</p>
   </div>
 </template>
 <script>
+import { onMounted } from "vue";
 export default {
   name: "BackNavigation",
   props: {
@@ -14,6 +15,20 @@ export default {
     const moveBack = () => {
       emit("listen-move-back");
     };
+
+    onMounted(() => {
+      //  window.addEventListener('backbutton', function (e) {
+      //   e.preventDefault();
+      //   console.log('Back button prevented page from going back');
+      //   // Put axios code here
+      //   }, false);
+      window.onpopstate = function() {
+         //e.preventDefault();
+         //alert('browser-back');
+         //history.go(1);
+         emit("listen-move-back");
+      };
+    });
 
     return {
       moveBack,

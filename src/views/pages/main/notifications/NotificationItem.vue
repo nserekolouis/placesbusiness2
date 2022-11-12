@@ -52,12 +52,12 @@ export default {
   },
   setup(props, { emit }) {
     const clicked = ref(false);
-    const url = inject("url");
+    const url_v3 = inject("url_v3");
     const notification_id = ref(props.notification.id);
     const post_id = ref(props.notification.post_id);
+    const comment_id = ref(props.notification.comment_id);
 
     onMounted(() => {
-      //console.log(TAG, props.notification.clicked);
       if (props.notification.clicked == 0) {
         clicked.value = false;
       } else {
@@ -66,10 +66,8 @@ export default {
     });
 
     onActivated(() => {
-      //console.log(TAG, props.notification.clicked);
       notification_id.value = props.notification.id;
       post_id.value = props.notification.post_id;
-
       if (props.notification.clicked == 0) {
         clicked.value = false;
       } else {
@@ -78,7 +76,7 @@ export default {
     });
 
     const updateNotificationClicked = () => {
-      let page_url = url + "api/v2/update_clicked";
+      let page_url = url_v3 + "/update_clicked";
 
       const data = {
         notification_id: "" + notification_id.value,
@@ -91,7 +89,11 @@ export default {
         .then((response) => {
           console.log(TAG,response);
           clicked.value = true;
-          emit("listen-post-details", post_id.value);
+          if(post_id.value === ""){
+            emit("listen-post-details",post_id.value);
+          }else{
+            emit("listen-comment-details",comment_id.value);
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -99,7 +101,7 @@ export default {
     };
 
     const goToUserProfile = (post) => {
-      emit("listen-user-profile", post);
+      emit("listen-user-profile",post);
     };
 
     return {

@@ -90,10 +90,10 @@ import SideBarLogin from "@/components/SideBarLogin.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 import Auth from "@/Auth.js";
-import { ref, onMounted, onUnmounted, onActivated } from "vue";
+import { ref, onMounted, onUnmounted} from "vue";
 import { inject } from "vue";
 
-const TAG = "COMMENTS_PAGE";
+const TAG = "SHARED-POST";
 
 export default {
   name: "CommentsPage",
@@ -122,7 +122,9 @@ export default {
   },
   setup(props, { emit }) {
     const componentName = "Post and Comments";
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
     const post_id = ref(props.id);
     const post = ref({});
     const count = ref(0);
@@ -142,18 +144,6 @@ export default {
       result.value = true;
     }
 
-    onActivated(() => {
-      console.log(TAG + " onactivated ", props.id);
-      count.value = 0;
-      return_mine.value = 0;
-      totalMine.value = 0;
-      totalOthers.value = 0;
-      loadMore.value = true;
-      post_id.value = props.id;
-      comments.value = [];
-      getPost();
-    });
-
     onMounted(() => {
       console.log(TAG + "MOUNTED");
       document.title = "Places | Comments";
@@ -166,8 +156,21 @@ export default {
         },
         false
       );
+
+      //console.log(TAG + " onactivated ", props.id);
+      count.value = 0;
+      return_mine.value = 0;
+      totalMine.value = 0;
+      totalOthers.value = 0;
+      loadMore.value = true;
+      post_id.value = props.id;
+      comments.value = [];
       getPost();
     });
+
+    //onMounted(() => {
+      //getPost();
+    //});
 
     onUnmounted(() => {
       console.log(TAG + "UNMOUNTED");
@@ -191,14 +194,14 @@ export default {
 
     const getPost = () => {
       console.log(TAG + "GET POST");
-      let page_url = url + "api/v2/get_post";
+      let page_url = url_v3 + "/get_post";
       const data = {
         post_id: "" + post_id.value,
       };
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log(TAG + "POST DETAILS", response);
+          console.log(TAG + "-POST-DETAILS", response);
           post.value = response.data.post;
           getComments();
         })
@@ -208,7 +211,7 @@ export default {
     };
 
     const getComments = () => {
-      let page_url = url + "api/v2/get_comments";
+      let page_url = url_v3 + "/get_comments";
       if (count.value != 0) {
         if (return_mine.value < totalMine.value) {
           comment_id_mine.value = comments.value[comments.value.length - 1].id;
@@ -227,7 +230,7 @@ export default {
         return_mine: return_mine.value,
       };
 
-      console.log(TAG + "COMMENTS DATA", data);
+      console.log(TAG + "COMMENTS_DATA", data);
 
       axios
         .post(page_url, data)
@@ -252,7 +255,7 @@ export default {
 
     const newComment = () => {
       count.value = 0;
-      let page_url = url + "api/v2/get_comments";
+      let page_url = url_v3 + "/get_comments";
 
       const data = {
         post_id: "" + post_id.value,

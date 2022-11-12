@@ -19,17 +19,16 @@
     </div>
     <div class="col-6" style="text-align: right">
       <div class="profile-item">
-        <button type="button" class="btn btn-outline-primary btn-sm mr-2"
-        style="height:25px; padding-top:0px;"
+        <!-- <button type="button" class="btn btn-outline-primary btn-sm"
+        style="height:24px; padding-top:0px;"
         >
           Following
-        </button>
-        <button type="button" class="btn btn-outline-primary btn-sm ml-2"
-        style="height:25px; padding-top:0px; margin-left:2px;"
+        </button> -->
+        <!-- <button type="button" class="btn btn-outline-primary btn-sm ml-2"
         @click="copyPlaceLink"
         >
-          Copy Link
-        </button>
+          Share Link
+        </button> -->
       </div>
     </div>
   </div>
@@ -37,7 +36,7 @@
 <script>
 import {
   onMounted,
-  //onActivated,
+  //onUnmounted,
   inject,
   ref,
 } from "vue";
@@ -47,31 +46,29 @@ const TAG = "PLACE_PROFILE";
 export default {
   name: "PlaceProfile",
   props: {
-    place: {},
+    id: String,
   },
-  setup(props) { 
-    console.log(props.place);
-    //const url = inject("url");
-    //const url_v1 = inject("url_v1");
+  setup(props) {
+    console.log(TAG + 'place_profile',props.id);
+
     const url_v3 = inject("url_v3");
-    const place = ref(props.place);
+    const place_id = ref(props.id);
     const placeDetails = ref({});
     const numFollowers = ref(0);
 
-    // onMounted(() => {
-    //   getPlacePageDetails();
-    // });
+    //check if user object is empty, put follow
+    //
 
     onMounted(() => {
       placeDetails.value = ref({});
-      place.value = props.place;
+      place_id.value = props.id;
       getPlacePageDetails();
     });
 
     const getPlacePageDetails = () => {
       let page_url = url_v3 + "/get_place_page_details";
       const data = {
-        place_id: "" + place.value.places_id,
+        place_id: "" + place_id.value,
       };
       console.log(TAG, data);
       axios
@@ -87,8 +84,8 @@ export default {
     };
 
     const copyPlaceLink = () => {
-      var link = window.location.origin + "/place/" + place.value.places_id;
-      console.log(TAG, place.value);
+      var link = window.location.origin + "/place/" + place_id.value;
+      console.log(TAG, place_id.value);
       navigator.clipboard.writeText(link);
       alert("Done");
     };

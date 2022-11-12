@@ -7,6 +7,7 @@ import CIcon from '@coreui/icons-vue'
 import { iconsSet as icons } from '@/assets/cicons'
 
 
+
 //.................
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -65,21 +66,23 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.component('EmojiPicker', EmojiPicker)
 
-
-
 app.provide('vapidKey', 'BGn2nGKMiDpzUK2pqdsaikMyw4Hn5c7zVQlGcKPCe8qrlrNtT4hTxWoTgF0urVNa3yj5913JA17plEMABE7sBHs')
 
 app.use(vue3GoogleLogin, {
   clientId: '114812492797-8blqglcqk8ph7ndl75u68ufcq40t6ip8.apps.googleusercontent.com'
 })
 
-//app.config.globalProperties.url = 'http://192.168.43.79:8000/';
-//app.provide('url', 'http://192.168.43.79:8000/');
+app.config.globalProperties.url_v1 = 'http://192.168.43.79:8000/api';
+app.provide('url_v1', 'http://192.168.43.79:8000/api');
 
-app.config.globalProperties.url = 'https://dev.thefavplaces.com/';
-app.provide('url', 'https://dev.thefavplaces.com/');
+app.config.globalProperties.url_v3 = 'http://192.168.43.79:8000/api/v3';
+app.provide('url_v3', 'http://192.168.43.79:8000/api/v3');
 
+//app.config.globalProperties.url_v1 = 'https://dev.thefavplaces.com/api';
+//app.provide('url_v1', 'https://dev.thefavplaces.com/api');
 
+//app.config.globalProperties.url = 'https://dev.thefavplaces.com/api/v3';
+//app.provide('url', 'https://dev.thefavplaces.com/api/v3');
 
 app.use(router)
 app.use(CoreuiVue)

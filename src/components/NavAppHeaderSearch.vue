@@ -1,39 +1,33 @@
 <template>
   <div class="top-class">
         <div class="row">
-          <div class="col-2 col-sm-1" style="min-width:45px;">
-            <select
-              class="form-select form-select-sm sel-recent-places"
-              aria-label="Default select examples"
-              @change="dropDownSelectPlace($event, $event.target.selectedIndex)"
-              >
-              <option :selected="false" class="select-option">
-                <p>Recent Places</p>
-              </option>
-              <option v-for="place in sub_places" :key="place.sub_id" class="select-option">
-                <p>{{ place.main_text }}</p>
-              </option>
-            </select>
-          </div>
-          <div class="col-10 col-sm-11">
-            <div class="input-group">
-              <input
-              class="form-control form-control-sm"
-              type="search"
-              placeholder="Search for place"
-              aria-label="Search"
-              v-model="search_place"
-              @input="searchPlace"
-              style="margin-right:-2px; "
-              />
-              <div class="input-group-append">
-                <button 
-                class="btn btn-secondary btn-sm" 
-                type="button"
-                @click="goToPlacePage"
-                >GO</button>
+          <div class="col" style="height:35px">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="goToPlacePage"> P </button>
+                <button class="btn btn-outline-secondary dropdown-toggle btn-sm" 
+                type="button" 
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"></button>
+                <div class="dropdown-menu">
+                  <a 
+                      v-for="place in sub_places"
+                      :key="place.id"
+                      class="dropdown-item"
+                      @click="dropDownSelectPlace(place)"
+                      >{{ place.main_text }}</a>
+                  </div>
               </div>
-            </div>
+            <input 
+            type="search" 
+            class="form-control form-control-sm" 
+            aria-label="Text input with dropdown button"
+            v-model="search_place"
+            @input="searchPlace"
+            placeholder="Search for any place in the world"
+            >
+          </div>
           </div>
         </div>
         <div class="row">
@@ -102,14 +96,14 @@ export default {
   },
   methods: {
     searchPlace: function () {
-      let page_url = this.url + "api/v2/search_places";
+      let page_url = this.url_v3 + "/search_places";
       const data = {
         query: this.search_place,
       };
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("RESPONSE SEARCH PLACES", response.data.predictions);
+          console.log(TAG + "USER_PLACE_SUBSCRIPTIONS", response.data.predictions);
           this.places = response.data.predictions;
         })
         .catch((error) => {
@@ -117,25 +111,28 @@ export default {
         });
     },
     selectPlace: function (place) {
+      console.log("SELECT-PLACE",place);
+
       this.search_place = place.main_text;
       this.places = [];
       this.place = place;
       this.addPlaceSubscription(place);
     },
     newPost() {
-      console.log("NAHS NEW POST");
       this.$emit("listen-post");
     },
     addPlaceSubscription: function (place) {
       console.log("ADD Sub place", place);
-      let page_url = this.url + "api/v2/add_user_place_subscription";
+      let page_url = this.url_v3 + "/add_user_place_subscription";
       const data = {
         place_id: "" + place.places_id,
       };
+
+      console.log("SELECT-PLACE-DATA",data);
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("Response ADD SUB: ", response);
+          console.log("SELECT-PLACE-RESPONSE", response);
           //this.$emit("listen-place", place);
            this.getPlaceSubscriptions();
         })
@@ -144,30 +141,19 @@ export default {
         });
     },
     getPlaceSubscriptions(){
-      let page_url = this.url + "api/v2/get_place_subs";
+      let page_url = this.url_v3 + "/get_place_subs";
       const data = {
-        userplacesub_id: "0",
+        userplacesub_id: "",
       };
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("PLACE SUBSCRITIONS", response.data.place_subs);
+          console.log("PLACE_SUBSCRITIONS", response);
           this.sub_places = response.data.place_subs;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
-    dropDownSelectPlace: function(e, selectedIndex){
-      console.log("EVENT", e);
-      console.log("EVENT", selectedIndex);
-      if (selectedIndex == 0) {
-        this.place = "";
-      } else {
-        console.log(TAG, this.sub_places[selectedIndex - 1]);
-        this.place = this.sub_places[selectedIndex - 1];
-        this.search_place = this.place.main_text;
-      }
     },
     goToPlacePage(){
       if(Object.keys(this.place).length != 0){
@@ -175,6 +161,11 @@ export default {
       }else{
         alert("Please select a place");
       }
+    },
+    dropDownSelectPlace(place){
+      console.log(TAG+'-DROP-DOWN', place);
+      this.place = place;
+      this.search_place = place.main_text;
     }
   },
 };
@@ -201,7 +192,4 @@ export default {
   height: 31px;
   background-color: white;
 }
-
-
-
 </style>

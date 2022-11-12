@@ -20,6 +20,7 @@
         :notification="notification"
         :index="index"
         @listen-post-details="goToPostDetails"
+        @listen-comment-details="goToCommentDetailsPage"
         @listen-user-profile="goToUserProfile"
       />
     </li>
@@ -45,7 +46,7 @@ export default {
     new_notifications: Boolean,
   },
   setup(props, { emit }) {
-    const url = inject("url");
+    const url_v3 = inject("url_v3");
     const show = ref(true);
     const notifications = ref([]);
     const info = "No notifications yet";
@@ -57,19 +58,8 @@ export default {
     const scrollComponent = ref(null);
     const componentName = "Notifications";
 
-    // watch(
-    //   () => props.new_notifications,
-    //   (newVal, oldVal) => {
-    //     console.log("New Value", newVal);
-    //     console.log("Old Value", oldVal);
-    //     count.value = 0;
-    //     note_id.value = 0;
-    //     notifications.value = [];
-    //     refreshNotifications();
-    //   }
-    // );
 
-    onActivated(() => {
+   onActivated(() => {
       count.value = 0;
           note_id.value = 0;
           notifications.value = [];
@@ -89,7 +79,7 @@ export default {
     });
 
     const getNotifications = () => {
-      let page_url = url + "api/v2/get_notifications";
+      let page_url = url_v3 + "/get_notifications";
 
       if (count.value > 0) {
         note_id.value = notifications.value[notifications.value.length - 1];
@@ -122,7 +112,7 @@ export default {
     };
 
     const refreshNotifications = () => {
-      let page_url = url + "api/v2/get_notifications";
+      let page_url = url_v3 + "/get_notifications";
 
       const data = {
         notification_id: "" + 0,
@@ -197,6 +187,9 @@ export default {
   methods: {
     goToPostDetails(post_id) {
       this.$emit("listen-post-details", post_id);
+    },
+    goToCommentDetailsPage(comment_id) {
+      this.$emit("listen-comment-details", comment_id);
     },
   },
 };

@@ -1,4 +1,8 @@
-import { createWebHistory, createRouter } from "vue-router"
+import { 
+  createWebHistory, 
+  createRouter, 
+  //createMemoryHistory
+} from "vue-router"
 import Auth from '@/Auth.js'
 import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
 import PageNotFound from '@/views/pages/main/PageNotFound.vue'
@@ -6,10 +10,11 @@ import UploadProfile from '@/views/pages/signup/ProfileScreen.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
 import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
-import SharedPost from "@/views/pages/main/SharedPost.vue"
-import SharedComment from "@/views/pages/main/SharedComment.vue"
-import SharedUserProfile from "@/views/pages/main/SharedUserProfile.vue"
-
+import SharedPost from "@/views/pages/shared/SharedPost.vue"
+import SharedComment from "@/views/pages/shared/SharedComment.vue"
+import SharedUserProfile from "@/views/pages/shared/SharedUserProfile.vue"
+import TermsAndConditions from "@/views/pages/signup/TermsAndConditions.vue"
+import SharedPlace from "@/views/pages/shared/SharedPlace.vue"
 
 
 const routes = [
@@ -18,8 +23,13 @@ const routes = [
     name: "LoginScreen",
     component: LoginScreen,
     props: {
-        prompt: true
+        prompt: false
     }
+  },
+  {
+    path: "/termsandconditions",
+    name: "TermsAndConditions",
+    component: TermsAndConditions,
   },
   {
     path: '/userhandle',
@@ -35,19 +45,6 @@ const routes = [
     path: '/home',
     name: "SwitchScreen",
     component: SwitchScreen,
-      // children:[
-      //   {
-      //     path: '',
-      //     name: 'PostsPage',
-      //     component: PostsPage
-      //   },
-      //   {
-      //     path: '/home/posts/comments/:id',
-      //     name: 'CommentsPage',
-      //     component: CommentsPage,
-      //     props: true
-      //   }
-      // ]
   },
   {
     path: '/user/:id',
@@ -68,6 +65,12 @@ const routes = [
     props: true
   },
   {
+    path: '/place/:id',
+    name: "SharedPlace",
+    component: SharedPlace,
+    props: true
+  },
+  {
     path: '/:catchAll(.*)*',
     name: "PageNotFound",
     component: PageNotFound,
@@ -81,6 +84,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
+  //history: createMemoryHistory(),
   routes
 })
 

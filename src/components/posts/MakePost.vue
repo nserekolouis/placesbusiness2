@@ -13,16 +13,44 @@
     </div>
   </div>
   <div class="row">
-    <div v-if="image_one" class="col-md-3">
+    <div v-if="image_one" class="col-md-3" style="border: 1px solid #ced4da">
+      <button 
+      type="button" 
+      class="btn-close" 
+      aria-label="Close"
+      style="float:right;"
+      @click="deleteImageOne(image_one)"
+      ></button>
       <img :src="image_one" class="post-image" />
     </div>
-    <div v-if="image_two" class="col-md-3">
+    <div v-if="image_two" class="col-md-3" style="border: 1px solid #ced4da">
+      <button 
+      type="button" 
+      class="btn-close" 
+      aria-label="Close"
+      style="float:right;"
+      @click="deleteImageTwo(image_two)"
+      ></button>
       <img :src="image_two" class="post-image" />
     </div>
-    <div v-if="image_three" class="col-md-3">
+    <div v-if="image_three" class="col-md-3" style="border: 1px solid #ced4da">
+      <button 
+      type="button" 
+      class="btn-close" 
+      aria-label="Close"
+      style="float:right;"
+      @click="deleteImageThree(image_three)"
+      ></button>
       <img :src="image_three" class="post-image" />
     </div>
-    <div v-if="image_four" class="col-md-3">
+    <div v-if="image_four" class="col-md-3" style="border: 1px solid #ced4da">
+      <button 
+      type="button" 
+      class="btn-close" 
+      aria-label="Close"
+      style="float:right;"
+      @click="deleteImageFour(image_four)"
+      ></button>
       <img :src="image_four" class="post-image" />
     </div>
   </div>
@@ -111,10 +139,14 @@ export default {
       profile_picture: this.url + Auth.user.user_photo,
       post_text: "",
       counter: "0",
-      image_one: "",
-      image_two: "",
-      image_three: "",
-      image_four: "",
+      image_one: window.localStorage.getItem('image_one') ? JSON.parse(window.localStorage.getItem('image_one')) : '',
+      image_two: window.localStorage.getItem('image_two') ? JSON.parse(window.localStorage.getItem('image_two')) : '',
+      image_three: window.localStorage.getItem('image_three') ? JSON.parse(window.localStorage.getItem('image_three')) : '',
+      image_four: window.localStorage.getItem('image_four') ? JSON.parse(window.localStorage.getItem('image_four')) : '',
+      //image_one: '',
+      //image_two: '',
+      //image_three: '',
+      //image_four: '',
       activeColor: aColor,
       loading: false,
     };
@@ -134,7 +166,7 @@ export default {
     uploadPostImages(event) {
       var count = 0;
       this.loading = true;
-      let page_url = this.url + "api/v2/upload_post_images";
+      let page_url = this.url_v3 + "/upload_post_images";
       let data = new FormData();
 
       if (event.target.files[0]) {
@@ -143,6 +175,7 @@ export default {
         } else {
           count++;
           data.append("image_one", event.target.files[0]);
+          
         }
       }
 
@@ -151,6 +184,7 @@ export default {
           alert(Constants.IMAGE_TWO);
         } else {
           data.append("image_two", event.target.files[1]);
+          //window.localStorage.setItem("image_two",event.target.files[1]);
         }
       }
 
@@ -159,6 +193,7 @@ export default {
           alert(Constants.IMAGE_THREE);
         } else {
           data.append("image_three", event.target.files[2]);
+          //window.localStorage.setItem("image_three",event.target.files[2]);
         }
       }
 
@@ -167,6 +202,7 @@ export default {
           alert(Constants.IMAGE_FOUR);
         } else {
           data.append("image_four", event.target.files[3]);
+          //window.localStorage.setItem("image_four",event.target.files[3]);
         }
       }
 
@@ -184,19 +220,24 @@ export default {
           this.loading = false;
           if (response.data.images[0].length > 0) {
             this.image_one = response.data.images[0];
+            window.localStorage.setItem("image_one",response.data.images[0]);
           }
 
           if (response.data.images[1].length > 0) {
             this.image_two = response.data.images[1];
+            window.localStorage.setItem("image_one",response.data.images[1]);
           }
 
           if (response.data.images[2].length > 0) {
             this.image_three = response.data.images[2];
+            window.localStorage.setItem("image_one",response.data.images[2]);
           }
 
           if (response.data.images[3].length > 0) {
             this.image_four = response.data.images[3];
+            window.localStorage.setItem("image_one",response.data.images[3]);
           }
+
         })
         .catch((error) => {
           this.loading = false;
@@ -214,7 +255,7 @@ export default {
         alert("Select a Place");
       } else {
         console.log("PLACE ID", this.place);
-        let page_url = this.url + "api/v2/make_post";
+        let page_url = this.url_v3 + "/make_post";
         let data = new FormData();
         data.append("place_id", this.place.places_id);
         data.append("post_text", this.post_text);
@@ -232,10 +273,14 @@ export default {
         axios
           .post(page_url, data)
           .then((response) => {
-            console.log("RESPONSE MAKE POST ", response);
+            console.log("RESPONSE-MAKE-POST", response);
             this.loading = false;
             this.activeColor = aColor;
             this.$emit("listen-post");
+            window.localStorage.setItem("image_one","");
+            window.localStorage.setItem("image_two","");
+            window.localStorage.setItem("image_three","");
+            window.localStorage.setItem("image_four","");
           })
           .catch((error) => {
             this.loading = false;
@@ -249,6 +294,74 @@ export default {
     },
     closeSelectEmoji(){
       console.log("CLOSE EMOJI");
+    },
+    deleteImageOne(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_one = "";
+              window.localStorage.setItem("image_one","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+    deleteImageTwo(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_two = "";
+              window.localStorage.setItem("image_two","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+    deleteImageThree(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_three = "";
+              window.localStorage.setItem("image_three","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    },
+    deleteImageFour(path){
+      let page_url = this.url_v3 + "/delete_image";
+      let data = new FormData();
+      data.append("path",path);
+      axios
+          .post(page_url, data)
+          .then((response) => {
+            console.log(response);
+            if(response.data.success === true){
+              this.image_four = "";
+              window.localStorage.setItem("image_four","");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     }
   },
 };

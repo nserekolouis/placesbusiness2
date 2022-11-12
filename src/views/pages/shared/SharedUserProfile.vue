@@ -1,20 +1,23 @@
 <template>
 <div class="container-fluid row">
     <div class="col-md-3">
-    <side-bar-login />
-</div>
-<div class="col-md-6">
-      <div class="row">
-    <back-navigation :info="componentName" @listen-move-back="moveBack" />
-    <div>
-      <user-profile :user_id="id" />
+      <side-bar-login />
     </div>
-  </div>
-  <div class="" ref="scrollComponent" style="margin-top: 10px">
-    <ul class="list-group">
-      <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+
+    <div class="col-md-6 border-left">
+      <back-navigation :info="componentName" @listen-move-back="moveBack" />
+      <hr class="mt-0 mb-1">
+      <div>
+        <user-profile :user_id="id" />
+      </div>
+      <div class="" ref="scrollComponent" style="margin-top: 10px">
+      <ul class="list-group">
+        <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+        <ad-space
+        v-if="post.id === ''"
+        />
         <four-images
-          v-if="post.image_four != null"
+          v-else-if="post.image_four != null"
           :post="post"
           @listen-comment="goToComments"
         />
@@ -40,27 +43,31 @@
           @listen-comment="goToComments"
         />
       </li>
+      <li v-show="showSpin" class="list-group-item">
+        <spinner-component :spin="spin" :info="spinInfo" />
+      </li>
     </ul>
   </div>
-</div>
-<div class="col-md-3 border-left">
+  </div>
+
+  <div class="col-md-3 border-left">
     <button
-    class="btn d-md-none btn-menu-right"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#offcanvasResponsive2"
-    aria-controls="offcanvasResponsive2"
-    >
-    <font-awesome-icon icon="fa-solid fa-ellipsis" />
-    </button>
+      class="btn d-md-none btn-menu-right"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasResponsive2"
+      aria-controls="offcanvasResponsive2"
+      >
+      <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      </button>
     <div
     class="offcanvas-md offcanvas-end"
     tabindex="-1"
     id="offcanvasResponsive2"
     aria-labelledby="offcanvasResponsiveLabel2"
     >
-    <div class="offcanvas-body">
-        <button
+      <div class="offcanvas-body">
+      <button
         type="button"
         class="btn-close btn-close-right"
         data-bs-dismiss="offcanvas"
@@ -68,28 +75,35 @@
         aria-label="Close"
         ></button>
         <search-users @listen-search-user-profile="searchUserProfile" />
-    </div>
-    </div>
-</div>
+      </div>
+      </div>
+  </div>
 </div>
 </template>
 <script>
-import OnlyText from "@/components/posts/PostOnlyText.vue";
-import OneImage from "@/components/posts/PostImagesOne.vue";
-import TwoImages from "@/components/posts/PostImagesTwo.vue";
-import ThreeImages from "@/components/posts/PostImagesThree.vue";
-import FourImages from "@/components/posts/PostImagesFour.vue";
+import OnlyText from "@/components/userposts/PostOnlyText.vue";
+import OneImage from "@/components/userposts/PostImagesOne.vue";
+import TwoImages from "@/components/userposts/PostImagesTwo.vue";
+import ThreeImages from "@/components/userposts/PostImagesThree.vue";
+import FourImages from "@/components/userposts/PostImagesFour.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
+import SpinnerComponent from "@/components/SpinnerComponent.vue";
+import AdSpace from "@/components/AdSpace.vue";
 import SideBarLogin from "@/components/SideBarLogin.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 
-import { ref, onMounted, onUnmounted, onActivated } from "vue";
+import { ref, onMounted, onUnmounted} from "vue";
 import axios from "axios";
 import { inject } from "vue";
 
+const TAG = "USER_POSTS_PAGE";
+
 export default {
-  name: 'SharedUserProfile',
+  props: {
+    id: String,
+    from_component: String,
+  },
   components: {
     OnlyText,
     OneImage,
@@ -98,22 +112,30 @@ export default {
     FourImages,
     UserProfile,
     BackNavigation,
+    SpinnerComponent,
+    AdSpace,
     SideBarLogin,
     SearchUsers
   },
-  props: {
-    id: String,
-  },
   setup(props, { emit }) {
     const componentName = "User Profile";
-    const url = inject("url");
+    const url_v3 = inject("url_v3");
+
     const u_id = ref(props.id);
-    const length = ref(0);
+    const first_post_id = ref(0);
+    const last_post_id = ref(0);
+    const ad_id = ref(0);
+
+    const totalUserPosts = ref(0);
     const count = ref(0);
     const post_id = ref(0);
     const loadMore = ref(true);
     const posts = ref([]);
     const scrollComponent = ref(null);
+
+    const spin = ref(false);
+    const spinInfo = ref(null);
+    const showSpin = ref(false);
 
     // watch(
     //   () => props.user_id,
@@ -126,41 +148,62 @@ export default {
     //   }
     // );
 
-    onActivated(() => {
-      u_id.value = props.id;
-      posts.value = [];
-      getUserPosts();
-    });
+    // onActivated(() => {
+    //   u_id.value = props.id;
+    //   posts.value = [];
+    //   getUserPosts();
+    // });
 
     const getUserPosts = () => {
       if (posts.value.length != 0) {
-        console.log("posts value", posts.value[posts.value.length - 1].id);
-        post_id.value = posts.value[posts.value.length - 1].id;
+        first_post_id.value = posts.value[0].id;
+        last_post_id.value = posts.value[posts.value.length - 2].id;
+        ad_id.value = posts.value[posts.value.length - 1].id;
+        if(ad_id.value === ""){
+          ad_id.value = 0;
+        }
       } else {
-        post_id.value = 0;
+        first_post_id.value = 0;
+        last_post_id.value = 0;
+        ad_id.value = 0;
       }
 
-      let page_url = url + "api/v2/get_user_posts";
+      let page_url = url_v3 + "/get_user_posts";
       const data = {
         profile_id: "" + u_id.value,
-        latest_post_id: "" + post_id.value,
+        first_post_id: "" + post_id.value,
+        last_post_id: "" + post_id.value,
+        ad_id: "" + ad_id.value,
       };
+
+     console.log(TAG + "-G-U-P-DATA",data); 
 
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("User", response);
+          console.log(TAG + "-G-U-P-RESPONSE",response);
+
           let newPosts = response.data.posts;
           console.log("posts 2", newPosts);
           posts.value.push(...newPosts);
           let total = response.data.total;
-          length.value = total;
+          totalUserPosts.value = total;
           count.value += 5;
-          if (count.value >= total.value) {
+          if (count.value >= totalUserPosts.value) {
             loadMore.value = false;
+            console.log(TAG + "-G-U-P-COUNT",count.value);
+            console.log(TAG + "-G-U-P-TOTAL",totalUserPosts.value);
+            console.log(TAG + "-G-U-P-LOADMORE",loadMore.value);
           } else {
             loadMore.value = true;
+            //show spin
+            spin.value = true;
+            showSpin.value = true;
+            console.log(TAG + "-G-U-P-COUNT",count.value);
+            console.log(TAG + "-G-U-P-TOTAL",totalUserPosts.value);
+            console.log(TAG + "-G-U-P-LOADMORE",loadMore.value);
           }
+
         })
         .catch((error) => {
           console.log("posts", error);
@@ -171,6 +214,8 @@ export default {
       console.log("posts");
       document.title = "Places | User Profile";
       window.addEventListener("scroll", handleScroll);
+      //u_id.value = props.id;
+      //posts.value = [];
       getUserPosts();
     });
 
@@ -181,11 +226,19 @@ export default {
 
     const handleScroll = () => {
       let element = scrollComponent.value;
-      console.log("LMUP SCROLLING", element.getBoundingClientRect().bottom);
-      console.log("LMUP SCROLLING WH", element.getBoundingClientRect().bottom);
+
+      console.log(TAG + "-S-HEIGHT", element.getBoundingClientRect().bottom < window.innerHeight);
+      console.log(TAG + "-S-COUNT", count.value < totalUserPosts.value);
+      console.log(TAG + "-S-LOADMORE", loadMore.value);
+
+      if (count.value >= totalUserPosts.value) {
+        spin.value = false;
+        spinInfo.value = "NO MORE POSTS";
+      }
+
       if (
-        element.getBoundingClientRect().bottom < window.innerHeight &&
-        count.value < length.value &&
+        element.getBoundingClientRect().bottom < window.innerHeight + 10 &&
+        count.value < totalUserPosts.value &&
         loadMore.value
       ) {
         loadMore.value = false;
@@ -208,6 +261,9 @@ export default {
       moveBack,
       componentName,
       goToComments,
+      spin,
+      spinInfo,
+      showSpin,
     };
   },
 };

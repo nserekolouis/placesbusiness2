@@ -196,7 +196,11 @@ export default {
         const total = ref(0);
         const startDateTime = ref(0);
         const stopDateTime = ref(0);
-        const url = inject('url');
+        //const url = inject('url');
+
+        //const url_v1 = inject("url_v1");
+        const url_v3 = inject("url_v3");
+
         const pst = ref(props.post);
 
         watch(() => props.show,
@@ -211,7 +215,7 @@ export default {
         });
 
         const getAccountBalance = () => {
-          let page_url = url + "api/v2/get_account_details";
+          let page_url = url_v3 + "/get_account_details";
           axios
             .get(page_url)
             .then((response) => {
@@ -248,7 +252,7 @@ export default {
             console.log(TAG,"4");
             alert('Please top up your account');
           }else{
-            let page_url = url + "api/v2/promote_post";
+            let page_url = url_v3 + "/promote_post";
             const data = {
               post_id: ""+pst.value.post_id,
               target_count: targetCount.value,

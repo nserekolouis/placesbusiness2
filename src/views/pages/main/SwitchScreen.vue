@@ -12,6 +12,7 @@ import SideBar from "@/components/SideBar.vue";
 import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
+import CommentDetailsPage from "@/views/pages/main/CommentDetailsPage.vue";
 
 const TAG = "SWITCH_SCREEN";
 
@@ -28,7 +29,8 @@ export default {
     SearchUsers,
     PostsPage,
     PlaceDetailsPage,
-    PromotedPostPage
+    PromotedPostPage,
+    CommentDetailsPage
   },
   data() {
     return {
@@ -46,10 +48,15 @@ export default {
       post:{},
       indicator: "#fff",
       noteCount: 0,
+      comment_id: "",
     };
   },
   methods: {
     goToComments(post) {
+      const state = {}
+      const url = '/post/'+post.post_id;
+      history.pushState(state, '', url)
+
       console.log("comment clicked", post);
       if (post != null) {
         this.id = post.post_id;
@@ -59,6 +66,10 @@ export default {
       this.current = "CommentsPage";
     },
     goToNotifications() {
+      const state = {}
+      const url = '/notifications';
+      history.pushState(state, '', url)
+
       this.new_notifications = !this.new_notifications;
       this.current = "NotificationSection";
       this.from_component = [];
@@ -78,34 +89,51 @@ export default {
     },
     goToProfile() {
       console.log("Go to profile");
+      const state = {}
+      const url = '/profile';
+      history.pushState(state, '', url)
       this.current = "EditProfileSection";
     },
     goToAccounts() {
+      const state = {}
+      const url = '/accounts';
+      history.pushState(state, '', url)
       this.current = "AccountsSection";
     },
     goToPrivacyAndSafety() {
+      const state = {}
+      const url = '/privacyandsafety';
+      history.pushState(state, '', url)
       this.current = "PrivacyAndSafety";
     },
     goToAboutPlaces() {
+      const state = {}
+      const url = '/aboutsection';
+      history.pushState(state, '', url)
       this.current = "AboutSection";
     },
     goToUserProfile(post) {
+      const state = {}
+      const url = '/user/' + post.user_id;
+      history.pushState(state, '', url)
+
       this.from_component.push(this.current);
       this.current = "UserPostsPage";
       this.user_id = post.user_id;
     },
     goToPostDetails(post_id) {
       console.log(post_id);
+      const state = {}
+      const url = '/post/'+post_id;
+      
+      history.pushState(state, '', url)
       this.from_component.push(this.current);
       this.current = "CommentsPage";
       this.id = post_id;
     },
     moveBack() {
       console.log("length", this.from_component.length);
-      console.log(
-        "length",
-        this.from_component[this.from_component.length - 1]
-      );
+      console.log("length",this.from_component[this.from_component.length - 1]);
       this.current = this.from_component[this.from_component.length - 1];
       this.from_component.pop();
     },
@@ -120,11 +148,18 @@ export default {
     },
     goToPlaceDetailsPage(place_details) {
       console.log("PLACE_DETAILS_PAGE", place_details);
+      const state = {}
+      const url = '/place/' + place_details.places_id;
+      history.pushState(state, '', url)
+
       this.place = place_details;
       this.from_component.push(this.current);
       this.current = "PlaceDetailsPage";
     },
     promotePost(post){
+      const state = {}
+      const url = '/promotpost';
+      history.pushState(state, '', url)
       this.from_component.push(this.current);
       this.post = post;
       this.current = "PromotedPostPage";
@@ -136,7 +171,15 @@ export default {
     listenNotificationCount(count){
       this.noteCount = count;
       console.log(TAG + "notification_color",count)
-    }
+    },
+    goToCommentDetailsPage(comment_id) {
+      const state = {}
+      const url = '/post/comment/'+comment_id;
+      history.pushState(state, '', url)
+      this.comment_id = comment_id;
+      this.from_component.push(this.current);
+      this.current = "CommentDetailsPage";
+    },
   },
 };
 </script>
@@ -172,6 +215,7 @@ export default {
           :post="post"
           :indicator="indicator"
           :noteCount="noteCount"
+          :comment_id="comment_id"
           @listen-comment="goToComments"
           @listen-notifications="goToNotifications"
           @listen-home="goToHome"
@@ -184,6 +228,7 @@ export default {
           @listen-move-back="moveBack"
           @listen-place-page="goToPlaceDetailsPage"
           @listen-promote-post="promotePost"
+          @listen-comment-details="goToCommentDetailsPage"
         ></component>
       </KeepAlive>
     </div>
@@ -195,7 +240,7 @@ export default {
         data-bs-target="#offcanvasResponsive2"
         aria-controls="offcanvasResponsive2"
       >
-        <font-awesome-icon icon="fa-solid fa-ellipsis" />
+      <font-awesome-icon icon="fa-solid fa-ellipsis" />
       </button>
       <div
         class="offcanvas-md offcanvas-end"
@@ -240,10 +285,13 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
 
   .btn-close {
     display: none;
+    position: absolute;
+    top: 1px;
   }
 
   .btn {
-    border: 0px solid black;
+    border: 1px solid #ced4da;
+    padding: 4px 8px 5px 10px;
   }
 
   .btn-menu-right {
@@ -264,8 +312,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
 
   .btn-close-left {
     position: absolute;
-    right: 20px;
-    top: 5px;
+    right: 2px;
+    top: 1px;
   }
 
   .main {
@@ -281,6 +329,8 @@ html:not([dir="rtl"]) .offcanvas.offcanvas-start {
 
   .btn-close {
     display: block;
+    position: absolute;
+    top: 1px;
   }
 
   .offcanvas-sm.offcanvas-start {

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col">
                 <div style="text-align:center">
-                    AD SPACE
+                    ADVERTISE WITH US!!
                 </div>
             </div>
         </div>

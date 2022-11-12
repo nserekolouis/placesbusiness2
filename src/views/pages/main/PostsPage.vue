@@ -97,6 +97,7 @@
 </template>
 <script>
 import axios from "axios";
+import router from "@/router";
 import OnlyText from "@/components/posts/PostOnlyText.vue";
 import OneImage from "@/components/posts/PostImagesOne.vue";
 import TwoImages from "@/components/posts/PostImagesTwo.vue";
@@ -108,7 +109,13 @@ import TitleComponent from "@/components/TitleComponent.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
 import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
-import { inject, ref, onMounted, watch, onActivated, onDeactivated } from "vue";
+
+import { inject, 
+         ref, 
+         onMounted, 
+         watch, 
+         onActivated, 
+         onDeactivated } from "vue";
 
 
 const TAG = "POSTS_PAGE";
@@ -140,7 +147,9 @@ export default {
     const posts = ref([]);
     const places = ref([]);
     const scrollComponent = ref(null);
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject('url_v1');
+    const url_v3 = inject('url_v3');
     const place = ref({});
     const loadMore = ref(true);
     const count = ref(0);
@@ -214,11 +223,11 @@ export default {
       last_post_id.value = 0;
       ad_id.value = 0;
       getPosts();
-      getPlaceSubscriptions();
+      //getPlaceSubscriptions();
     });
 
     const getPosts = () => {
-      let page_url = url + "api/v2/get_posts";
+      let page_url = url_v3 + "/get_posts";
       const data = {
         id: "" + id.value,
         first_post_id: first_post_id.value,
@@ -252,24 +261,28 @@ export default {
         .catch((error) => {
           console.log(error);
           loadMore.value = true;
+          console.log(TAG,error.response.status)
+          if(error.response.status === 401){
+            router.push({ name: "LoginScreen" });
+          }
         });
     };
 
-    const getPlaceSubscriptions = () => {
-      let page_url = url + "api/v2/get_place_subs";
-      const data = {
-        userplacesub_id: "0",
-      };
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("PLACE SUBSCRITIONS", response.data.place_subs);
-          places.value = response.data.place_subs;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
+    // const getPlaceSubscriptions = () => {
+    //   let page_url = url_v3 + "api/v2/get_place_subs";
+    //   const data = {
+    //     userplacesub_id: "0",
+    //   };
+    //   axios
+    //     .post(page_url, data)
+    //     .then((response) => {
+    //       console.log("PLACE SUBSCRITIONS", response.data.place_subs);
+    //       places.value = response.data.place_subs;
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // };
 
     const newPost = () => {
       id.value = 0;
@@ -347,7 +360,7 @@ export default {
 
     const searchedPlace = (searched_place) => {
       console.log("SEARCHED_PLACE", searched_place);
-      getPlaceSubscriptions();
+      //getPlaceSubscriptions();
     };
 
     const goToPlacePage = (p) => {

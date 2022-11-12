@@ -1,5 +1,4 @@
 <template>
-  <div class="container-fluid">
     <app-header />
     <div class="row">
       <div
@@ -8,10 +7,10 @@
           margin-left: auto;
           margin-right: auto;
           text-align: center;
-          margin-top: 40px;
+          margin-top: 0px;
         "
       >
-        <h1>Stay connected to your favourate Places</h1>
+        <h1>Stay connected to your favourite Places</h1>
         <div class="row d-md-none">
           <div
             id="carouselExampleIndicators"
@@ -80,15 +79,22 @@
             <img :src="travel" class="round-image" />
           </div>
         </div>
-        <div class="row">
-          <div class="col div-gmail">
-            <p class="p-login-gmail">LOGIN WITH GMAIL</p>
+
+        <div class="container m-2 p-1" style="border: 1px solid rgb(235 232 232)">
+          <div class="w-100">
             <GoogleLogin :callback="callback" prompt class="btn-google" />
+          </div>
+          <div class="w-100">
+            <p
+            @click="goToTermsAndConditions"
+            class="p-term-conditions"
+            ><small><u>By signing in you accept the 
+              places terms & conditions</u></small></p>
           </div>
         </div>
       </div>
     </div>
-  </div>
+    <FooterComponent/>
 </template>
 <script setup>
 import { decodeCredential } from "vue3-google-login";
@@ -97,7 +103,7 @@ import router from "@/router";
 import axios from "axios";
 import { inject } from "vue";
 
-const url = inject("url");
+const url = inject("url_v3");
 
 const callback = (response) => {
   const userData = decodeCredential(response.credential);
@@ -108,15 +114,19 @@ const callback = (response) => {
     password_confirmation: "password",
     role: "Client",
   };
-  let page_url = url + "api/v2/register";
+
+  let page_url = url + "/register";
   axios
     .post(page_url, data)
     .then((response) => {
       console.log("LOGIN", response);
       console.log("Response LOGIN USER", response.data.user.userhandle);
       Auth.login(response.data.token, response.data.user);
-      console.log("1");
-      if (response.data.user.userhandle == null) {
+    
+      if(response.data.user.deleted_at != null){
+        console.log("1");
+        alert("Your account has been disabled, await administration verification to find out why?")
+      }else if (response.data.user.userhandle == null) {
         console.log("2");
         router.push({ name: "UserHandle" });
       } else if (response.data.user.username == null) {
@@ -125,12 +135,16 @@ const callback = (response) => {
       } else {
         console.log("4");
         router.push({ name: "SwitchScreen" });
-        //router.push({ name: "UploadProfile" });
       }
     })
     .catch((error) => {
       console.error("There was an error!", error.message);
     });
+  
+};
+
+const goToTermsAndConditions = () => {
+  router.push({ name: "TermsAndConditions" });
 };
 </script>
 
@@ -139,6 +153,7 @@ import placesLogo from "@/assets/images/placeslogo.png";
 import logo from "@/assets/logo.png";
 import happyPeople1 from "@/assets/images/happypeople1.png";
 import AppHeader from "@/components/AppHeader.vue";
+import FooterComponent from "@/components/FooterComponent.vue"
 
 import africanMale from "@/assets/images/login/african_male.jpeg";
 import church from "@/assets/images/login/church.jpg";
@@ -147,8 +162,12 @@ import travel from "@/assets/images/login/travel.jpg";
 
 export default {
   name: "LoginScreen",
+  components: {
+    AppHeader,
+    FooterComponent
+  },
   props: {
-    prompt: Boolean,
+    prompt: Boolean
   },
   setup() {
     return {
@@ -158,11 +177,8 @@ export default {
       africanMale,
       church,
       people,
-      travel,
+      travel
     };
-  },
-  components: {
-    AppHeader,
   },
 };
 </script>
@@ -192,5 +208,9 @@ export default {
   margin-top: 50px;
   border: 1px solid #d9d9d9;
   padding: 10px;
+}
+.p-term-conditions{
+  margin-bottom: 0px;
+  color: burlywood;
 }
 </style>

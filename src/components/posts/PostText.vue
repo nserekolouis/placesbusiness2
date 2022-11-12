@@ -101,10 +101,10 @@ p {
 }
 
 .dots{
-    color: white;
+    color: #288c7f;
     cursor: pointer;
     font-weight: bold;
-    background-color: #288c7f;
+    /* background-color: #288c7f; */
     padding: 1px;
     font-size: 10px;
     text-transform: uppercase;

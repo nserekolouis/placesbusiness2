@@ -82,7 +82,9 @@ export default {
   },
   setup(props, { emit }) {
     const componentName = "User Profile";
-    const url = inject("url");
+    //const url = inject("url");
+    //const url_v1 = inject("url_v1");
+    const url_v3 = inject("url_v3");
 
     const u_id = ref(props.user_id);
     const first_post_id = ref(0);
@@ -131,7 +133,7 @@ export default {
         ad_id.value = 0;
       }
 
-      let page_url = url + "api/v2/get_user_posts";
+      let page_url = url_v3 + "/get_user_posts";
       const data = {
         profile_id: "" + u_id.value,
         first_post_id: "" + post_id.value,

@@ -83,7 +83,7 @@ export default {
           app_token: "web-platform",
           user_agent: "web",
         };
-        let page_url = this.url + "api/v2/user_handle";
+        let page_url = this.url_v3 + "/user_handle";
         axios
           .post(page_url, data)
           .then((response) => {

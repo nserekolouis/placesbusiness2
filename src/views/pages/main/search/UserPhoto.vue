@@ -1,6 +1,6 @@
 <template>
   <img
-    :src="this.url + post.userphoto"
+    :src="post.userphoto"
     class="profile-picture"
     @click="goToProfile"
   />
