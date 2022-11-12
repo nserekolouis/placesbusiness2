@@ -2,34 +2,30 @@
   <div class="row">
     <div class="col">
       <p v-if="readMoreClicked">
-      <small>
+      <!-- <small> -->
         <span class="span-p-text" v-html="postText"></span>
-      </small>
+      <!-- </small> -->
       </p>
-      <p v-if="hasMoreText">
-       <small>
+      <p v-else-if="hasMoreText">
+       <!-- <small> -->
         <span class="span-p-text">
           <span v-html="postTextOne"></span>
           <span class="dots" :style="{ display: displayDots }" @click="showMore">Read More</span>
-          <!-- <span v-html="postTextTwo" :style="{display: displayMore}"></span> -->
         </span>
-       </small>
+       <!-- </small> -->
       </p>
       <p v-else>
-        <small>
+        <!-- <small> -->
           <span class="span-p-text" v-html="postText"></span>
-        </small>
+        <!-- </small> -->
       </p>
     </div>
   </div>
 </template>
 <script>
 import { 
-  ref,
-  watch
-  //onActivated,
-  //onMounted
- } from "vue";
+  ref
+} from "vue";
 
 const TAG = "POST_TEXT";
 
@@ -48,37 +44,29 @@ export default {
     const readMoreClicked = ref(false);
     const postTextOne = ref("");
 
+    if(postText.value != null){
+      const words = postText.value.split(/\r?\n/);
+     
+      words.forEach((word) => {
+          if (word.charAt(0) === "#"){
+            postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
+          }else if(word.startsWith("https",0)){
+            postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
+          }
+      });
 
-    watch(
-      () => props.post,
-      (newVal, oldVal) => {
-        console.log("NEW",newVal);
-        console.log("OLD",oldVal);
-        postText.value = props.post.post_text;
-        if(postText.value != null){
-          if(postText.value != null){
-            const words = postText.value.split(/\r?\n/);
-            words.forEach((word) => {
-              if (word.charAt(0) === "#"){
-                postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
-              }else if(word.startsWith("https",0)){
-                postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
-              }
-        });
+      if(postText.value.length <= 320){
+        hasMoreText.value = false;
+        postTextOne.value = postText.value;
+        
+      }else{
+        hasMoreText.value = true;
+        postTextOne.value = postText.value.substring(0,319);
 
-        if(postText.value.length <= 320){
-          hasMoreText.value = false;
-          postTextOne.value = postText.value;
-          
-        }else{
-          hasMoreText.value = true;
-          postTextOne.value = postText.value.substring(0,319);
-        }
       }
-    }
-    }
-    );
 
+      
+    }
 
     const showMore = () => {
       displayMore.value = "block";
@@ -102,7 +90,7 @@ export default {
 <style scoped>
 p {
   margin-bottom: 0px;
-  font-size: 14px;
+  font-size: 13px;
   white-space: pre-line;
   overflow-wrap: break-word;
 }
@@ -113,10 +101,10 @@ p {
 }
 
 .dots{
-    color: white;
+    color: #288c7f;
     cursor: pointer;
     font-weight: bold;
-    background-color: #288c7f;
+    /* background-color: #288c7f; */
     padding: 1px;
     font-size: 10px;
     text-transform: uppercase;
@@ -125,7 +113,7 @@ p {
     width: 65px;
 }
 
-@media (max-width: 575.98px) {
+/* @media (max-width: 575.98px) {
   p {
     font-size: 14px;
   }
@@ -153,5 +141,5 @@ p {
   p {
     font-size: 14px;
   }
-}
+} */
 </style>

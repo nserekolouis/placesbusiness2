@@ -152,7 +152,7 @@
     <div class="col-3" >
     {{ promo.target_reach+" / "+promo.total }}
     </div>
-    <div class="col-2" >
+    <div class="col-2" >like_post
     <button> Pause </button>
     </div>
   </div>

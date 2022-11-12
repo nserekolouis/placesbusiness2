@@ -128,7 +128,7 @@ export default {
     onUnmounted(() => {
       console.log(TAG + "UNMOUNTED");
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("backbutton", moveBack());
+      //window.removeEventListener("backbutton", moveBack());
     });
 
     //methods

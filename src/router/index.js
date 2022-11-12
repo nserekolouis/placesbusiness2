@@ -1,4 +1,8 @@
-import { createWebHistory, createRouter } from "vue-router"
+import { 
+  createWebHistory, 
+  createRouter, 
+  //createMemoryHistory
+} from "vue-router"
 import Auth from '@/Auth.js'
 import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
 import PageNotFound from '@/views/pages/main/PageNotFound.vue'
@@ -80,6 +84,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
+  //history: createMemoryHistory(),
   routes
 })
 

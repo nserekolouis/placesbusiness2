@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col" style="height:17px;">
+    <div class="col" style="height:20px;">
       <p class="d-inline-block username"
       >{{ username }}</p>
       <p class="d-inline-block text-muted userhandle"

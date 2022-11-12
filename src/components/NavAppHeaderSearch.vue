@@ -4,7 +4,7 @@
           <div class="col" style="height:35px">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <button type="button" class="btn btn-outline-secondary btn-sm" @click="goToPlacePage">GO</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="goToPlacePage"> P </button>
                 <button class="btn btn-outline-secondary dropdown-toggle btn-sm" 
                 type="button" 
                 data-toggle="dropdown"

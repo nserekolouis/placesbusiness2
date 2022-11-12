@@ -53,6 +53,10 @@ export default {
   },
   methods: {
     goToComments(post) {
+      const state = {}
+      const url = '/post/'+post.post_id;
+      history.pushState(state, '', url)
+
       console.log("comment clicked", post);
       if (post != null) {
         this.id = post.post_id;
@@ -62,6 +66,10 @@ export default {
       this.current = "CommentsPage";
     },
     goToNotifications() {
+      const state = {}
+      const url = '/notifications';
+      history.pushState(state, '', url)
+
       this.new_notifications = !this.new_notifications;
       this.current = "NotificationSection";
       this.from_component = [];
@@ -81,24 +89,44 @@ export default {
     },
     goToProfile() {
       console.log("Go to profile");
+      const state = {}
+      const url = '/profile';
+      history.pushState(state, '', url)
       this.current = "EditProfileSection";
     },
     goToAccounts() {
+      const state = {}
+      const url = '/accounts';
+      history.pushState(state, '', url)
       this.current = "AccountsSection";
     },
     goToPrivacyAndSafety() {
+      const state = {}
+      const url = '/privacyandsafety';
+      history.pushState(state, '', url)
       this.current = "PrivacyAndSafety";
     },
     goToAboutPlaces() {
+      const state = {}
+      const url = '/aboutsection';
+      history.pushState(state, '', url)
       this.current = "AboutSection";
     },
     goToUserProfile(post) {
+      const state = {}
+      const url = '/user/' + post.user_id;
+      history.pushState(state, '', url)
+
       this.from_component.push(this.current);
       this.current = "UserPostsPage";
       this.user_id = post.user_id;
     },
     goToPostDetails(post_id) {
       console.log(post_id);
+      const state = {}
+      const url = '/post/'+post_id;
+      
+      history.pushState(state, '', url)
       this.from_component.push(this.current);
       this.current = "CommentsPage";
       this.id = post_id;
@@ -120,11 +148,18 @@ export default {
     },
     goToPlaceDetailsPage(place_details) {
       console.log("PLACE_DETAILS_PAGE", place_details);
+      const state = {}
+      const url = '/place/' + place_details.places_id;
+      history.pushState(state, '', url)
+
       this.place = place_details;
       this.from_component.push(this.current);
       this.current = "PlaceDetailsPage";
     },
     promotePost(post){
+      const state = {}
+      const url = '/promotpost';
+      history.pushState(state, '', url)
       this.from_component.push(this.current);
       this.post = post;
       this.current = "PromotedPostPage";
@@ -138,6 +173,9 @@ export default {
       console.log(TAG + "notification_color",count)
     },
     goToCommentDetailsPage(comment_id) {
+      const state = {}
+      const url = '/post/comment/'+comment_id;
+      history.pushState(state, '', url)
       this.comment_id = comment_id;
       this.from_component.push(this.current);
       this.current = "CommentDetailsPage";
