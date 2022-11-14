@@ -3,7 +3,7 @@
     <div class="row">
       <post-place-name
         v-if="Auth.user != null"
-        :post="post"
+        :post="pst"
         :index="index"
         @listen-block-user="blockUser"
         @listen-report-comment="reportComment"
@@ -16,14 +16,14 @@
     <div class="row">
       <div class="col-2">
         <post-profile-picture
-          :post="post"
+          :post="pst"
           @listen-user-profile="goToUserProfile"
         />
       </div>
       <div class="col-10">
-        <post-user-info :post="post" />
-        <post-text :post="post" />
-        <reaction-component :post="post" />
+        <post-user-info :post="pst" />
+        <post-text :post="pst" />
+        <reaction-component :post="pst" />
       </div>
     </div>
   </div>
@@ -40,8 +40,7 @@ import PostPlaceName from "@/components/comments/CommentPlaceName.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
 import CommentPlaceNameLogin from "@/components/comments/CommentPlaceNameLogin.vue";
 import Auth from "@/Auth.js";
-
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const TAG = "COMMENT_ONLY_TEXT";
 
@@ -55,6 +54,15 @@ export default {
     console.log(TAG, props.post);
     const showExtras = ref(false);
     const info = ref(null);
+    const pst = ref(props.post);
+
+    watch(
+      () => props.post,
+      (newVal, oldVal) => {
+        console.log("oldVal",oldVal);
+        pst.value = newVal;
+      }
+    );
 
     const deleteComment = () => {
       showExtras.value = true;
@@ -82,7 +90,8 @@ export default {
       blockUser,
       reportComment,
       goToUserProfile,
-      Auth
+      Auth,
+      pst
     };
   },
   components: {

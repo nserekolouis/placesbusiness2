@@ -1,7 +1,6 @@
 import { 
   createWebHistory, 
   createRouter, 
-  //createMemoryHistory
 } from "vue-router"
 import Auth from '@/Auth.js'
 import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
@@ -44,6 +43,55 @@ const routes = [
   {
     path: '/home',
     name: "SwitchScreen",
+    component: SwitchScreen
+  },
+  {
+    path: '/home/user/:id',
+    name: "User",
+    component: SwitchScreen,
+    props: true
+  },
+  {
+    path: '/home/post/:id',
+    name: "Post",
+    component: SwitchScreen,
+    props: true
+  },
+  {
+    path: '/home/post/comment/:id',
+    name: "Comment",
+    component: SwitchScreen,
+    props: true
+  },
+  {
+    path: '/home/place/:id',
+    name: "Place",
+    component: SwitchScreen,
+    props: true
+  },
+  {
+    path: '/notifications',
+    name: "Notifications",
+    component: SwitchScreen,
+  },
+  {
+    path: '/profile',
+    name: "Profile",
+    component: SwitchScreen,
+  },
+  {
+    path: '/accounts',
+    name: "Accounts",
+    component: SwitchScreen,
+  },
+  {
+    path: '/privacyandsafety',
+    name: "PrivacyAndSafety",
+    component: SwitchScreen,
+  },
+  {
+    path: '/aboutplaces',
+    name: "AboutPlaces",
     component: SwitchScreen,
   },
   {

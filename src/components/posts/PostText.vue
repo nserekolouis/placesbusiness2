@@ -24,7 +24,8 @@
 </template>
 <script>
 import { 
-  ref
+  ref,
+  watch
 } from "vue";
 
 const TAG = "POST_TEXT";
@@ -44,34 +45,43 @@ export default {
     const readMoreClicked = ref(false);
     const postTextOne = ref("");
 
-    if(postText.value != null){
-      const words = postText.value.split(/\r?\n/);
-     
-      words.forEach((word) => {
-          if (word.charAt(0) === "#"){
-            postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
-          }else if(word.startsWith("https",0)){
-            postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
+
+    watch(
+      () => props.post,
+      (newVal, oldVal) => {
+        console.log("New Value", newVal);
+        console.log("Old Value", oldVal);
+        postText.value = newVal.post_text;
+        if(postText.value != null){
+          const words = postText.value.split(/\r?\n/);
+      
+          words.forEach((word) => {
+              if (word.charAt(0) === "#"){
+                postText.value = postText.value.replace(word,' <span style="color:#288c7f">'+word+'</span> ');
+              }else if(word.startsWith("https",0)){
+                postText.value = postText.value.replace(word,' <span style="color:#288c7f; text-decoration:underline">'+word+'</span> ');
+              }
+          });
+
+          if(postText.value.length <= 320){
+            hasMoreText.value = false;
+            postTextOne.value = postText.value;
+            
+          }else{
+            hasMoreText.value = true;
+            postTextOne.value = postText.value.substring(0,319);
+
           }
+          
+        }
       });
 
-      if(postText.value.length <= 320){
-        hasMoreText.value = false;
-        postTextOne.value = postText.value;
-        
-      }else{
-        hasMoreText.value = true;
-        postTextOne.value = postText.value.substring(0,319);
-
-      }
-
-      
-    }
 
     const showMore = () => {
       displayMore.value = "block";
       displayDots.value = "none";
       readMoreClicked.value = true;
+
     };
 
     return {

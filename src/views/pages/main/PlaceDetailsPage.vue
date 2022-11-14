@@ -67,7 +67,7 @@
   import PlaceProfile from "@/components/PlaceProfile.vue";
   import SpinnerComponent from "@/components/SpinnerComponent.vue";
   import AdSpace from "@/components/AdSpace.vue";
-  import { onActivated, onDeactivated, ref, inject } from "vue";
+  import { onMounted, onActivated, onDeactivated, ref, inject } from "vue";
 
   const TAG = "PLACE_DETAILS_PAGE";
 
@@ -112,6 +112,13 @@
       const spin = ref(false);
       const spinInfo = ref(null);
       const showSpin = ref(false);
+
+      onMounted(() => {
+        window.addEventListener("scroll", handleScroll);
+        place.value = props.place;
+        posts.value = [];
+        getPlacePosts();
+      });
 
       onActivated(() => {
         window.addEventListener("scroll", handleScroll);

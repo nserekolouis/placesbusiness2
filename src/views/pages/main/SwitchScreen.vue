@@ -54,7 +54,7 @@ export default {
   methods: {
     goToComments(post) {
       const state = {}
-      const url = '/post/'+post.post_id;
+      const url = '/home/post/'+post.post_id;
       history.pushState(state, '', url)
 
       console.log("comment clicked", post);
@@ -76,6 +76,10 @@ export default {
       this.from_component.push(this.current);
     },
     goToHome() {
+      const state = {}
+      const url = '/home';
+      history.pushState(state, '', url);
+
       this.current = "PostsPage";
       this.from_component = [];
       this.from_component.push(this.current);
@@ -108,13 +112,13 @@ export default {
     },
     goToAboutPlaces() {
       const state = {}
-      const url = '/aboutsection';
+      const url = '/aboutplaces';
       history.pushState(state, '', url)
       this.current = "AboutSection";
     },
     goToUserProfile(post) {
       const state = {}
-      const url = '/user/' + post.user_id;
+      const url = '/home/user/' + post.user_id;
       history.pushState(state, '', url)
 
       this.from_component.push(this.current);
@@ -149,7 +153,7 @@ export default {
     goToPlaceDetailsPage(place_details) {
       console.log("PLACE_DETAILS_PAGE", place_details);
       const state = {}
-      const url = '/place/' + place_details.places_id;
+      const url = '/home/place/' + place_details.places_id;
       history.pushState(state, '', url)
 
       this.place = place_details;

@@ -1,7 +1,6 @@
 <template>
   <div class="row">
     <div class="col">
-      <!-- <title-component :title="componentTitle" /> -->
       <back-navigation :info="componentName" @listen-move-back="moveBack" />
       <div class="" ref="scrollComponent">
         <ul class="list-group">

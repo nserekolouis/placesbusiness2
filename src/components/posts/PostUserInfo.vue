@@ -30,8 +30,11 @@ export default {
       immediate: true,
       handler(val) {
         if (Object.keys(val).length != 0) {
-          this.username = val.username.substring(0,10);
-          this.userhandle = val.userhandle.substring(0,6);
+          if(val.username){
+            this.username = val.username.substring(0,10);
+            this.userhandle = val.userhandle.substring(0,6);
+          }
+          
 
           const created = new Date(val.created_at);
           console.log("Created: ", created.toLocaleString());

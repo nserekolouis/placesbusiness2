@@ -10,7 +10,7 @@
 </template>
 <script>
 import axios from "axios";
-import { ref, inject } from "vue";
+import { ref, inject, watch } from "vue";
 
 const TAG = "COMMENT_REACTION";
 
@@ -21,24 +21,34 @@ export default {
   },
   setup(props, { emit }) {
     console.log(TAG, props.post);
-    const post = ref(props.post);
+    const pst = ref(props.post);
     const liked = ref(props.post.liked);
     const likes = ref(props.post.likes);
     const activeColor = ref("");
-    //const url = inject("url");
     const url_v3 = inject("url_v3");
 
-    if (liked.value == 1) {
-      activeColor.value = "red";
-    } else {
-      activeColor.value = "";
-    }
+    watch(
+      () => props.post,
+      (newVal, oldVal) => {
+        console.log("oldVal",oldVal);
+        console.log("newVal",newVal);
+        pst.value = newVal;
+        liked.value = newVal.liked;
+        likes.value = newVal.likes;
+
+        if (liked.value == 1) {
+          activeColor.value = "red";
+        } else {
+          activeColor.value = "";
+        }
+      }
+    );
 
     const likeClicked = () => {
       console.log("like clicked");
       let page_url = url_v3 + "/like_comment";
       let data = new FormData();
-      data.append("comment_id", post.value.id);
+      data.append("comment_id", pst.value.id);
       axios
         .post(page_url, data)
         .then((response) => {
@@ -56,11 +66,12 @@ export default {
     };
 
     const commentClicked = () => {
-      console.log("comment clicked", post.value);
-      emit("listen-comment", post.value);
+      console.log("comment clicked", pst.value);
+      emit("listen-comment", pst.value);
     };
 
     return {
+      pst,
       liked,
       likes,
       activeColor,
