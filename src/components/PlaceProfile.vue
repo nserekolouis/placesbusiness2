@@ -37,7 +37,7 @@
 <script>
 import {
   onMounted,
-  //onActivated,
+  onActivated,
   inject,
   ref,
 } from "vue";
@@ -63,6 +63,12 @@ export default {
     // });
 
     onMounted(() => {
+      placeDetails.value = ref({});
+      place.value = props.place;
+      getPlacePageDetails();
+    });
+
+     onActivated(() => {
       placeDetails.value = ref({});
       place.value = props.place;
       getPlacePageDetails();
