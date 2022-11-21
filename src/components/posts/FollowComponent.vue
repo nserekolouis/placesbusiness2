@@ -1,5 +1,8 @@
 <template>
-    <div class="row" style="
+    <div 
+    v-if="user_id != post.user_id"
+    class="row" 
+    style="
     border-top:1px solid #dfdfdf; 
     margin-top:2px; 
     border-bottom:1px solid #dfdfdf;">
