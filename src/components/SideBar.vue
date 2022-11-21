@@ -1,6 +1,7 @@
 <template>
   <button
-    class="btn d-md-none humberger"
+    class="btn d-md-none humberger mt-1"
+    style="height:30px;"
     type="button"
     data-bs-toggle="offcanvas"
     data-bs-target="#offcanvasResponsive"

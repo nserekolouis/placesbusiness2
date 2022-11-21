@@ -25,6 +25,11 @@
         <post-text :post="post" />
         <image-one :post="post" />
         <reaction-component :post="post" @listen-comment="goToComments" />
+         <follow-component 
+        :post="post"
+        :followObject="followObj"
+        @listen-follow-object="passFollowObject"
+        />
       </div>
     </div>
   </div>
@@ -40,6 +45,7 @@ import PostText from "@/components/posts/PostText.vue";
 import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 import PostPlaceName from "@/components/posts/PostPlaceName.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
+import FollowComponent from "@/components/posts/FollowComponent.vue";
 import { ref, watch } from "vue";
 import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
 import Auth from "@/Auth.js";
@@ -47,16 +53,47 @@ import Auth from "@/Auth.js";
 const TAG = "POST_IMAGES_ONE";
 
 export default {
-  name: "OnlyText",
+  name: "PostImagesOne",
+  components: {
+    ReactionComponent,
+    ImageOne,
+    PostUserInfo,
+    PostText,
+    PostProfilePicture,
+    PostPlaceName,
+    PostExtras,
+    PostPlaceNameLogin,
+    FollowComponent,
+  },
   props: {
     post: {},
     index: Number,
     deleted_post_id: Number,
+    followObject: {}
   },
   setup(props, { emit }) {
     const showExtras = ref(false);
     const info = ref(null);
     const post = ref(props.post);
+
+    //follow.......................
+    const followObj = ref({});
+    
+    watch(
+      () => props.followObject,
+      (newVal, oldVal) => {
+        console.log("FollowObj_New_Value", newVal);
+        console.log("FollowObj_Old_Value", oldVal);
+        followObj.value = newVal
+      }
+    );
+
+    const passFollowObject = (obj) => {
+      followObj.value = obj;
+      console.log("follow_2");
+      emit("listen-follow-object", obj);
+    };
+    //......................
 
     watch(
       () => props.deleted_post_id,
@@ -116,18 +153,11 @@ export default {
       goToUserProfile,
       Auth,
       goToPlacePage,
-      promotePost
+      promotePost,
+      passFollowObject,
+      followObj
     };
   },
-  components: {
-    ReactionComponent,
-    ImageOne,
-    PostUserInfo,
-    PostText,
-    PostProfilePicture,
-    PostPlaceName,
-    PostExtras,
-    PostPlaceNameLogin,
-  },
+  
 };
 </script>

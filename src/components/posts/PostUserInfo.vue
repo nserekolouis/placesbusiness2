@@ -7,8 +7,14 @@
       >
       {{ userhandle +' '+timestamp }}
       </p>
-      <!-- <p class="d-inline-block text-muted timestamp">
-      {{ timestamp }}</p> -->
+      <button class="d-none p-0 border-0 rounded" 
+      style="
+      margin-right:2px; 
+      width:25px;
+      height:25px;
+      color:white;
+      background: #798185;
+      ">+</button>
     </div>
   </div>
 </template>
@@ -31,7 +37,7 @@ export default {
       handler(val) {
         if (Object.keys(val).length != 0) {
           if(val.username){
-            this.username = val.username.substring(0,10);
+            this.username = val.username.substring(0,20);
             this.userhandle = val.userhandle.substring(0,6);
           }
           

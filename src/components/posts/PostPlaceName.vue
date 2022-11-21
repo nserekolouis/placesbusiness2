@@ -3,6 +3,14 @@
     <u
     @click="goToPlacePage"
     >
+      <button class="d-none p-0 border-0 rounded" 
+      style="
+      margin-right:2px; 
+      width:25px;
+      height:25px;
+      color:white;
+      background: teal;
+      ">-</button>
       <p class="p-place-name">{{ post.main_text }}</p>
     </u>
   </div>
@@ -24,14 +32,14 @@
         <button class="dropdown-item" type="button" @click="shareAction">
           Copy Link
         </button>
-        <button
+        <!-- <button
           v-if="user_id != post.user_id"
           class="dropdown-item"
           type="button"
           @click="followAction"
         >
           {{ follow }}
-        </button>
+        </button> -->
 
         <button
           v-if="user_id == post.user_id"
@@ -74,21 +82,12 @@
       </template>
     </modal>
   </Teleport>
-
-  <!-- <Teleport to="body">
-    <promote-post :post="post" :show="showPromotePost">
-      <template #header>
-        <h6>Promote Post</h6>
-      </template>
-    </promote-post>
-  </Teleport> -->
-
 </template>
 <script>
 import Auth from "@/Auth.js";
 import axios from "axios";
 import Modal from "@/components/posts/PostModal.vue";
-//import PromotePost from "@/components/PromotePost.vue";
+
 
 import { ref } from "vue";
 import Constants from "@/constants/index.js";
@@ -98,8 +97,7 @@ const TAG = "POST_PLACE_NAME";
 export default {
   name: "PostPlaceName",
   components: {
-    Modal,
-    // PromotePost
+    Modal
   },
   props: {
     post: {},
@@ -111,6 +109,7 @@ export default {
     const place = ref({});
     const post = ref(props.post);
     const showPromotePost = ref(false);
+    
 
     const showModal = () => {
       console.log("show modal");
@@ -141,7 +140,7 @@ export default {
       goToPlacePage,
       promotePost,
       showPromotePost,
-      moveBack
+      moveBack,
     };
   },
   data() {
@@ -266,7 +265,6 @@ export default {
   height: 30px;
   display: inline-block;
   margin-left: auto;
-  /* background-color: #c1c1c12e; */
   text-align: center;
   border-radius: 50%;
 }

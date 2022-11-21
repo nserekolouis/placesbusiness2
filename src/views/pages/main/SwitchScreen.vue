@@ -238,11 +238,12 @@ export default {
     </div>
     <div class="col-md-3 border-left">
       <button
-        class="btn d-md-none btn-menu-right"
+        class="btn d-md-none btn-menu-right mt-1"
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasResponsive2"
         aria-controls="offcanvasResponsive2"
+        style="height:30px;"
       >
       <font-awesome-icon icon="fa-solid fa-ellipsis" />
       </button>

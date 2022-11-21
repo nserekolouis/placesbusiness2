@@ -135,8 +135,8 @@
       const getPlacePosts = () => {
       
         if (posts.value.length != 0) {
-          first_post_id.value = posts.value[0].id;
-          last_post_id.value = posts.value[posts.value.length - 2].id;
+          first_post_id.value = posts.value[0].created_at;
+          last_post_id.value = posts.value[posts.value.length - 2].created_at;
           ad_id.value = posts.value[posts.value.length - 1].id;
           if(ad_id.value === ""){
             ad_id.value = 0;

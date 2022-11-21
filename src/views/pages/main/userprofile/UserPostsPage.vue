@@ -52,7 +52,6 @@ import TwoImages from "@/components/userposts/PostImagesTwo.vue";
 import ThreeImages from "@/components/userposts/PostImagesThree.vue";
 import FourImages from "@/components/userposts/PostImagesFour.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
-//import PostExtras from "@/components/posts/PostExtras.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
@@ -74,7 +73,6 @@ export default {
     TwoImages,
     ThreeImages,
     FourImages,
-    //PostExtras,\
     UserProfile,
     BackNavigation,
     SpinnerComponent,
@@ -82,8 +80,6 @@ export default {
   },
   setup(props, { emit }) {
     const componentName = "User Profile";
-    //const url = inject("url");
-    //const url_v1 = inject("url_v1");
     const url_v3 = inject("url_v3");
 
     const u_id = ref(props.user_id);
@@ -93,7 +89,6 @@ export default {
 
     const totalUserPosts = ref(0);
     const count = ref(0);
-    const post_id = ref(0);
     const loadMore = ref(true);
     const posts = ref([]);
     const scrollComponent = ref(null);
@@ -102,16 +97,6 @@ export default {
     const spinInfo = ref(null);
     const showSpin = ref(false);
 
-    // watch(
-    //   () => props.user_id,
-    //   (newVal, oldVal) => {
-    //     console.log("New Value", newVal);
-    //     console.log("Old Value", oldVal);
-    //     u_id.value = newVal;
-    //     posts.value = [];
-    //     getUserPosts();
-    //   }
-    // );
 
     onActivated(() => {
       u_id.value = props.user_id;
@@ -121,23 +106,23 @@ export default {
 
     const getUserPosts = () => {
       if (posts.value.length != 0) {
-        first_post_id.value = posts.value[0].id;
-        last_post_id.value = posts.value[posts.value.length - 2].id;
+        first_post_id.value = posts.value[0].created_at;
+        last_post_id.value = posts.value[posts.value.length - 2].created_at;
         ad_id.value = posts.value[posts.value.length - 1].id;
         if(ad_id.value === ""){
           ad_id.value = 0;
         }
       } else {
-        first_post_id.value = 0;
-        last_post_id.value = 0;
+        first_post_id.value = '';
+        last_post_id.value = '';
         ad_id.value = 0;
       }
 
       let page_url = url_v3 + "/get_user_posts";
       const data = {
         profile_id: "" + u_id.value,
-        first_post_id: "" + post_id.value,
-        last_post_id: "" + post_id.value,
+        first_post_id: "" + first_post_id.value,
+        last_post_id: "" + last_post_id.value,
         ad_id: "" + ad_id.value,
       };
 
@@ -179,7 +164,6 @@ export default {
       console.log("posts");
       document.title = "Places | User Profile";
       window.addEventListener("scroll", handleScroll);
-      //getUserPosts();
     });
 
     onUnmounted(() => {

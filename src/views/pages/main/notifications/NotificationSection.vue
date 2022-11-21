@@ -10,7 +10,7 @@
    @listen-notifications="goToNotifications"
   />
   <center-infomation :info="info" v-show="show" class="info-missing" />
-  <ul class="list-group" ref="scrollComponent">
+  <ul class="list-group" ref="scrollComponent" style="margin-top:10px;">
     <li
       v-for="(notification, index) in notifications"
       :key="notification.id"

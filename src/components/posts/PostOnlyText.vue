@@ -13,6 +13,7 @@
       />
       <post-place-name-login v-else :post="post" />
     </div>
+    <hr class="m-0 p-0 d-none">
     <div class="row">
       <div class="col-2">
         <post-profile-picture
@@ -25,6 +26,11 @@
         <post-text :post="post" />
         <reaction-component :post="post" @listen-comment="goToComments" />
         <tag-component :post="post"/>
+        <follow-component 
+        :post="post"
+        :followObject="followObj"
+        @listen-follow-object="passFollowObject"
+        />
       </div>
     </div>
   </div>
@@ -40,6 +46,8 @@ import PostProfilePicture from "@/components/posts/PostProfilePicture.vue";
 
 import PostPlaceName from "@/components/posts/PostPlaceName.vue";
 import PostPlaceNameLogin from "@/components/posts/PostPlaceNameLogin.vue";
+
+import FollowComponent from "@/components/posts/FollowComponent.vue";
 
 import TagComponent from "@/components/posts/TagComponent.vue"
 import PostExtras from "@/components/posts/PostExtras.vue";
@@ -58,19 +66,38 @@ export default {
     PostPlaceName,
     PostExtras,
     PostPlaceNameLogin,
-    TagComponent
+    TagComponent,
+    FollowComponent
   },
   props: {
-    //places: Array,
     post: Object,
-    //index: Number,
     deleted_post_id: Number,
+    followObject: {}
   },
   setup(props, { emit }) {
-    console.log(TAG + '-1-',props.post);
+    
     const showExtras = ref(false);
     const info = ref(null);
     const post = ref(props.post);
+
+    //follow.......................
+    const followObj = ref({});
+    
+    watch(
+      () => props.followObject,
+      (newVal, oldVal) => {
+        console.log("FollowObj_New_Value", newVal);
+        console.log("FollowObj_Old_Value", oldVal);
+        followObj.value = newVal
+      }
+    );
+
+    const passFollowObject = (obj) => {
+      followObj.value = obj;
+      console.log("follow_2");
+      emit("listen-follow-object", obj);
+    };
+    //......................
 
     watch(
       () => props.deleted_post_id,
@@ -85,6 +112,8 @@ export default {
         }
       }
     );
+
+    
 
     const deletePost = () => {
       showExtras.value = true;
@@ -118,6 +147,8 @@ export default {
       emit("listen-promote-post", post);
     };
 
+    
+
     return {
       showExtras,
       info,
@@ -128,7 +159,9 @@ export default {
       goToUserProfile,
       Auth,
       goToPlacePage,
-      promotePost
+      promotePost,
+      passFollowObject,
+      followObj
     };
   },
 };

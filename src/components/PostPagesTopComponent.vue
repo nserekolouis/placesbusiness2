@@ -1,30 +1,34 @@
 <template>
     <div class="tabs">
-            <div style="width:50%; display:inline-block">
-                <div class="top-left"
-                @click="goToHome"
-                :style="{ border: topLeftColor }"
+        <div style="width:50%; display:inline-block;">
+            <div class="top-left"
+            @click="goToHome"
+            :style="{ border: topLeftColor }"
+            >
+            <div style="padding:1px;">
+                <font-awesome-icon icon="fa-solid fa-house" />
+                <span
+                class="position-absolute 
+                top-2 start-2 translate-middle p-1 
+                bg-places border border-light 
+                rounded-circle"
+                :style="{ backgroundColor: color }"
                 >
-                    <font-awesome-icon icon="fa-solid fa-house" />
-                    <span
-                    class="position-absolute top-2 start-2 translate-middle p-1 bg-places border border-light rounded-circle"
-                    :style="{ backgroundColor: color }"
-                    >
-                    <span class="visually-hidden">New alerts</span>
-                    </span>
-                </div>
+                </span>
             </div>
-            <div style="width:50%; display:inline-block">
-                <div class="top-right"
-                @click="goToNotifications"
-                :style="{ border: topRightColor }"
-                >
-                    <font-awesome-icon icon="fa-solid fa-bell" />
-                    <span class="badge" style="margin-left: 10px; font-size: 15px;">{{
-                        nCount
-                    }}</span>
-                </div>
             </div>
+        </div>
+        <div style="width:50%; display:inline-block; height: 50px;">
+            <div class="top-right"
+            @click="goToNotifications"
+            :style="{ border: topRightColor }"
+            >
+                <font-awesome-icon icon="fa-solid fa-bell" />
+                <span class="badge" style="margin-left: 10px; font-size: 15px;">{{
+                    nCount
+                }}</span>
+            </div>
+        </div>
     </div>
 </template>
 <script>

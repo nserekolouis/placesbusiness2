@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col">
       <back-navigation :info="componentName" @listen-move-back="moveBack" />
-      <div class="" ref="scrollComponent">
+      <div class="" ref="scrollComponent" style="margin-top:10px;">
         <ul class="list-group">
           <li class="list-group-item">
             <c-four-images

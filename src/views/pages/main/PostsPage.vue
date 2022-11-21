@@ -9,7 +9,7 @@
    @listen-home="goToHome"
    @listen-notifications="goToNotifications"
   />
-  <div>
+  <div style="margin-top:10px;">
     <nav-app-header-search
       :selected_place="place"
       @listen-post="newPost"
@@ -42,6 +42,7 @@
           :post="post"
           :index="post.id"
           :deleted_post_id="d_post_id"
+          :followObject="followObj"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
@@ -52,6 +53,7 @@
           :post="post"
           :index="post.id"
           :deleted_post_id="d_post_id"
+          :followObject="followObj"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
@@ -62,6 +64,7 @@
           :post="post"
           :index="post.id"
           :deleted_post_id="d_post_id"
+          :followObject="followObj"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
@@ -72,6 +75,7 @@
           :post="post"
           :index="post.id"
           :deleted_post_id="d_post_id"
+          :followObject="followObj"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
@@ -83,10 +87,12 @@
           :index="index"
           :places="places"
           :deleted_post_id="d_post_id"
+          :followObject="followObj"
           @listen-comment="goToComments"
           @listen-user-profile="goToUserProfile"
           @listen-place-page="goToPlacePage"
           @listen-promote-post="promotePost"
+          @listen-follow-object="passFollowObject"
         />
       </li>
       <li v-show="showSpin" class="list-group-item">
@@ -147,8 +153,6 @@ export default {
     const posts = ref([]);
     const places = ref([]);
     const scrollComponent = ref(null);
-    //const url = inject("url");
-    //const url_v1 = inject('url_v1');
     const url_v3 = inject('url_v3');
     const place = ref({});
     const loadMore = ref(true);
@@ -166,6 +170,7 @@ export default {
     const ad_id = ref(0);
     const color = ref(props.indicator);
     const nCount = ref(props.noteCount);
+    const followObj  = ref({});
 
     watch(() => props.indicator,
             (newVal, oldVal) => {
@@ -223,7 +228,6 @@ export default {
       last_post_id.value = 0;
       ad_id.value = 0;
       getPosts();
-      //getPlaceSubscriptions();
     });
 
     const getPosts = () => {
@@ -268,22 +272,6 @@ export default {
         });
     };
 
-    // const getPlaceSubscriptions = () => {
-    //   let page_url = url_v3 + "api/v2/get_place_subs";
-    //   const data = {
-    //     userplacesub_id: "0",
-    //   };
-    //   axios
-    //     .post(page_url, data)
-    //     .then((response) => {
-    //       console.log("PLACE SUBSCRITIONS", response.data.place_subs);
-    //       places.value = response.data.place_subs;
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // };
-
     const newPost = () => {
       id.value = 0;
       count.value = 0;
@@ -321,15 +309,6 @@ export default {
         scrollingPosition.value = window.scrollY;
       }
 
-      // console.log(
-      //   TAG + " height ",
-      //   element.getBoundingClientRect().bottom < window.innerHeight
-      // );
-
-      // console.log(TAG + " load more ", loadMore.value);
-
-      // console.log(TAG + " count ", count.value < total.value);
-
       if (count.value >= total.value) {
         spin.value = false;
         spinInfo.value = "NO MORE POSTS";
@@ -342,16 +321,12 @@ export default {
       ) {
         loadMore.value = false;
         id.value = posts.value[posts.value.length - 2].id;
-        //console.log(TAG, "SCROLL LOAD MORE");
         first_post_id.value = posts.value[0].id;
         last_post_id.value = posts.value[posts.value.length - 2].id;
         ad_id.value = posts.value[posts.value.length - 1].id;
         if(ad_id.value === ""){
           ad_id.value = 0;
         }
-        //console.log(TAG + "first post",first_post_id.value);
-        //console.log(TAG + "last post",last_post_id.value);
-        //console.log(TAG + "ad post",ad_id.value);
         getPosts();
       }
     };
@@ -360,7 +335,6 @@ export default {
 
     const searchedPlace = (searched_place) => {
       console.log("SEARCHED_PLACE", searched_place);
-      //getPlaceSubscriptions();
     };
 
     const goToPlacePage = (p) => {
@@ -378,6 +352,12 @@ export default {
     const goToNotifications = () => {
       emit("listen-notifications");
     };
+
+    const passFollowObject = (obj) => {
+      followObj.value = obj;
+      console.log("follow_3");
+    };
+
 
     return {
       show,
@@ -401,7 +381,9 @@ export default {
       color,
       nCount,
       goToHome,
-      goToNotifications
+      goToNotifications,
+      passFollowObject,
+      followObj
     };
   },
   data() {

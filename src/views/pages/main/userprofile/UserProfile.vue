@@ -34,12 +34,12 @@
         <div class="row">
           <div class="col-6">
             <p style="display: inline-block; width: 120px">
-              Followers: {{ user.followers }}
+              Followers: {{ followers }}
             </p>
           </div>
           <div class="col-6">
             <p style="display: inline-block; width: 120px">
-              Following: {{ user.following }}
+              Following: {{ following }}
             </p>
           </div>
         </div>
@@ -101,6 +101,8 @@ export default {
     return {
       user: {},
       follow: "",
+      followers: 0,
+      following: 0
     };
   },
   methods: {
@@ -119,6 +121,8 @@ export default {
           } else {
             this.follow = "Follow";
           }
+          this.followers = response.data.user_details.followers;
+          this.following = response.data.user_details.following;
         })
         .catch((error) => {
           console.log(error);
@@ -135,9 +139,9 @@ export default {
           console.log("USER FOLLOW MESSAGE", response);
           console.log("USER FOLLOW STATUS", response);
           if (response.data.status == 1) {
-            this.follow = "Unfollow";
+            this.follow = "following";
           } else {
-            this.follow = "Follow";
+            this.follow = "follow";
           }
         })
         .catch((error) => {
