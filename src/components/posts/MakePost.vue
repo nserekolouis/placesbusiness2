@@ -8,7 +8,7 @@
       v-model="post_text"
       maxlength="640"
       rows="5"
-      placeholder="What is really happening?"
+      placeholder="2. Tell us, what is really happening?"
     ></textarea>
     </div>
   </div>

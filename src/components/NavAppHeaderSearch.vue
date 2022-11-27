@@ -34,7 +34,7 @@
             aria-label="Text input with dropdown button"
             v-model="search_place"
             @input="searchPlace"
-            placeholder="Search for any place in the world"
+            placeholder="1. Search for a places"
             >
           </div>
           </div>
