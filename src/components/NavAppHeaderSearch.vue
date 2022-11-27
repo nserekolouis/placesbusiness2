@@ -10,13 +10,22 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"></button>
-                <div class="dropdown-menu">
-                  <a 
+                <div class="dropdown-menu" style="width:95%;">
+                  <p 
                       v-for="place in sub_places"
                       :key="place.id"
                       class="dropdown-item"
+                      style="
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      margin-bottom: 0px;
+                      "
                       @click="dropDownSelectPlace(place)"
-                      >{{ place.main_text }}</a>
+                      >
+                      {{ place.main_text }} <br>
+                      <small class="text-muted">{{ place.secondary_text }}</small>
+                  </p>
                   </div>
               </div>
             <input 

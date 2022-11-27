@@ -13,6 +13,7 @@ import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
 import CommentDetailsPage from "@/views/pages/main/CommentDetailsPage.vue";
+import TrendingPlaces from "@/components/TrendingPlaces.vue";
 
 const TAG = "SWITCH_SCREEN";
 
@@ -30,7 +31,8 @@ export default {
     PostsPage,
     PlaceDetailsPage,
     PromotedPostPage,
-    CommentDetailsPage
+    CommentDetailsPage,
+    TrendingPlaces
   },
   data() {
     return {
@@ -262,7 +264,10 @@ export default {
             aria-label="Close"
             style="border: 1px solid black"
           ></button>
-          <search-users @listen-search-user-profile="searchUserProfile" />
+          <div class="">
+            <search-users @listen-search-user-profile="searchUserProfile" />
+            <trending-places />
+          </div>
         </div>
       </div>
     </div>
