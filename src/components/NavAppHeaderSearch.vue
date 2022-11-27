@@ -4,7 +4,7 @@
           <div class="col" style="height:35px">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <button type="button" class="btn btn-outline-secondary btn-sm" @click="goToPlacePage"> P </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="goToPlacePage"> PAGE </button>
                 <button class="btn btn-outline-secondary dropdown-toggle btn-sm" 
                 type="button" 
                 data-toggle="dropdown"
@@ -34,7 +34,7 @@
             aria-label="Text input with dropdown button"
             v-model="search_place"
             @input="searchPlace"
-            placeholder="1. Search for a places"
+            placeholder="1. Search for a place"
             >
           </div>
           </div>

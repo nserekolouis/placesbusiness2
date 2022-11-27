@@ -191,8 +191,9 @@ export default {
       (newVal, oldVal) => {
         console.log("New Value", newVal);
         console.log("Old Value", oldVal);
-        id.value = 0;
-        getPosts();
+        //id.value = 0;
+        //getPosts();
+        newPost();
       }
     );
 
@@ -278,6 +279,8 @@ export default {
       total.value = 0;
       first_post_id.value = 0;
       last_post_id.value = 0;
+      spinInfo.value = ""
+      showSpin.value = false
       getPosts();
     };
 
