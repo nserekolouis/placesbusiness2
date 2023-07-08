@@ -127,10 +127,10 @@ import Constants from "@/constants/index.js";
 const bColor = "#288c7f";
 const aColor = "#c1c1c1";
 
-let image_file_one = "";
-const image_file_two = "";
-const image_file_three = "";
-const image_file_four = "";
+let image_file_one = null;
+let image_file_two = null;
+let image_file_three = null;
+let image_file_four = null;
 
 
 //const TAG = "MAKE POST";
@@ -155,6 +155,10 @@ export default {
       //image_four: '',
       activeColor: aColor,
       loading: false,
+      // image_file_one: '',
+      // image_file_two: '',
+      // image_file_three: '',
+      // image_file_four: '',
     };
   },
   watch: {
@@ -197,9 +201,9 @@ export default {
         } else {
           //data.append("image_two", event.target.files[1]);
           //window.localStorage.setItem("image_two",event.target.files[1]);
-          const image = event.target.files[1];
+          image_file_two = event.target.files[1];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_two);
           reader.onload = e =>{
               this.image_two = e.target.result;
               console.log(this.image_two);
@@ -213,9 +217,9 @@ export default {
         } else {
           //data.append("image_three", event.target.files[2]);
           //window.localStorage.setItem("image_three",event.target.files[2]);
-          const image = event.target.files[2];
+          image_file_three = event.target.files[2];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_three);
           reader.onload = e =>{
               this.image_three = e.target.result;
               console.log(this.image_three);
@@ -230,9 +234,9 @@ export default {
         } else {
           //data.append("image_four", event.target.files[3]);
           //window.localStorage.setItem("image_four",event.target.files[3]);
-          const image = event.target.files[3];
+          image_file_four = event.target.files[3];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_four);
           reader.onload = e =>{
               this.image_four = e.target.result;
               console.log(this.image_four);
@@ -295,10 +299,10 @@ export default {
         let data = new FormData();
         data.append("place_id", this.place.places_id);
         data.append("post_text", this.post_text);
-        data.append("image_one", this.image_one);
-        data.append("image_two", this.image_two);
-        data.append("image_three", this.image_three);
-        data.append("image_four", this.image_four);
+        data.append("image_one", image_file_one);
+        data.append("image_two", image_file_two);
+        data.append("image_three", image_file_three);
+        data.append("image_four", image_file_four);
 
         this.post_text = "";
         this.image_one = "";
@@ -320,7 +324,7 @@ export default {
           })
           .catch((error) => {
             this.loading = false;
-            console.log(error);
+            console.log("Error: "+error);
           });
       }
     },
