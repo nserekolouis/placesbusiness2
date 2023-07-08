@@ -1,38 +1,46 @@
 <template>
-  <back-navigation :info="componentName" @listen-move-back="moveBack" />
-  <div class="" ref="scrollComponent" style="margin-top: 10px">
-    <ul class="list-group">
-      <li class="list-group-item">
-        <four-images v-if="post.image_four != null" :post="post" />
-        <three-images v-else-if="post.image_three != null" :post="post" />
-        <two-images v-else-if="post.image_two != null" :post="post" />
-        <one-image v-else-if="post.image_one != null" :post="post" />
-        <only-text v-else :post="post" />
-      </li>
-      <li class="list-group-item">
-        <make-comment :post="post" @listen-comment="newComment" />
-      </li>
-      <li
-        v-for="(post, index) in comments"
-        :key="post.id"
-        class="list-group-item"
-      >
-        <post-extras v-if="post.post_extras == 1" :info="info" />
-        <c-four-images v-else-if="post.image_four != null" :post="post" />
-        <c-three-images v-else-if="post.image_three != null" :post="post" />
-        <c-two-images v-else-if="post.image_two != null" :post="post" />
-        <c-one-image v-else-if="post.image_one != null" :post="post" />
-        <c-only-text
-          v-else
-          :post="post"
-          :index="index"
-          @listen-user-profile="goToUserProfile"
-        />
-      </li>
-       <li v-show="showSpin" class="list-group-item">
-        <spinner-component :spin="spin" :info="spinInfo" />
-      </li>
-    </ul>
+<div class="row">
+  <div class="col-md-8">
+    <back-navigation :info="componentName" @listen-move-back="moveBack" />
+    <div class="" ref="scrollComponent" style="margin-top: 10px">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <four-images v-if="post.image_four != null" :post="post" />
+          <three-images v-else-if="post.image_three != null" :post="post" />
+          <two-images v-else-if="post.image_two != null" :post="post" />
+          <one-image v-else-if="post.image_one != null" :post="post" />
+          <only-text v-else :post="post" />
+        </li>
+        <li class="list-group-item">
+          <make-comment :post="post" @listen-comment="newComment" />
+        </li>
+        <li
+          v-for="(post, index) in comments"
+          :key="post.id"
+          class="list-group-item"
+        >
+          <post-extras v-if="post.post_extras == 1" :info="info" />
+          <c-four-images v-else-if="post.image_four != null" :post="post" />
+          <c-three-images v-else-if="post.image_three != null" :post="post" />
+          <c-two-images v-else-if="post.image_two != null" :post="post" />
+          <c-one-image v-else-if="post.image_one != null" :post="post" />
+          <c-only-text
+            v-else
+            :post="post"
+            :index="index"
+            @listen-user-profile="goToUserProfile"
+          />
+        </li>
+        <li v-show="showSpin" class="list-group-item">
+          <spinner-component :spin="spin" :info="spinInfo" />
+        </li>
+      </ul>
+    </div>
+    </div>
+
+    <div class="col-md-4 border-left">
+      <sidebar-right :place_id="p_id" :trend_places="true" :trend_place="false"/>
+    </div>
   </div>
 </template>
 <script>
@@ -51,6 +59,7 @@ import MakeComment from "@/components/comments/MakeComment.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
+import SidebarRight from "@/components/SidebarRight";
 import { ref, onMounted, onUnmounted, onActivated } from "vue";
 import { inject } from "vue";
 
@@ -72,7 +81,8 @@ export default {
     MakeComment,
     PostExtras,
     BackNavigation,
-    SpinnerComponent
+    SpinnerComponent,
+    SidebarRight
   },
   props: {
     id: String,

@@ -1,5 +1,7 @@
 <template>
-  <div class="row">
+<div class="row">
+  <div class="col-md-8">
+    <div class="row">
     <back-navigation :info="componentName" @listen-move-back="moveBack" />
     <hr class="mt-0 mb-1">
     <div>
@@ -44,6 +46,12 @@
       </li>
     </ul>
   </div>
+  </div>
+
+  <div class="col-md-4 border-left">
+    <sidebar-right :place_id="p_id" :trend_places="true" :trend_place="false"/>
+  </div>
+</div>
 </template>
 <script>
 import OnlyText from "@/components/userposts/PostOnlyText.vue";
@@ -55,6 +63,7 @@ import BackNavigation from "@/components/BackNavigation.vue";
 import UserProfile from "@/views/pages/main/userprofile/UserProfile.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
+import SidebarRight from "@/components/SidebarRight";
 
 import { ref, onMounted, onUnmounted, onActivated } from "vue";
 import axios from "axios";
@@ -76,7 +85,8 @@ export default {
     UserProfile,
     BackNavigation,
     SpinnerComponent,
-    AdSpace
+    AdSpace,
+    SidebarRight
   },
   setup(props, { emit }) {
     const componentName = "User Profile";

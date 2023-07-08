@@ -79,7 +79,7 @@
           >
             <img
               :src="profile_picture"
-              alt="Profile Picture"
+              alt=""
               class="rounded-circle"
               width="40"
               height="40"

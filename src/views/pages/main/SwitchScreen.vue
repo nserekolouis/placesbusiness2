@@ -4,16 +4,17 @@ import PostsPage from "@/views/pages/main/PostsPage.vue";
 import UserPostsPage from "@/views/pages/main/userprofile/UserPostsPage.vue";
 import NotificationSection from "@/views/pages/main/notifications/NotificationSection.vue";
 
-import AboutSection from "@/views/pages/main/AboutSection.vue";
-import AccountsSection from "@/views/pages/main/AccountsSection.vue";
-import EditProfileSection from "@/views/pages/main/EditProfileSection.vue";
-import PrivacyAndSafety from "@/views/pages/main/PrivacyAndSafetySection.vue";
+import AboutSection from "@/views/pages/others/AboutSection.vue";
+import AccountsSection from "@/views/pages/others/AccountsSection.vue";
+import EditProfileSection from "@/views/pages/others/EditProfileSection.vue";
+import PrivacyAndSafety from "@/views/pages/others/PrivacyAndSafetySection.vue";
 import SideBar from "@/components/SideBar.vue";
-import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
+//import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
+//import TrendingPlaces from "@/components/TrendingPlaces.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
 import CommentDetailsPage from "@/views/pages/main/CommentDetailsPage.vue";
-import TrendingPlaces from "@/components/TrendingPlaces.vue";
+
 
 const TAG = "SWITCH_SCREEN";
 
@@ -27,12 +28,12 @@ export default {
     EditProfileSection,
     PrivacyAndSafety,
     SideBar,
-    SearchUsers,
+    //SearchUsers,
     PostsPage,
     PlaceDetailsPage,
     PromotedPostPage,
     CommentDetailsPage,
-    TrendingPlaces
+    //TrendingPlaces
   },
   data() {
     return {
@@ -206,7 +207,7 @@ export default {
         @listen-notification-count="listenNotificationCount"
       />
     </div>
-    <div class="col-md-6 border-left">
+    <div class="col-md-9 border-left">
       <KeepAlive>
         <component
           :is="current"
@@ -237,39 +238,6 @@ export default {
           @listen-comment-details="goToCommentDetailsPage"
         ></component>
       </KeepAlive>
-    </div>
-    <div class="col-md-3 border-left">
-      <button
-        class="btn d-md-none btn-menu-right mt-1"
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasResponsive2"
-        aria-controls="offcanvasResponsive2"
-        style="height:30px;"
-      >
-      <font-awesome-icon icon="fa-solid fa-ellipsis" />
-      </button>
-      <div
-        class="offcanvas-md offcanvas-end"
-        tabindex="-1"
-        id="offcanvasResponsive2"
-        aria-labelledby="offcanvasResponsiveLabel2"
-      >
-        <div class="offcanvas-body">
-          <button
-            type="button"
-            class="btn-close btn-close-right"
-            data-bs-dismiss="offcanvas"
-            data-bs-target="#offcanvasResponsive2"
-            aria-label="Close"
-            style="border: 1px solid black"
-          ></button>
-          <div class="">
-            <search-users @listen-search-user-profile="searchUserProfile" />
-            <trending-places />
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>

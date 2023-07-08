@@ -98,7 +98,6 @@
               </ul>
             </div>
             <div class="form-item" style="position:relative">
-
               <button type="submit" class="btn btn-primary btn-next"
               >
               <span class="span-p-text" v-html="buttonText"></span>
@@ -132,10 +131,12 @@ export default {
     const username = ref("");
     const userbio = ref("");
     const country_id = ref(229);
+    const url = inject('url');
     const url_v1 = inject('url_v1');
     const url_v3 = inject('url_v3');
     const searching = ref(true);
     const userouter = ref(true);
+    // const url = ref("");
 
     console.log(TAG+"-AUTH-",Auth);
 
@@ -153,6 +154,13 @@ export default {
           alert(Constants.IMAGE_PROFILE);
         } else {
           dStatus.value = "initial";
+          // const file = event.target.files[0];
+          // url.value = URL.createObjectURL(file);
+          // dStatus.value = "none";
+          // profile_picture.value = url.value;
+          // console.log(url.value);
+          // buttonText.value = "SAVE"
+
           let page_url = url_v3 + "/upload_profile_picture";
           let data = new FormData();
           data.append("image_one", event.target.files[0]);
@@ -161,7 +169,7 @@ export default {
             .then((response) => {
               console.log("profile_picture", response);
               dStatus.value = "none";
-              profile_picture.value = response.data.user_photo;
+              profile_picture.value = url+response.data.user_photo;
             })
             .catch((error) => {
               dStatus.value = "none";

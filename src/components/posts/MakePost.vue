@@ -127,6 +127,12 @@ import Constants from "@/constants/index.js";
 const bColor = "#288c7f";
 const aColor = "#c1c1c1";
 
+let image_file_one = "";
+const image_file_two = "";
+const image_file_three = "";
+const image_file_four = "";
+
+
 //const TAG = "MAKE POST";
 
 export default {
@@ -166,16 +172,22 @@ export default {
     uploadPostImages(event) {
       var count = 0;
       this.loading = true;
-      let page_url = this.url_v3 + "/upload_post_images";
-      let data = new FormData();
+      //let page_url = this.url_v3 + "/upload_post_images";
+      //let data = new FormData();
 
       if (event.target.files[0]) {
         if (event.target.files[0].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_ONE);
         } else {
           count++;
-          data.append("image_one", event.target.files[0]);
-          
+          //data.append("image_one", event.target.files[0]);
+          image_file_one = event.target.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(image_file_one);
+          reader.onload = e =>{
+              this.image_one = e.target.result;
+              console.log(this.image_one);
+          };
         }
       }
 
@@ -183,8 +195,15 @@ export default {
         if (event.target.files[1].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_TWO);
         } else {
-          data.append("image_two", event.target.files[1]);
+          //data.append("image_two", event.target.files[1]);
           //window.localStorage.setItem("image_two",event.target.files[1]);
+          const image = event.target.files[1];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_two = e.target.result;
+              console.log(this.image_two);
+          };
         }
       }
 
@@ -192,17 +211,32 @@ export default {
         if (event.target.files[2].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_THREE);
         } else {
-          data.append("image_three", event.target.files[2]);
+          //data.append("image_three", event.target.files[2]);
           //window.localStorage.setItem("image_three",event.target.files[2]);
+          const image = event.target.files[2];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_three = e.target.result;
+              console.log(this.image_three);
+          };
         }
       }
 
       if (event.target.files[3]) {
+
         if (event.target.files[3].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_FOUR);
         } else {
-          data.append("image_four", event.target.files[3]);
+          //data.append("image_four", event.target.files[3]);
           //window.localStorage.setItem("image_four",event.target.files[3]);
+          const image = event.target.files[3];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_four = e.target.result;
+              console.log(this.image_four);
+          };
         }
       }
 
@@ -212,37 +246,39 @@ export default {
         this.activeColor = aColor;
       }
 
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("RESPONSE POST IMAGES ", response.data.images.length);
+      this.loading = false;
 
-          this.loading = false;
-          if (response.data.images[0].length > 0) {
-            this.image_one = response.data.images[0];
-            window.localStorage.setItem("image_one",response.data.images[0]);
-          }
+      // axios
+      //   .post(page_url, data)
+      //   .then((response) => {
+      //     console.log("RESPONSE POST IMAGES ", response.data.images.length);
 
-          if (response.data.images[1].length > 0) {
-            this.image_two = response.data.images[1];
-            window.localStorage.setItem("image_one",response.data.images[1]);
-          }
+      //     this.loading = false;
+      //     if (response.data.images[0].length > 0) {
+      //       this.image_one = response.data.images[0];
+      //       window.localStorage.setItem("image_one",response.data.images[0]);
+      //     }
 
-          if (response.data.images[2].length > 0) {
-            this.image_three = response.data.images[2];
-            window.localStorage.setItem("image_one",response.data.images[2]);
-          }
+      //     if (response.data.images[1].length > 0) {
+      //       this.image_two = response.data.images[1];
+      //       window.localStorage.setItem("image_one",response.data.images[1]);
+      //     }
 
-          if (response.data.images[3].length > 0) {
-            this.image_four = response.data.images[3];
-            window.localStorage.setItem("image_one",response.data.images[3]);
-          }
+      //     if (response.data.images[2].length > 0) {
+      //       this.image_three = response.data.images[2];
+      //       window.localStorage.setItem("image_one",response.data.images[2]);
+      //     }
 
-        })
-        .catch((error) => {
-          this.loading = false;
-          console.log(error);
-        });
+      //     if (response.data.images[3].length > 0) {
+      //       this.image_four = response.data.images[3];
+      //       window.localStorage.setItem("image_one",response.data.images[3]);
+      //     }
+
+      //   })
+      //   .catch((error) => {
+      //     this.loading = false;
+      //     console.log(error);
+      //   });
     },
     makepost() {
       this.loading = true;
@@ -255,7 +291,7 @@ export default {
         alert("Select a Place");
       } else {
         console.log("PLACE ID", this.place);
-        let page_url = this.url_v3 + "/make_post";
+        let page_url = this.url_v3 + "/image_file_make_post";
         let data = new FormData();
         data.append("place_id", this.place.places_id);
         data.append("post_text", this.post_text);
@@ -296,72 +332,80 @@ export default {
       console.log("CLOSE EMOJI");
     },
     deleteImageOne(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_one = "";
-              window.localStorage.setItem("image_one","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_one = "";
+      //         window.localStorage.setItem("image_one","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_one = "";
+      console.log(path);
     },
     deleteImageTwo(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_two = "";
-              window.localStorage.setItem("image_two","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_two = "";
+      //         window.localStorage.setItem("image_two","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_two = "";
+      console.log(path);
     },
     deleteImageThree(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_three = "";
-              window.localStorage.setItem("image_three","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_three = "";
+      //         window.localStorage.setItem("image_three","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_three = "";
+      console.log(path);
     },
     deleteImageFour(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_four = "";
-              window.localStorage.setItem("image_four","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_four = "";
+      //         window.localStorage.setItem("image_four","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_four = "";
+      console.log(path);
     }
   },
 };

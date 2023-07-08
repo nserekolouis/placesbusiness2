@@ -13,11 +13,27 @@
                 @click="selectUser(place)"
                 style="padding:5px; cursor:pointer"
             >
-            <p>{{ place.main_text }}</p>
+            <p class="place-name">{{ place.main_text }}</p>
             <p>
-              <small
-              style="color: teal;"
-              >
+              <small>Trending Words</small>
+            </p>
+            <ul class="list-group">
+              <li
+              v-for="word in place.trending_words"
+              :key="word.id"
+              class="list-group-item">
+                <p>
+                    {{ word.words}}
+                </p>
+                <p>
+                  <small>              
+                    posts: {{ word.trend_count }}
+                  </small>
+                </p>
+              </li>
+            </ul>
+            <p>
+              <small>
               posts: {{ place.post_count }}
               </small>
               </p>
@@ -29,7 +45,6 @@
 </template>
 <script>
 import axios from "axios";
-//import router from "@/router";
 import { ref, inject, onMounted } from "vue";
 
 const TAG = "trending_places";
@@ -43,6 +58,11 @@ export default {
 
       onMounted(() => {
           getTrendingPlaces();
+
+          window.setInterval(function () {
+            console.log('interval......');
+            getTrendingPlaces();
+          }, 60000);
       });
 
       const getTrendingPlaces = () => {
@@ -65,8 +85,22 @@ export default {
 };
 </script>
 <style scoped>
+.place-name {
+  width: 220px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre;
+}
+
+small {
+  font-size: 10px;
+  font-weight: bold;
+  color:lightgray
+}
+
 p{
     margin-bottom: 0px;
+    font-size: 12px;
 }
 
 

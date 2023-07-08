@@ -1,5 +1,7 @@
 <template>
   <div class="row">
+    <div class="col-md-8">
+       <div class="row">
     <div class="col">
       <back-navigation :info="componentName" @listen-move-back="moveBack" />
       <div class="" ref="scrollComponent" style="margin-top:10px;">
@@ -100,6 +102,13 @@
         </div>
       </div>
     </div>
+    </div>
+    </div>
+
+    <div class="col-md-4 border-left">
+      <sidebar-right :place_id="p_id" :trend_places="true" :trend_place="false"/>
+    </div>
+
   </div>
 </template>
 <script>
@@ -117,12 +126,14 @@ import CFourImages from "@/components/comments/CommentFourImages.vue";
 import MakeComment from "@/components/comments/MakeComment.vue";
 import PostExtras from "@/components/posts/PostExtras.vue";
 import BackNavigation from "@/components/BackNavigation.vue";
+import SidebarRight from "@/components/SidebarRight";
+
 import { 
     ref, 
     //onMounted, 
     //onUnmounted, 
     onActivated,
-    onDeactivated 
+    onDeactivated,
     } from "vue";
 import { inject } from "vue";
 //import SideBar from "@/components/SideBar.vue";
@@ -148,7 +159,8 @@ export default {
     CFourImages,
     MakeComment,
     PostExtras,
-    BackNavigation
+    BackNavigation,
+    SidebarRight, 
     //TitleComponent,
     //SideBar,
     //SearchUsers,

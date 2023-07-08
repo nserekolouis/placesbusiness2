@@ -1,10 +1,12 @@
 <template>
   <title-component :title="componentTitle" />
   <hr>
-  <div class="row col card accounts-card">
-    <p>{{ email }}</p>
-    <p>{{ userhandle }}</p>
-    <p>{{ username }}</p>
+  <div class="m-2">
+    <div class="row col card accounts-card">
+      <p>{{ email }}</p>
+      <p>{{ userhandle }}</p>
+      <p>{{ username }}</p>
+  </div>
   </div>
 </template>
 <script>

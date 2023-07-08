@@ -1,59 +1,66 @@
 <template>
-  <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
-  <hr class="m-0">
-  <place-profile :place="place" style="margin-top: 10px" />
-  <center-infomation :info="alert" v-show="show" class="info-missing" />
-  <ul class="list-group" ref="scrollComponent">
-    <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
-      <ad-space
-        v-if="post.id === ''"
-      />
-      <four-images
-        v-else-if="post.image_four != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <three-images
-        v-else-if="post.image_three != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <two-images
-        v-else-if="post.image_two != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <one-image
-        v-else-if="post.image_one != null"
-        :post="post"
-        :index="post.id"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-      <only-text
-        v-else
-        :post="post"
-        :index="index"
-        :places="places"
-        :deleted_post_id="d_post_id"
-        @listen-comment="goToComments"
-        @listen-user-profile="goToUserProfile"
-      />
-    </li>
-    <li v-show="showSpin" class="list-group-item">
-      <spinner-component :spin="spin" :info="spinInfo" />
-    </li>
-  </ul>
+  <div class="row">
+    <div class="col-md-8">
+      <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
+      <hr class="m-0">
+      <place-profile :place="place" style="margin-top: 10px" />
+      <center-infomation :info="alert" v-show="show" class="info-missing" />
+      <ul class="list-group" ref="scrollComponent">
+        <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+          <ad-space
+            v-if="post.id === ''"
+          />
+          <four-images
+            v-else-if="post.image_four != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <three-images
+            v-else-if="post.image_three != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <two-images
+            v-else-if="post.image_two != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <one-image
+            v-else-if="post.image_one != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+          <only-text
+            v-else
+            :post="post"
+            :index="index"
+            :places="places"
+            :deleted_post_id="d_post_id"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+          />
+        </li>
+        <li v-show="showSpin" class="list-group-item">
+          <spinner-component :spin="spin" :info="spinInfo" />
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4 border-left">
+    <sidebar-right :place_id="place.places_id" :trend_places="false" :trend_place="true"/>
+  </div>
+  </div>
 </template>
 <script>
   import axios from "axios";
@@ -67,7 +74,8 @@
   import PlaceProfile from "@/components/PlaceProfile.vue";
   import SpinnerComponent from "@/components/SpinnerComponent.vue";
   import AdSpace from "@/components/AdSpace.vue";
-  import { onMounted, onActivated, onDeactivated, ref, inject } from "vue";
+  import SidebarRight from "@/components/SidebarRight";
+  import { onMounted, watch, onActivated, onDeactivated, ref, inject } from "vue";
 
   const TAG = "PLACE_DETAILS_PAGE";
 
@@ -83,7 +91,8 @@
       BackNavigation,
       PlaceProfile,
       SpinnerComponent,
-      AdSpace
+      AdSpace,
+      SidebarRight
     },
     props: {
       place: {},
@@ -114,17 +123,26 @@
       const showSpin = ref(false);
 
       onMounted(() => {
-        window.addEventListener("scroll", handleScroll);
         place.value = props.place;
         posts.value = [];
         getPlacePosts();
       });
 
-      onActivated(() => {
-        window.addEventListener("scroll", handleScroll);
-        place.value = props.place;
+      watch(
+      () => props.place,
+      (newVal, oldVal) => {
+        console.log("newVal",newVal);
+        console.log("oldVal",oldVal);
+        place.value = newVal;
+        count.value = 0;
+        total.value = 0;
         posts.value = [];
         getPlacePosts();
+      }
+    );
+
+      onActivated(() => {
+        window.addEventListener("scroll", handleScroll);
       });
 
       onDeactivated(() => {
@@ -166,6 +184,10 @@
             posts.value.push(...newPosts);
             count.value += newPosts.length;
             total.value = response.data.total;
+
+            console.log(TAG+"-G-P-P-RESPONSE", count.value);
+            console.log(TAG+"-G-P-P-RESPONSE", total.value);
+
             if (count.value < total.value) {
               spin.value = true;
               showSpin.value = true;
@@ -200,9 +222,9 @@
           spinInfo.value = "NO MORE POSTS";
         }
 
-        console.log(TAG + "-S-HEIGHT", element.getBoundingClientRect().bottom < window.innerHeight + 20);
-        console.log(TAG + "-S-COUNT", count.value < total.value);
-        console.log(TAG + "-S-LOADMORE", loadMore.value);
+        //console.log(TAG + "-S-HEIGHT", element.getBoundingClientRect().bottom < window.innerHeight + 20);
+        //console.log(TAG + "-S-COUNT", count.value < total.value);
+        //console.log(TAG + "-S-LOADMORE", loadMore.value);
 
         if (
           element.getBoundingClientRect().bottom < window.innerHeight + 10 &&
@@ -215,7 +237,7 @@
       };
 
       const goToComments = (post) => {
-        console.log("COMMENT_CLICKED", post);
+        //console.log("COMMENT_CLICKED", post);
         emit("listen-comment", post);
       };
 

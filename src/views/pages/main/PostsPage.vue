@@ -1,104 +1,111 @@
 <template>
-  <title-component class="d-none d-sm-block" :title="componentTitle" />
-  <post-pages-top-component 
-   class="d-md-none"
-   :indicator="color"
-   :noteCount="nCount"
-   :LeftColor="leftColor"
-   :RightColor="rightColor"
-   @listen-home="goToHome"
-   @listen-notifications="goToNotifications"
-  />
-  <div style="margin-top:10px;">
-    <nav-app-header-search
-      :selected_place="place"
-      @listen-post="newPost"
-      @listen-place="searchedPlace"
-      @listen-place-page="goToPlacePage"
+<div class="row">
+  <div class="col-md-8">
+    <title-component class="d-none d-sm-block" :title="componentTitle" />
+    <post-pages-top-component 
+    class="d-md-none"
+    :indicator="color"
+    :noteCount="nCount"
+    :LeftColor="leftColor"
+    :RightColor="rightColor"
+    @listen-home="goToHome"
+    @listen-notifications="goToNotifications"
     />
-  </div>
-  <div id="container" ref="scrollComponent">
-    <select
-      style="display:none"
-      class="form-select form-select-sm sel-recent-places"
-      aria-label="Default select examples"
-      @change="selectPlace($event, $event.target.selectedIndex)"
-    >
-      <option :selected="false" class="select-option">
-        <div>Recent Places</div>
-      </option>
-      <option v-for="place in places" :key="place.sub_id" class="select-option">
-        <div>{{ place.main_text }}</div>
-      </option>
-    </select>
-    <center-infomation :info="alert" v-show="show" class="info-missing" />
-    <ul class="list-group" style="margin-top: 10px">
-      <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
-        <ad-space
-        v-if="post.id === ''"
-        />
-        <four-images
-          v-else-if="post.image_four != null"
-          :post="post"
-          :index="post.id"
-          :deleted_post_id="d_post_id"
-          :followObject="followObj"
-          @listen-comment="goToComments"
-          @listen-user-profile="goToUserProfile"
-          @listen-place-page="goToPlacePage"
-          @listen-promote-post="promotePost"
-        />
-        <three-images
-          v-else-if="post.image_three != null"
-          :post="post"
-          :index="post.id"
-          :deleted_post_id="d_post_id"
-          :followObject="followObj"
-          @listen-comment="goToComments"
-          @listen-user-profile="goToUserProfile"
-          @listen-place-page="goToPlacePage"
-          @listen-promote-post="promotePost"
-        />
-        <two-images
-          v-else-if="post.image_two != null"
-          :post="post"
-          :index="post.id"
-          :deleted_post_id="d_post_id"
-          :followObject="followObj"
-          @listen-comment="goToComments"
-          @listen-user-profile="goToUserProfile"
-          @listen-place-page="goToPlacePage"
-          @listen-promote-post="promotePost"
-        />
-        <one-image
-          v-else-if="post.image_one != null"
-          :post="post"
-          :index="post.id"
-          :deleted_post_id="d_post_id"
-          :followObject="followObj"
-          @listen-comment="goToComments"
-          @listen-user-profile="goToUserProfile"
-          @listen-place-page="goToPlacePage"
-          @listen-promote-post="promotePost"
-        />
-        <only-text
-          v-else
-          :post="post"
-          :index="index"
-          :places="places"
-          :deleted_post_id="d_post_id"
-          :followObject="followObj"
-          @listen-comment="goToComments"
-          @listen-user-profile="goToUserProfile"
-          @listen-place-page="goToPlacePage"
-          @listen-promote-post="promotePost"
-          @listen-follow-object="passFollowObject"
-        />
-      </li>
-      <li v-show="showSpin" class="list-group-item">
-        <spinner-component :spin="spin" :info="spinInfo" />
-      </li>
-    </ul>
+    <div style="margin-top:10px;">
+      <nav-app-header-search
+        :selected_place="place"
+        @listen-post="newPost"
+        @listen-place="searchedPlace"
+        @listen-place-page="goToPlacePage"
+      />
+    </div>
+    <div id="container" ref="scrollComponent">
+      <select
+        style="display:none"
+        class="form-select form-select-sm sel-recent-places"
+        aria-label="Default select examples"
+        @change="selectPlace($event, $event.target.selectedIndex)"
+      >
+        <option :selected="false" class="select-option">
+          <div>Recent Places</div>
+        </option>
+        <option v-for="place in places" :key="place.sub_id" class="select-option">
+          <div>{{ place.main_text }}</div>
+        </option>
+      </select>
+      <center-infomation :info="alert" v-show="show" class="info-missing" />
+      <ul class="list-group" style="margin-top: 10px">
+        <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
+          <ad-space
+          v-if="post.id === ''"
+          />
+          <four-images
+            v-else-if="post.image_four != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            :followObject="followObj"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+            @listen-place-page="goToPlacePage"
+            @listen-promote-post="promotePost"
+          />
+          <three-images
+            v-else-if="post.image_three != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            :followObject="followObj"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+            @listen-place-page="goToPlacePage"
+            @listen-promote-post="promotePost"
+          />
+          <two-images
+            v-else-if="post.image_two != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            :followObject="followObj"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+            @listen-place-page="goToPlacePage"
+            @listen-promote-post="promotePost"
+          />
+          <one-image
+            v-else-if="post.image_one != null"
+            :post="post"
+            :index="post.id"
+            :deleted_post_id="d_post_id"
+            :followObject="followObj"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+            @listen-place-page="goToPlacePage"
+            @listen-promote-post="promotePost"
+          />
+          <only-text
+            v-else
+            :post="post"
+            :index="index"
+            :places="places"
+            :deleted_post_id="d_post_id"
+            :followObject="followObj"
+            @listen-comment="goToComments"
+            @listen-user-profile="goToUserProfile"
+            @listen-place-page="goToPlacePage"
+            @listen-promote-post="promotePost"
+            @listen-follow-object="passFollowObject"
+          />
+        </li>
+        <li v-show="showSpin" class="list-group-item">
+          <spinner-component :spin="spin" :info="spinInfo" />
+        </li>
+      </ul>
+    </div>
+    </div>
+    <div class="col-md-4 border-left">
+      <sidebar-right :place_id="p_id" :trend_places="true" :trend_place="false"/>
+    </div>
   </div>
 </template>
 <script>
@@ -115,6 +122,7 @@ import TitleComponent from "@/components/TitleComponent.vue";
 import SpinnerComponent from "@/components/SpinnerComponent.vue";
 import AdSpace from "@/components/AdSpace.vue";
 import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
+import SidebarRight from "@/components/SidebarRight";
 
 import { inject, 
          ref, 
@@ -139,7 +147,8 @@ export default {
     TitleComponent,
     SpinnerComponent,
     AdSpace,
-    PostPagesTopComponent
+    PostPagesTopComponent,
+    SidebarRight
   },
   props: {
     new_posts: Boolean,
@@ -171,6 +180,9 @@ export default {
     const color = ref(props.indicator);
     const nCount = ref(props.noteCount);
     const followObj  = ref({});
+    const p_id = 'd734bcc0-4c79-4e52-b060-b63e8792e11a';
+
+
 
     watch(() => props.indicator,
             (newVal, oldVal) => {
@@ -386,7 +398,8 @@ export default {
       goToHome,
       goToNotifications,
       passFollowObject,
-      followObj
+      followObj,
+      p_id
     };
   },
   data() {
@@ -408,11 +421,6 @@ h6 {
 .sel-recent-places {
   margin-top: 10px;
   width: 40px;
-  /* min-width: 200px; */
-  /* position: absolute;
-  top: 220.5px;
-  width: 25%;
-  min-width: 200px; */
 }
 
 .place-details {

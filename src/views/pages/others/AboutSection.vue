@@ -1,12 +1,16 @@
 <template>
   <title-component :title="componentTitle" />
   <hr>
-  <div class="row col card accounts-card">
-    <p>Places</p>
-    <p>App version 2.8(19)</p>
-    <p>@2021 -2022 Placesint</p>
-    <p>Licenses</p>
+
+  <div class="m-2">
+    <div class="row col card accounts-card">
+      <p>Places</p>
+      <p>App version 2.8(19)</p>
+      <p>@2021 -2022 Placesint</p>
+      <p>Licenses</p>
+      </div>
   </div>
+  
 </template>
 <script>
 import TitleComponent from "@/components/TitleComponent.vue";

@@ -1,37 +1,46 @@
 <template>
-  <title-component class="d-none d-sm-block" :title="componentTitle" />
-  <post-pages-top-component 
-   class="d-md-none"
-   :indicator="color"
-   :noteCount="nCount"
-   :LeftColor="leftColor"
-   :RightColor="rightColor"
-   @listen-home="goToHome"
-   @listen-notifications="goToNotifications"
-  />
-  <center-infomation :info="info" v-show="show" class="info-missing" />
-  <ul class="list-group" ref="scrollComponent" style="margin-top:10px;">
-    <li
-      v-for="(notification, index) in notifications"
-      :key="notification.id"
-      class="list-group-item"
-    >
-      <notification-item
-        :notification="notification"
-        :index="index"
-        @listen-post-details="goToPostDetails"
-        @listen-comment-details="goToCommentDetailsPage"
-        @listen-user-profile="goToUserProfile"
-      />
-    </li>
-  </ul>
+<div class="row">
+<div class="col-md-8">
+    <title-component class="d-none d-sm-block" :title="componentTitle" />
+    <post-pages-top-component 
+    class="d-md-none"
+    :indicator="color"
+    :noteCount="nCount"
+    :LeftColor="leftColor"
+    :RightColor="rightColor"
+    @listen-home="goToHome"
+    @listen-notifications="goToNotifications"
+    />
+    <center-infomation :info="info" v-show="show" class="info-missing" />
+    <ul class="list-group" ref="scrollComponent" style="margin-top:10px;">
+      <li
+        v-for="(notification, index) in notifications"
+        :key="notification.id"
+        class="list-group-item"
+      >
+        <notification-item
+          :notification="notification"
+          :index="index"
+          @listen-post-details="goToPostDetails"
+          @listen-comment-details="goToCommentDetailsPage"
+          @listen-user-profile="goToUserProfile"
+        />
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-4 border-left">
+    <sidebar-right :place_id="p_id" :trend_places="true" :trend_place="false"/>
+  </div>
+</div>
+  
 </template>
 <script>
 import axios from "axios";
 import NotificationItem from "@/views/pages/main/notifications/NotificationItem.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
 import TitleComponent from "@/components/TitleComponent.vue";
-import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue"
+import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
+import SidebarRight from "@/components/SidebarRight";
 import { inject, ref, onMounted, onUnmounted, onActivated } from "vue";
 
 export default {
@@ -40,10 +49,12 @@ export default {
     TitleComponent,
     NotificationItem,
     CenterInfomation,
-    PostPagesTopComponent
+    PostPagesTopComponent,
+    SidebarRight
   },
   props: {
     new_notifications: Boolean,
+    p_id: String
   },
   setup(props, { emit }) {
     const url_v3 = inject("url_v3");

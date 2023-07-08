@@ -160,15 +160,22 @@ export default {
       this.loading = true;
       var count = 0;
 
-      let page_url = this.url_v3 + "/upload_comment_images";
-      let data = new FormData();
+      //let page_url = this.url_v3 + "/upload_comment_images";
+      //let data = new FormData();
 
       if (event.target.files[0]) {
         if (event.target.files[0].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_ONE);
         } else {
           count++;
-          data.append("image_one", event.target.files[0]);
+          //data.append("image_one", event.target.files[0]);
+          const image = event.target.files[0];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_one = e.target.result;
+              console.log(this.image_one);
+          };
         }
       }
 
@@ -176,7 +183,14 @@ export default {
         if (event.target.files[1].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_TWO);
         } else {
-          data.append("image_two", event.target.files[1]);
+          //data.append("image_two", event.target.files[1]);
+          const image = event.target.files[1];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_two = e.target.result;
+              console.log(this.image_two);
+          };
         }
       }
 
@@ -184,7 +198,14 @@ export default {
         if (event.target.files[2].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_THREE);
         } else {
-          data.append("image_three", event.target.files[2]);
+          //data.append("image_three", event.target.files[2]);
+          const image = event.target.files[2];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_three = e.target.result;
+              console.log(this.image_three);
+          };
         }
       }
 
@@ -192,7 +213,14 @@ export default {
         if (event.target.files[3].size > Constants.FILE_SIZE) {
           alert(Constants.IMAGE_FOUR);
         } else {
-          data.append("image_four", event.target.files[3]);
+          //data.append("image_four", event.target.files[3]);
+          const image = event.target.files[3];
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = e =>{
+              this.image_four = e.target.result;
+              console.log(this.image_three);
+          };
         }
       }
 
@@ -202,35 +230,37 @@ export default {
         this.activeColor = aColor;
       }
 
-      axios
-        .post(page_url, data)
-        .then((response) => {
-          console.log("RESPONSE COMMENT IMAGES ", response.data.success);
-          this.loading = false;
-          if (response.data.images[0].length > 0) {
-            this.image_one = response.data.images[0];
-            window.localStorage.setItem("comment_image_one",response.data.images[0]);
-          }
+      this.loading = false;
 
-          if (response.data.images[1].length > 0) {
-            this.image_two = response.data.images[1];
-            window.localStorage.setItem("comment_image_two",response.data.images[1]);
-          }
+      // axios
+      //   .post(page_url, data)
+      //   .then((response) => {
+      //     console.log("RESPONSE COMMENT IMAGES ", response.data.success);
+      //     this.loading = false;
+      //     if (response.data.images[0].length > 0) {
+      //       this.image_one = response.data.images[0];
+      //       window.localStorage.setItem("comment_image_one",response.data.images[0]);
+      //     }
 
-          if (response.data.images[2].length > 0) {
-            this.image_three = response.data.images[2];
-            window.localStorage.setItem("comment_image_three",response.data.images[2]);
-          }
+      //     if (response.data.images[1].length > 0) {
+      //       this.image_two = response.data.images[1];
+      //       window.localStorage.setItem("comment_image_two",response.data.images[1]);
+      //     }
 
-          if (response.data.images[3].length > 0) {
-            this.image_four = response.data.images[3];
-            window.localStorage.setItem("comment_image_four",response.data.images[3]);
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          console.log(error);
-        });
+      //     if (response.data.images[2].length > 0) {
+      //       this.image_three = response.data.images[2];
+      //       window.localStorage.setItem("comment_image_three",response.data.images[2]);
+      //     }
+
+      //     if (response.data.images[3].length > 0) {
+      //       this.image_four = response.data.images[3];
+      //       window.localStorage.setItem("comment_image_four",response.data.images[3]);
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     this.loading = false;
+      //     console.log(error);
+      //   });
     },
 
     makeComment() {
@@ -282,75 +312,83 @@ export default {
     },
 
     deleteImageOne(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_one = "";
-              window.localStorage.setItem("comment_image_one","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_one = "";
+      //         window.localStorage.setItem("comment_image_one","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_one = "";
+      console.log(path);
     },
 
     deleteImageTwo(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_two = "";
-              window.localStorage.setItem("comment_image_two","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_two = "";
+      //         window.localStorage.setItem("comment_image_two","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_two = "";
+      console.log(path);
     },
 
     deleteImageThree(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_three = "";
-              window.localStorage.setItem("comment_image_three","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_three = "";
+      //         window.localStorage.setItem("comment_image_three","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_three = "";
+      console.log(path);
     },
 
     deleteImageFour(path){
-      let page_url = this.url_v3 + "/delete_image";
-      let data = new FormData();
-      data.append("path",path);
-      axios
-          .post(page_url, data)
-          .then((response) => {
-            console.log(response);
-            if(response.data.success === true){
-              this.image_four = "";
-              window.localStorage.setItem("comment_image_four","");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      // let page_url = this.url_v3 + "/delete_image";
+      // let data = new FormData();
+      // data.append("path",path);
+      // axios
+      //     .post(page_url, data)
+      //     .then((response) => {
+      //       console.log(response);
+      //       if(response.data.success === true){
+      //         this.image_four = "";
+      //         window.localStorage.setItem("comment_image_four","");
+      //       }
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      this.image_four = "";
+      console.log(path);
     }
   },
 };
