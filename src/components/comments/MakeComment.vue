@@ -125,6 +125,11 @@ const aColor = "#c1c1c1";
 
 const TAG = "Make Comment";
 
+let image_file_one = null;
+let image_file_two = null;
+let image_file_three = null;
+let image_file_four = null;
+
 export default {
   name: "MakeComment",
   props: {
@@ -169,9 +174,9 @@ export default {
         } else {
           count++;
           //data.append("image_one", event.target.files[0]);
-          const image = event.target.files[0];
+          image_file_one = event.target.files[0];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_one);
           reader.onload = e =>{
               this.image_one = e.target.result;
               console.log(this.image_one);
@@ -184,9 +189,9 @@ export default {
           alert(Constants.IMAGE_TWO);
         } else {
           //data.append("image_two", event.target.files[1]);
-          const image = event.target.files[1];
+          image_file_two = event.target.files[1];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_two);
           reader.onload = e =>{
               this.image_two = e.target.result;
               console.log(this.image_two);
@@ -199,9 +204,9 @@ export default {
           alert(Constants.IMAGE_THREE);
         } else {
           //data.append("image_three", event.target.files[2]);
-          const image = event.target.files[2];
+          image_file_three = event.target.files[2];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_three);
           reader.onload = e =>{
               this.image_three = e.target.result;
               console.log(this.image_three);
@@ -214,12 +219,12 @@ export default {
           alert(Constants.IMAGE_FOUR);
         } else {
           //data.append("image_four", event.target.files[3]);
-          const image = event.target.files[3];
+          image_file_four = event.target.files[3];
           const reader = new FileReader();
-          reader.readAsDataURL(image);
+          reader.readAsDataURL(image_file_four);
           reader.onload = e =>{
               this.image_four = e.target.result;
-              console.log(this.image_three);
+              console.log(this.image_four);
           };
         }
       }
@@ -270,18 +275,26 @@ export default {
         this.loading = false;
         alert("Please add info to share");
       } else {
-        let page_url = this.url_v3 + "/make_comment";
+        let page_url = this.url_v3 + "/image_file_make_comment";
 
-        const data = {
-          post_id: "" + this.post.id,
-          comment_text: this.post_text,
-          image_one: this.image_one,
-          image_two: this.image_two,
-          image_three: this.image_three,
-          image_four: this.image_four,
-        };
+        let data = new FormData();
+        data.append("post_id", this.post.id);
+        data.append("comment_text", this.post_text);
+        data.append("image_one", image_file_one);
+        data.append("image_two", image_file_two);
+        data.append("image_three", image_file_three);
+        data.append("image_four", image_file_four);
 
-        console.log(TAG + "COMMENT DATA", data);
+        // const data = {
+        //   post_id: "" + this.post.id,
+        //   comment_text: this.post_text,
+        //   image_one: image_file_one,
+        //   image_two: image_file_two,
+        //   image_three: image_file_three,
+        //   image_four: image_file_four,
+        // };
+
+        console.log(TAG + "COMMENT_DATA", data);
         this.post_text = "";
         this.image_one = "";
         this.image_two = "";
@@ -292,7 +305,7 @@ export default {
           .post(page_url, data)
           .then((response) => {
             this.loading = false;
-            console.log("RESPONSE MAKE COMMENT ", response);
+            console.log("RESPONSE_MAKE_COMMENT", response);
             this.$emit("listen-comment", this.post.id);
             window.localStorage.setItem("comment_image_one","");
             window.localStorage.setItem("comment_image_two","");

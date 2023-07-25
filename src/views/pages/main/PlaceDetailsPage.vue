@@ -3,7 +3,11 @@
     <div class="col-md-8">
       <back-navigation :info="componentTitle" @listen-move-back="moveBack" />
       <hr class="m-0">
-      <place-profile :place="place" style="margin-top: 10px" />
+      <place-profile 
+      :place="place" 
+      style="margin-top: 10px"
+      @listen-go-to-messages="goToMessages"
+      />
       <center-infomation :info="alert" v-show="show" class="info-missing" />
       <ul class="list-group" ref="scrollComponent">
         <li v-for="(post, index) in posts" :key="post.id" class="list-group-item">
@@ -77,7 +81,7 @@
   import SidebarRight from "@/components/SidebarRight";
   import { onMounted, watch, onActivated, onDeactivated, ref, inject } from "vue";
 
-  const TAG = "PLACE_DETAILS_PAGE";
+  const TAG = "P_D_P";
 
   export default {
     name: "PlaceDetailsPage",
@@ -98,7 +102,7 @@
       place: {},
     },
     setup(props, { emit }) {
-      console.log(TAG + " 1 ", props.place);
+      console.log(TAG + "_props_place", props.place);
       const place = ref(props.place);
       
       const url_v3 = inject("url_v3");
@@ -207,7 +211,7 @@
       };
 
       const moveBack = () => {
-        emit("listen-move-back");
+        emit("listen-move-back",place);
       };
 
       const handleScroll = () => {
@@ -245,6 +249,11 @@
         emit("listen-user-profile", post);
       };
 
+      const goToMessages = () => {
+        console.log(TAG + "_place",place);
+        emit("listen-go-to-messages",place);
+      }
+
       return {
         show,
         posts,
@@ -257,6 +266,7 @@
         spin,
         spinInfo,
         showSpin,
+        goToMessages
       };
     },
   };

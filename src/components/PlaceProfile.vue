@@ -19,6 +19,14 @@
     </div>
     <div class="col-6" style="text-align: right">
       <div class="profile-item">
+        <button 
+        type="button" 
+        class="btn btn-outline-primary btn-sm mr-2"
+        style="height:25px; padding-top:0px; margin-right:2px;"
+        @click="goToMessages"
+        >
+          Message
+        </button>
         <button type="button" class="btn btn-outline-primary btn-sm mr-2"
         style="height:25px; padding-top:0px;"
         >
@@ -49,7 +57,7 @@ export default {
   props: {
     place: {},
   },
-  setup(props) { 
+  setup(props,{emit}) { 
     console.log(props.place);
     //const url = inject("url");
     //const url_v1 = inject("url_v1");
@@ -99,10 +107,15 @@ export default {
       alert("Done");
     };
 
+    const goToMessages = () => {
+      emit("listen-go-to-messages");
+    }
+
     return {
       placeDetails,
       numFollowers,
-      copyPlaceLink
+      copyPlaceLink,
+      goToMessages
     };
   },
 };

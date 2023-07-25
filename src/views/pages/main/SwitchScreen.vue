@@ -14,6 +14,7 @@ import SideBar from "@/components/SideBar.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
 import CommentDetailsPage from "@/views/pages/main/CommentDetailsPage.vue";
+import MessagesPage from "@/views/pages/main/MessagesPage.vue";
 
 
 const TAG = "SWITCH_SCREEN";
@@ -34,6 +35,7 @@ export default {
     PromotedPostPage,
     CommentDetailsPage,
     //TrendingPlaces
+    MessagesPage
   },
   data() {
     return {
@@ -187,6 +189,11 @@ export default {
       this.from_component.push(this.current);
       this.current = "CommentDetailsPage";
     },
+    goToMessages(place){
+      this.from_component.push(this.current);
+      this.current = "MessagesPage";
+      this.place = place;
+    }
   },
 };
 </script>
@@ -236,6 +243,7 @@ export default {
           @listen-place-page="goToPlaceDetailsPage"
           @listen-promote-post="promotePost"
           @listen-comment-details="goToCommentDetailsPage"
+          @listen-go-to-messages="goToMessages"
         ></component>
       </KeepAlive>
     </div>
