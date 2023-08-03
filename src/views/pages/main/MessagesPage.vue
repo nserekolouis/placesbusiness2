@@ -11,9 +11,11 @@
                             <div class="row d-flex justify-content-center">
                             <div class="col-md-10 col-lg-8 col-xl-6">
                                 <div class="card" id="chat2">
-                                    <div class="card-body" 
+                                    <div
+                                    ref="bottomEl" 
+                                    class="card-body" 
                                     data-mdb-perfect-scrollbar="true" 
-                                    style="position: relative; height: 400px; overflow-y: auto;">
+                                    style="position: relative; overflow-y: auto;">
                                     <ul>
                                         <li
                                         v-for="message in messages"
@@ -48,7 +50,7 @@
                                                     </div>
                                             </div>
                                         </li>
-                                    </ul>    
+                                    </ul>
                                     </div>
                                     <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
                                         <img :src="profile_picture"
@@ -85,7 +87,7 @@
 import SidebarRight from "@/components/SidebarRight";
 import BackNavigation from "@/components/BackNavigation.vue";
 import Auth from "@/Auth.js";
-import { ref,inject } from "vue";
+import { ref,inject,onActivated } from "vue";
 import axios from "axios";
 
 const TAG = "M_P"
@@ -107,6 +109,12 @@ export default {
          const messages = ref([]);
          const profile_picture = Auth.user.user_photo;
          const url_v3 = inject("url_v3");
+         const bottomEl = ref();
+        
+
+         onActivated(()=>{
+             getMessages();
+         });
           
          const moveBack = () => {
              emit("listen-move-back");
@@ -115,7 +123,6 @@ export default {
          const sendMessage = () => {
             console.log(TAG + "_place:",place.value);
             
-
             let page_url = url_v3 + "/send_message";
             let data = new FormData();
             data.append("places_id", place.value.places_id);
@@ -126,12 +133,38 @@ export default {
             .post(page_url, data)
             .then((response) => {
                 console.log(TAG + "_send_message_response", response);
+                text_message.value = "";
                 const message = response.data.place_message;
                 messages.value.push(...message);
+                scrollToBottom();
                 console.log(TAG + "_message",messages.value);
             })
             .catch((error) => {
                 console.log(TAG + "_send_message_error", error);
+            });
+         };
+
+         const getMessages = () => {
+            let page_url = url_v3 + "/get_messages";
+            axios
+            .get(page_url)
+            .then((response) => {
+                console.log(TAG + "_get_messages_response", response);
+                const message = response.data.messages;
+                messages.value.push(...message);
+                scrollToBottom();
+                console.log(TAG + "_message",messages.value);
+            })
+            .catch((error) => {
+                console.log(TAG + "_send_message_error", error);
+            });
+         };
+
+         const scrollToBottom = () => {
+            console.log(TAG + "_scroll_to_bottom");
+            const lastChildElement = bottomEl.value.lastElementChild;
+            lastChildElement?.scrollIntoView({
+                behavior: 'smooth',
             });
          };
 
@@ -141,7 +174,9 @@ export default {
              text_message,
              sendMessage,
              messages,
-             profile_picture
+             profile_picture,
+             bottomEl,
+             scrollToBottom
          }
     },
 }

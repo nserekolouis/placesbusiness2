@@ -55,7 +55,7 @@ export default {
     const url_v3 = inject("url_v3");
     const notification_id = ref(props.notification.id);
     const post_id = ref(props.notification.post_id);
-    const comment_id = ref(props.notification.comment_id);
+    //const comment_id = ref(props.notification.comment_id);
 
     onMounted(() => {
       if (props.notification.clicked == 0) {
@@ -87,12 +87,14 @@ export default {
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log(TAG,response);
+          console.log(TAG+"_RES",response);
           clicked.value = true;
-          if(post_id.value === ""){
-            emit("listen-post-details",post_id.value);
-          }else{
-            emit("listen-comment-details",comment_id.value);
+          if(response.data.post_id !== null){
+            emit("listen-post-details",response.data.post_id);
+          }else if(response.data.comment_id !== null){
+            emit("listen-comment-details",response.data.comment_id);
+          }else if(response.data.places_id !== null){
+            emit("listen-go-to-messages",response.data.place);
           }
         })
         .catch((error) => {

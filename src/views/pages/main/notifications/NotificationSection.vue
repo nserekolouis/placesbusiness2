@@ -24,6 +24,7 @@
           @listen-post-details="goToPostDetails"
           @listen-comment-details="goToCommentDetailsPage"
           @listen-user-profile="goToUserProfile"
+          @listen-go-to-messages="goToMessages"
         />
       </li>
     </ul>
@@ -202,6 +203,9 @@ export default {
     goToCommentDetailsPage(comment_id) {
       this.$emit("listen-comment-details", comment_id);
     },
+    goToMessages(place){
+      this.$emit("listen-go-to-messages", place);
+    }
   },
 };
 </script>
