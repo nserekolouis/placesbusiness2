@@ -67,6 +67,19 @@
               }}</span>
             </a>
           </li>
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToMessagesHome"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <font-awesome-icon icon="fa-regular fa-message" />
+                <p>Messages</p>
+              </div>
+            </a>
+          </li>
         </ul>
         <hr />
         <div class="dropdown">
@@ -234,12 +247,17 @@ export default {
       emit("listen-notifications",noteCount.value);
     };
 
+    const goToMessagesHome = () => {
+      emit("listen-messages-home");
+    }
+
     return {
       noteColor,
       noteCount,
       placesLogo,
       indicator,
       goToNotifications,
+      goToMessagesHome
     };
   },
   data() {

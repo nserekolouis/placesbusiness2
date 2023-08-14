@@ -15,6 +15,7 @@ import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";
 import PromotedPostPage from "@/views/pages/main/PromotedPostPage.vue";
 import CommentDetailsPage from "@/views/pages/main/CommentDetailsPage.vue";
 import MessagesPage from "@/views/pages/main/MessagesPage.vue";
+import MessagesHome from "@/views/pages/main/MessagesHome.vue";
 
 
 const TAG = "SWITCH_SCREEN";
@@ -35,7 +36,8 @@ export default {
     PromotedPostPage,
     CommentDetailsPage,
     //TrendingPlaces
-    MessagesPage
+    MessagesPage,
+    MessagesHome
   },
   data() {
     return {
@@ -193,6 +195,10 @@ export default {
       this.from_component.push(this.current);
       this.current = "MessagesPage";
       this.place = place;
+    },
+    goToMessagesHome(){
+      this.from_component.push(this.current);
+      this.current = "MessagesHome";
     }
   },
 };
@@ -212,6 +218,7 @@ export default {
         @listen-delete-post-id="deletedPostId"
         @listen-indicator-color="sharePostsIndicatorColor"
         @listen-notification-count="listenNotificationCount"
+        @listen-messages-home="goToMessagesHome"
       />
     </div>
     <div class="col-md-9 border-left">

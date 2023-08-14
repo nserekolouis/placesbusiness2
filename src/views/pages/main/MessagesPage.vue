@@ -15,12 +15,18 @@
                                     ref="bottomEl" 
                                     class="card-body" 
                                     data-mdb-perfect-scrollbar="true" 
-                                    style="position: relative; overflow-y: auto;">
+                                    style="
+                                    position: relative; 
+                                    height:80vh; 
+                                    overflow-y: auto;
+                                    padding-bottom:100px;
+                                    ">
                                     <ul>
                                         <li
-                                        v-for="message in messages"
+                                        v-for="(message,index) in messages"
                                         :key="message.id"
                                         class="list-group-item"
+                                        :id="index"
                                         >
                                             <div v-if="message.from == 'place'">
                                                 <div v-if="message.from =='place'" class="d-flex flex-row justify-content-start">
@@ -40,7 +46,7 @@
                                                 </div>
                                             </div>
                                             <div v-else class="">
-                                                <div class="d-flex flex-row justify-content-end mb-4 pt-1">
+                                                <div class="d-flex flex-row justify-content-end mb-2 pt-1">
                                                     <div>
                                                         <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">{{ message.text }}</p>
                                                         <p class="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">00:06</p>
@@ -161,12 +167,15 @@ export default {
          };
 
          const scrollToBottom = () => {
-            console.log(TAG + "_scroll_to_bottom");
-            const lastChildElement = bottomEl.value.lastElementChild;
-            lastChildElement?.scrollIntoView({
-                behavior: 'smooth',
-            });
+             //window.onload = 
+             init();
          };
+
+         const init = () => {
+             console.log(TAG+"_scroll_count",(messages.value.length));
+             console.log(TAG+"_scroll_to_bottom",document.getElementById((messages.value.length)));
+             document.getElementById((messages.value.length-2)).scrollIntoView({behavior: 'smooth'});
+         }
 
          return {
              componentName,

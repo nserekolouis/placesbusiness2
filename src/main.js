@@ -31,7 +31,7 @@ import {
   faCircleNotch
 } from '@fortawesome/free-solid-svg-icons'
 
-  import {faMessage,faHeart} from '@fortawesome/free-regular-svg-icons'
+import {faMessage,faHeart} from '@fortawesome/free-regular-svg-icons'
 
 /* add icons to the library */
 library.add(faPencil)
