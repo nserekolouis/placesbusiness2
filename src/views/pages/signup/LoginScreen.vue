@@ -10,7 +10,7 @@
           margin-top: 0px;
         "
       >
-        <h1>Stay connected to your favourite Places</h1>
+        <h1>Places Business</h1>
         <div class="row d-md-none">
           <div
             id="carouselExampleIndicators"
@@ -132,8 +132,11 @@ const callback = (response) => {
       } else if (response.data.user.username == null) {
         console.log("3");
         router.push({ name: "UploadProfile" });
+      } else if(response.data.place_admin == null){
+         console.log("4");
+        router.push({ name: "AdminRequest" });
       } else {
-        console.log("4");
+        console.log("5");
         router.push({ name: "SwitchScreen" });
       }
     })

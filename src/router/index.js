@@ -6,6 +6,7 @@ import Auth from '@/Auth.js'
 import LoginScreen from "@/views/pages/signup/LoginScreen.vue"
 import PageNotFound from '@/views/pages/main/PageNotFound.vue'
 import UploadProfile from '@/views/pages/signup/ProfileScreen.vue'
+import AdminRequest from '@/views/pages/signup/AdminRequest.vue'
 import UserhandleScreen from '@/views/pages/signup/UserhandleScreen.vue'
 import SwitchScreen from '@/views/pages/main/SwitchScreen.vue'
 import UnderMaintenace from "@/views/pages/main/UnderMaintenace.vue"
@@ -14,6 +15,7 @@ import SharedComment from "@/views/pages/shared/SharedComment.vue"
 import SharedUserProfile from "@/views/pages/shared/SharedUserProfile.vue"
 import TermsAndConditions from "@/views/pages/signup/TermsAndConditions.vue"
 import SharedPlace from "@/views/pages/shared/SharedPlace.vue"
+import DashboardPage from "@/views/pages/main/dashboard/DashboardPage.vue"
 
 
 const routes = [
@@ -39,6 +41,16 @@ const routes = [
     path: '/uploadProfile',
     name: "UploadProfile",
     component: UploadProfile,
+  },
+  {
+    path: '/adminrequest',
+    name: "AdminRequest",
+    component: AdminRequest,
+  },
+  {
+    path: '/dashboard',
+    name: "DashboardPage",
+    component: DashboardPage,
   },
   {
     path: '/home',

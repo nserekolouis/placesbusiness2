@@ -17,20 +17,42 @@
                 v-for="(message) in messages"
                 :key="message.id"
                 >
-                {{ message }}
+                <home-message-item :receiver="message" />
                 </li>
             </ul>
+        </div>
+        <div class="col-md-4 border-left">
+            <sidebar-right :place_id="p_id" :trend_places="true" :trend_place="false"/>
         </div>
     </div>
 </template>
 <script>
 import axios from "axios";
 import {inject, ref, onActivated} from "vue";
+import HomeMessageItem from "@/components/HomeMessageItem.vue";
+import TitleComponent from "@/components/TitleComponent.vue";
+import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
+import CenterInfomation from "@/components/CenterInformation.vue";
+import SidebarRight from "@/components/SidebarRight";
+
 const TAG = "M_H";
 export default {
+    name: "MessagesHome",
+    components:{
+        HomeMessageItem,
+        TitleComponent,
+        PostPagesTopComponent,
+        CenterInfomation,
+        SidebarRight
+    },
+    props: {
+        new_notifications: Boolean,
+        p_id: String
+    },
     setup() {
         const messages = ref([]);
         const url_v3 = inject('url_v3');
+        const componentTitle = "Messages";
 
         onActivated(() => {
             getMessages();
@@ -50,7 +72,8 @@ export default {
         }
 
         return{
-            messages
+            messages,
+            componentTitle
         }
     },
 }

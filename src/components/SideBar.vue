@@ -48,7 +48,7 @@
                 >
                   <span class="visually-hidden">New alerts</span>
                 </span>
-                <p>Home</p>
+                <p>Dashboard</p>
               </div>
             </a>
           </li>
@@ -59,7 +59,7 @@
           >
             <a href="#" class="nav-link link-dark">
               <font-awesome-icon icon="fa-solid fa-bell" />
-              <p>Notifications</p>
+              <p>Places</p>
               <span class="badge bg-places ml-10"
               :style="{ color: noteColor }"
               >{{
