@@ -132,11 +132,14 @@ const callback = (response) => {
       } else if (response.data.user.username == null) {
         console.log("3");
         router.push({ name: "UploadProfile" });
-      } else if(response.data.place_admin == null){
-         console.log("4");
+      } else if(response.data.place_admin == 0){
+        console.log("4");
         router.push({ name: "AdminRequest" });
-      } else {
+      } else if(response.data.place_admin > 0){
         console.log("5");
+        router.push({ name: "DashboardPage" });
+      } else {
+        console.log("6");
         router.push({ name: "SwitchScreen" });
       }
     })

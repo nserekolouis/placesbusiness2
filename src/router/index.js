@@ -16,6 +16,7 @@ import SharedUserProfile from "@/views/pages/shared/SharedUserProfile.vue"
 import TermsAndConditions from "@/views/pages/signup/TermsAndConditions.vue"
 import SharedPlace from "@/views/pages/shared/SharedPlace.vue"
 import DashboardPage from "@/views/pages/main/dashboard/DashboardPage.vue"
+import DashboardMain from "@/views/pages/main/dashboard/DashboardMain.vue"
 
 
 const routes = [
@@ -51,6 +52,12 @@ const routes = [
     path: '/dashboard',
     name: "DashboardPage",
     component: DashboardPage,
+  },
+  {
+    path: '/dashboardmain/:places_id/:main_text',
+    name: "DashboardMain",
+    component: DashboardMain,
+    props: true
   },
   {
     path: '/home',
