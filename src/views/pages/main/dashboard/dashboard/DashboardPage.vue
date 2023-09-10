@@ -15,7 +15,7 @@
 <script>
 //import SidebarDashboard from "@/components/SidebarDashboard.vue";
 //import NavbarDashboard from "@/components/NavbarDashboard.vue";
-import DashboardTable from "@/views/pages/main/dashboard/DashboardTable.vue";
+import DashboardTable from "@/views/pages/main/dashboard/dashboard/DashboardTable.vue";
 import AppHeader from "@/components/AppHeader.vue";
 export default {
     name: "DashboardPage",

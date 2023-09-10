@@ -1,15 +1,15 @@
 <template>
     <div class="row">
         <div class="col-md-4">
-            <img :src="receiver.receiver.user_photo" alt="Girl in a jacket" width="50" height="50">
+            <img :src="url + receiver.user_photo" alt="Girl in a jacket" width="50" height="50">
         </div>
         <div class="col-md-8">
             <div class="row">
                 <div class="col-md-4">
-                    <p>{{receiver.receiver.username}}</p>
+                    <p>{{receiver.username}}</p>
                 </div>
                 <div class="col-md-4">
-                    <p>{{receiver.receiver.userhandle}}</p>
+                    <p>{{receiver.userhandle}}</p>
                 </div>
                 <div class="col-md-4">
                     <p>{{timestamp}}</p>
@@ -26,15 +26,20 @@
 <script>
 import {
     //watch,
+    inject,
     ref} from "vue";
-const TAG = "H_M_I";
+
+const TAG = "M_I";
+
 export default {
-    name: "HomeMessageItem",
+    name: "MessageItem",
     props: {
         receiver: Object
     },
     setup(props) {
+        console.log(TAG+"_props",props);
         const timestamp = ref(props.receiver.created_at);
+        const url = inject('url');
         console.log(TAG + "_timestamp",timestamp);
         
         // watch(() => props.receiver, (first, second) => {
@@ -70,7 +75,8 @@ export default {
         };
         convertTime(timestamp);
         return {
-            timestamp
+            timestamp,
+            url
         }
     },
 }

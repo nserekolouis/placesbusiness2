@@ -33,7 +33,7 @@
         </a>
         <hr />
         <ul class="nav nav-pills flex-column mb-auto">
-          <li
+          <!-- <li
             class="nav-item"
             data-bs-dismiss="offcanvas"
             data-bs-target="#offcanvasResponsive"
@@ -51,8 +51,8 @@
                 <p>Dashboard</p>
               </div>
             </a>
-          </li>
-          <li
+          </li> -->
+          <!-- <li
             data-bs-dismiss="offcanvas"
             data-bs-target="#offcanvasResponsive"
             @click="goToNotifications"
@@ -66,7 +66,7 @@
                 noteCount
               }}</span>
             </a>
-          </li>
+          </li> -->
           <li
             class="nav-item"
             data-bs-dismiss="offcanvas"
@@ -75,7 +75,8 @@
           >
             <a href="#" class="nav-link link-dark" aria-current="page">
               <div class="" style="position: relative">
-                <font-awesome-icon icon="fa-regular fa-message" />
+                <!-- <font-awesome-icon icon="fa-regular fa-message" /> -->
+                <i class="fa-solid fa-message"></i>
                 <p>Messages</p>
               </div>
             </a>
@@ -91,7 +92,7 @@
             aria-expanded="false"
           >
             <img
-              :src="profile_picture"
+              :src="url + profile_picture"
               alt=""
               class="rounded-circle"
               width="40"
@@ -147,7 +148,7 @@
 import axios from "axios";
 import placesLogo from "@/assets/images/placeslogo.png";
 import Auth from "@/Auth.js";
-import { inject, ref, watch } from "vue";
+import { inject, ref, watch, onMounted } from "vue";
 import { getToken, onMessage } from "firebase/messaging";
 
 
@@ -162,6 +163,7 @@ export default {
     const messaging = inject("messaging");
     const vapidKey = inject("vapidKey");
     const url_v3 = inject("url_v3");
+    const url = inject("url");
     const noteCount = ref(0);
     const indicator = ref(props.indicatorbg);
     const deleted_post_id = ref("");
@@ -175,6 +177,10 @@ export default {
         indicator.value = newVal;
       }
     );
+
+    onMounted(()=>{
+      requestPermission();
+    });
 
     const requestPermission = () => {
       console.log(TAG + "REQUESTING_PERMISSION ...");
@@ -201,7 +207,7 @@ export default {
         }
       });
     };
-    requestPermission();
+    
 
     onMessage(messaging, (payload) => {
       console.log(TAG + "MESSAGE_RECEIVED", payload);
@@ -219,22 +225,21 @@ export default {
     });
 
     const webOnline = (currentToken) => {
-      let page_url = url_v3 + "/web_online";
+      let page_url = url_v3 + "/web_business_online";
       let data = new FormData();
       data.append("token", currentToken);
       axios
         .post(page_url, data)
         .then((response) => {
-          console.log("RESPONSE WEB ONLINE", response);
-          if (response.data.success) {
-           
-            noteCount.value = response.data.count;
-            if(noteCount.value > 0){
-              noteColor.value = "#000";
-            }else{
-               noteColor.value = "#fff";
-            }
-          }
+          console.log(TAG + "RESPONSE WEB ONLINE", response);
+          // if (response.data.success) {
+          //   noteCount.value = response.data.count;
+          //   if(noteCount.value > 0){
+          //     noteColor.value = "#000";
+          //   }else{
+          //      noteColor.value = "#fff";
+          //   }
+          // }
         })
         .catch((error) => {
           console.log(error);
@@ -257,7 +262,8 @@ export default {
       placesLogo,
       indicator,
       goToNotifications,
-      goToMessagesHome
+      goToMessagesHome,
+      url
     };
   },
   data() {

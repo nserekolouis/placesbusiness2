@@ -8,7 +8,7 @@ import AboutSection from "@/views/pages/others/AboutSection.vue";
 import AccountsSection from "@/views/pages/others/AccountsSection.vue";
 import EditProfileSection from "@/views/pages/others/EditProfileSection.vue";
 import PrivacyAndSafety from "@/views/pages/others/PrivacyAndSafetySection.vue";
-import SideBar from "@/components/SideBar.vue";
+import SideBar from "@/views/pages/main/sidebar/SideBar.vue";
 //import SearchUsers from "@/views/pages/main/search/SearchUsers.vue";
 //import TrendingPlaces from "@/components/TrendingPlaces.vue";
 import PlaceDetailsPage from "@/views/pages/main/PlaceDetailsPage.vue";

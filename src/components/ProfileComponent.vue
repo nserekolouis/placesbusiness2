@@ -234,7 +234,8 @@ export default {
             if (response.data.status_code === 1) {
               Auth.updateUser(response.data.user);
               if(userouter.value){
-                  router.push({ name: "SwitchScreen" });
+                  //router.push({ name: "SwitchScreen" });
+                  router.push({ name: "AdminRequest" });
               }
             }
           })

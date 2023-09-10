@@ -15,8 +15,8 @@ import SharedComment from "@/views/pages/shared/SharedComment.vue"
 import SharedUserProfile from "@/views/pages/shared/SharedUserProfile.vue"
 import TermsAndConditions from "@/views/pages/signup/TermsAndConditions.vue"
 import SharedPlace from "@/views/pages/shared/SharedPlace.vue"
-import DashboardPage from "@/views/pages/main/dashboard/DashboardPage.vue"
-import DashboardMain from "@/views/pages/main/dashboard/DashboardMain.vue"
+import DashboardPage from "@/views/pages/main/dashboard/dashboard/DashboardPage.vue"
+import DashboardMain from "@/views/pages/main/dashboard/dashboard/DashboardMain.vue"
 
 
 const routes = [

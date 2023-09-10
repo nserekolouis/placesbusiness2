@@ -16,8 +16,9 @@
                 <li class="list-group-item"
                 v-for="(message) in messages"
                 :key="message.id"
+                @click="goToChatMessages(message)"
                 >
-                <home-message-item :receiver="message" />
+                <message-item :receiver="message" />
                 </li>
             </ul>
         </div>
@@ -25,23 +26,21 @@
 </template>
 <script>
 import axios from "axios";
-import {inject, ref, 
-//onActivated,
-onMounted} from "vue";
-import HomeMessageItem from "@/components/HomeMessageItem.vue";
+import {inject, ref, onMounted} from "vue";
 import TitleComponent from "@/components/TitleComponent.vue";
 import PostPagesTopComponent from "@/components/PostPagesTopComponent.vue";
 import CenterInfomation from "@/components/CenterInformation.vue";
+import MessageItem from "@/views/pages/main/dashboard/messages/messages/MessageItem.vue"
 
 
 const TAG = "D_M";
 export default {
     name: "DashboardMessages",
     components:{
-        HomeMessageItem,
         TitleComponent,
         PostPagesTopComponent,
         CenterInfomation,
+        MessageItem
     },
     props: {
         new_notifications: Boolean,
@@ -49,7 +48,7 @@ export default {
         places_id: String,
         main_text: String
     },
-    setup(props) {
+    setup(props,{emit}) {
         console.log(TAG+"_props",props);
         const messages = ref([]);
         const url_v3 = inject('url_v3');
@@ -58,18 +57,13 @@ export default {
 
         const componentTitle = "Messages for "+maintext.value;
 
-        // onActivated(() => {
-        //     getMessages();
-        //     console.log(TAG + "_onactivated");
-        // });
-
         onMounted(() => {
             console.log(TAG + "_onmounted");
             getPlaceMessages();
         });
 
         const getPlaceMessages = () => {
-            let page_url = url_v3 + "/get_place_messahes";
+            let page_url = url_v3 + "/get_place_messages";
             const data = {
                 places_id: placesid.value
             };
@@ -84,9 +78,14 @@ export default {
             });
         }
 
+        const goToChatMessages = (message) => {
+            emit("listen-chat-messages",message);
+        }
+
         return{
             messages,
-            componentTitle
+            componentTitle,
+            goToChatMessages
         }
     },
 }
