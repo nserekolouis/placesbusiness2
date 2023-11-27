@@ -19,7 +19,11 @@
                 <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Chat here..." aria-label="Recipient's username" aria-describedby="basic-addon2" v-model="chatInput">
                 <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" @click="sendAdminMessage">Send</button>
+                    <!--<button class="btn btn-outline-secondary" type="button" @click="sendAdminMessage">Send</button>-->
+                    <div class="wrapper">
+                        <a class="ms-3" v-show="button" @click="sendAdminMessage()"><i class="fas fa-paper-plane"></i></a>
+                        <span class="loader inner" v-show="loader"></span>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -62,6 +66,9 @@ export default {
 
         const info = "Chat with "+userhandle.value;
 
+        const button = ref(true);
+        const loader = ref(false);
+
         //onActivated(() => {
             //getAdminChatMessages();
         //});
@@ -92,6 +99,8 @@ export default {
             if(typeof chatInput.value === "undefined"){
                 alert("Put text");
             }else{
+                loader.value = true;
+                button.value  =  false;
                 let page_url = url_v3 + "/send_admin_message";
                 const data = {
                     places_id: places_id.value,
@@ -106,10 +115,14 @@ export default {
                     console.log(TAG + "_resp",response);
                     messages.value.push(...response.data.messages)
                     chatInput.value = "";
+                    loader.value = false;
+                    button.value  =  true;
                     scrollToEnd();
                 })
                 .catch((error) => {
                     console.log(TAG + "_error",error);
+                    loader.value = false;
+                    button.value  =  true;
                 });
             }
         }
@@ -130,7 +143,9 @@ export default {
             sendAdminMessage,
             chatInput,
             chatScroll,
-            scrollToEnd
+            scrollToEnd,
+            button,
+            loader
         }
     },
 }
@@ -141,5 +156,39 @@ export default {
     overflow: hidden;
     overflow-y: auto;
     padding-bottom: 80px;
+}
+
+.loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #5700ff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    -webkit-animation: rotation 1s linear infinite;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
+
+.wrapper{
+    position: relative;
+    width: 100px;
+    background-color: antiquewhite;
+}
+
+.inner{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 15px;
 }
 </style>

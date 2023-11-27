@@ -38,7 +38,7 @@ export default {
     },
     setup(props) {
         console.log(TAG+"_props",props);
-        const timestamp = ref(props.receiver.created_at);
+        const timestamp = ref(props.receiver.updated_at);
         const url = inject('url');
         console.log(TAG + "_timestamp",timestamp);
         

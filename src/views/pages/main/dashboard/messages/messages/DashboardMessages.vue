@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col">
             <title-component class="d-none d-sm-block" :title="componentTitle" />
+            <hr>
             <post-pages-top-component 
             class="d-md-none"
             :indicator="color"
@@ -54,6 +55,8 @@ export default {
         const url_v3 = inject('url_v3');
         const placesid = ref(props.places_id);
         const maintext = ref(props.main_text);
+        const show = ref(true);
+        const info = "You have no messages yet!";
 
         const componentTitle = "Messages for "+maintext.value;
 
@@ -72,6 +75,9 @@ export default {
             .then((response) => {
                 console.log(TAG + "_resp",response);
                 messages.value = response.data.messages;
+                if(messages.value.length > 0){
+                    show.value = false;
+                }
             })
             .catch((error) => {
                 console.log(TAG + "_error",error);
@@ -85,7 +91,9 @@ export default {
         return{
             messages,
             componentTitle,
-            goToChatMessages
+            goToChatMessages,
+            show,
+            info
         }
     },
 }

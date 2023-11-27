@@ -81,6 +81,62 @@
               </div>
             </a>
           </li>
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToShop"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <!-- <font-awesome-icon icon="fa-regular fa-message" /> -->
+                <i class="fa-solid fa-message"></i>
+                <p>Retail Shop</p>
+              </div>
+            </a>
+          </li>
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToBusinessHome"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <!-- <font-awesome-icon icon="fa-regular fa-message" /> -->
+                <i class="fa-solid fa-message"></i>
+                <p>Restuarant</p>
+              </div>
+            </a>
+          </li>
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToBusinessHome"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <!-- <font-awesome-icon icon="fa-regular fa-message" /> -->
+                <i class="fa-solid fa-message"></i>
+                <p>Accomodation</p>
+              </div>
+            </a>
+          </li>
+          <li
+            class="nav-item"
+            data-bs-dismiss="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            @click="goToBusinessHome"
+          >
+            <a href="#" class="nav-link link-dark" aria-current="page">
+              <div class="" style="position: relative">
+                <!-- <font-awesome-icon icon="fa-regular fa-message" /> -->
+                <i class="fa-solid fa-message"></i>
+                <p>Venue</p>
+              </div>
+            </a>
+          </li>
         </ul>
         <hr />
         <div class="dropdown">
@@ -152,7 +208,7 @@ import { inject, ref, watch, onMounted } from "vue";
 import { getToken, onMessage } from "firebase/messaging";
 
 
-const TAG = "SIDEBAR";
+const TAG = "S_B";
 
 export default {
   name: "SideBar",
@@ -166,7 +222,7 @@ export default {
     const url = inject("url");
     const noteCount = ref(0);
     const indicator = ref(props.indicatorbg);
-    const deleted_post_id = ref("");
+    //const deleted_post_id = ref("");
     const noteColor = ref("#fff");
 
     watch(
@@ -183,45 +239,42 @@ export default {
     });
 
     const requestPermission = () => {
-      console.log(TAG + "REQUESTING_PERMISSION ...");
+      console.log(TAG + "_REQUESTING_PERMISSION ...");
       Notification.requestPermission().then((permission) => {
         if (permission === "granted") {
-          console.log("NOTIFICATION_PERMISSION_GRANTED");
+          console.log(TAG + "_NOTIFICATION_PERMISSION_GRANTED");
           getToken(messaging, { vapidKey: vapidKey })
             .then((currentToken) => {
               if (currentToken) {
-                console.log(TAG + "CURRENT_TOKEN", currentToken);
+                console.log(TAG + "_CURRENT_TOKEN", currentToken);
                 webOnline(currentToken);
               } else {
-                console.log(TAG,"TOKEN NOT AVAILABLE");
+                console.log(TAG + "_TOKEN_NOT_AVAILABLE","token not available");
               }
             })
             .catch((err) => {
-              console.log(TAG,
-                "AN ERROR OCCURED WHILE RETREIVING THE TOKEN",
-                err
-              );
+              console.log(TAG + "_error",err);
             });
         } else {
-          console.log(TAG,"NOTIFICATION PERMISSION NOT GRANTED");
+          console.log(TAG + "_notification","NOTIFICATION PERMISSION NOT GRANTED");
         }
       });
     };
     
 
     onMessage(messaging, (payload) => {
-      console.log(TAG + "MESSAGE_RECEIVED", payload);
-      if (payload.data.payload === "9") {
-        indicator.value = "#288c7f";
-        emit("listen-indicator-color", indicator.value);
-      } else if (payload.data.payload === "6") {
-        deleted_post_id.value = payload.data.post_id;
-        emit("listen-delete-post-id", deleted_post_id.value);
-      } else {
-        noteColor.value = "#000";
-        noteCount.value++;
-        emit("listen-notification-count", noteCount.value);
-      }
+      console.log(TAG + "_MESSAGE_RECEIVED", payload);
+      // if (payload.data.payload === "9") {
+      //   indicator.value = "#288c7f";
+      //   emit("listen-indicator-color", indicator.value);
+      // } else if (payload.data.payload === "6") {
+      //   deleted_post_id.value = payload.data.post_id;
+      //   emit("listen-delete-post-id", deleted_post_id.value);
+      // } else {
+      //   noteColor.value = "#000";
+      //   noteCount.value++;
+      //   emit("listen-notification-count", noteCount.value);
+      // }
     });
 
     const webOnline = (currentToken) => {
@@ -256,6 +309,10 @@ export default {
       emit("listen-messages-home");
     }
 
+    const goToShop = () => {
+      emit("listen-shop");
+    }
+
     return {
       noteColor,
       noteCount,
@@ -263,6 +320,7 @@ export default {
       indicator,
       goToNotifications,
       goToMessagesHome,
+      goToShop,
       url
     };
   },
