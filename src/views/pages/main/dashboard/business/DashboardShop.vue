@@ -1,26 +1,16 @@
 <template>
     <div class="row">
         <div class="col">
-            <title-component class="d-none d-sm-block" :title="componentTitle" />
+            <title-component class="d-none d-sm-block" :title="componentTitle" :places_id="placesid"/>
             <hr>
             <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 Business Details
             </button>
             </p>
             <div class="collapse" id="collapseExample">
             <div class="card card-body">
                 <div>
-                    <!-- <div class="form-group">
-                        <label for="timepicker">Opening Time:</label>
-                        <div class="cs-form">
-                            <input type="time" class="form-control" value="08:00 AM" />
-                        </div>
-                        <label for="timepicker">closing Time:</label>
-                        <div class="cs-form">
-                            <input type="time" class="form-control" value="09:00 PM" />
-                        </div>
-                    </div> -->
                     <div class="form-group">
                         <label for="phone">Enter your phone number:</label>
                         <input type="tel" v-model="phonenumber" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" class="form-control">
@@ -28,6 +18,10 @@
                     <div class="form-group">
                         <label for="decription">Description</label>
                         <input type="text" v-model="description" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="decription">Delivery fee:</label>
+                        <input type="number" v-model="deliveryfee" class="form-control">
                     </div>
                     <button 
                     type="submit" 
@@ -39,7 +33,7 @@
             </div>
             <hr>
             <p>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
                 Working Hours
             </button>
             </p>
@@ -160,6 +154,24 @@
             </div>
             </div>
             <hr>
+            <p>
+            <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                Delivery Options
+            </button>
+            </p>
+            <div class="collapse" id="collapseExample3">
+            <div class="card card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        Pickup at Shop
+                    </li>
+                    <li class="list-group-item">
+                        Deliver to door Step
+                    </li>
+                </ul>
+            </div>
+            </div>
+            <hr>
             <div>
                 <h6>ADD ITEM</h6>
                 <div>
@@ -237,7 +249,7 @@
 </template>
 <script>
 import axios from "axios";
-import TitleComponent from "@/components/TitleComponent.vue";
+import TitleComponent from "@/components/TitleShopComponent.vue";
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -284,6 +296,9 @@ export default {
         const fridayOff = ref();
         const saturdayOff = ref();
         const sundayOff = ref();
+        const selected = ref();
+        const deliveryfee = ref(0);
+        
 
 
         watch(mondayOff,async(newValue,oldValue)=>{
@@ -359,6 +374,7 @@ export default {
         onMounted(() => {
             get_client_items();
             get_retail_business_details();
+            get_retail_business_timestamps();
         });
 
         const search_item_name = (newValue) => {
@@ -429,6 +445,7 @@ export default {
                 places_id:placesid.value,
                 phonenumber:phonenumber.value,
                 description:description.value,
+                deliveryfee:deliveryfee.value
             }
             axios
                 .post(page_url,data)
@@ -451,6 +468,7 @@ export default {
                     console.log(TAG + "_response_grbd", response.data);
                     phonenumber.value = response.data.business_details.phonenumber;
                     description.value = response.data.business_details.description;
+                    
                 })
                 .catch((error) => {
                     console.log(TAG + "_error",error);
@@ -482,6 +500,13 @@ export default {
                 .post(page_url,data)
                 .then((response) => {
                     console.log(TAG + "_response_grbt", response.data);
+                    mondayTime.value = response.data.timestamps[0];
+                    tuesdayTime.value = response.data.timestamps[1];
+                    wednesdayTime.value = response.data.timestamps[2];
+                    thursdayTime.value = response.data.timestamps[3];
+                    fridayTime.value = response.data.timestamps[4];
+                    saturdayTime.value = response.data.timestamps[5];
+                    sundayTime.value = response.data.timestamps[6];
                 })
                 .catch((error) => {
                     console.log(TAG + "_error",error);
@@ -520,7 +545,9 @@ export default {
             saturdayOff,
             sundayOff,
             add_retail_business_timestamp,
-            get_retail_business_timestamps
+            get_retail_business_timestamps,
+            selected,
+            placesid,
         }
     },
 }

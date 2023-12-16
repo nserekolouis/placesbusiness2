@@ -23,14 +23,6 @@
                     >
                         <i class="fa-solid fa-pencil"></i>
                     </div>
-                    <!--<div>
-                        <div style="float:right">
-                            <button type="button" class="btn btn-primary btn-sm" style="margin-right:2px;">-</button>
-                            <input type="number" min="1" value="1" style="width:50px;">
-                            <button type="button" class="btn btn-primary btn-sm" style="margin-left:2px;">+</button><br>
-                            <a href="#" class="btn btn-danger btn-sm" style="float:right;">Buy</a>
-                        </div>
-                    </div>-->
                 </div>
                 </div>
                 </div>
